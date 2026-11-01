@@ -43,9 +43,9 @@ add("LOCK-WEB exact + installed", "PASS" if not loose and os.path.exists("web/pa
 
 # --- physics + WP2 gates (map test files -> gate ids from the junit report)
 junit = "results/junit_all.xml"; os.makedirs("results", exist_ok=True)
-sh(PY, "-m", "pytest", "-m", "phy or trk or iso or com or known_failure", f"--junitxml={junit}", "-q", "-p", "no:cacheprovider")
+sh(PY, "-m", "pytest", "-m", "phy or trk or iso or com or fus or known_failure", f"--junitxml={junit}", "-q", "-p", "no:cacheprovider")
 per, extra, kf = {}, {}, {}
-com = {}
+com, fus = {}, {}
 def tally(d, key, tc):
     sk = tc.find("skipped")
     if sk is not None and "xfail" in (sk.get("type", "") + sk.get("message", "")):    # strict xfail = an EXPLICIT known failure that still fails as declared
@@ -60,6 +60,8 @@ for tc in ET.parse(junit).getroot().iter("testcase"):
     elif "test_trk_" in cn or "test_rig_integration" in cn: tally(extra, "WP2-TRK association/stale/occlusion/failure modes", tc)
     mc = re.search(r"test_com(\d\d)_", cn)
     if mc: tally(com, f"COM-{mc.group(1)}", tc)
+    mf = re.search(r"test_fus(\d\d)_", tc.get("name", ""))
+    if mf: tally(fus, f"FUS-{mf.group(1)}", tc)
     if "test_known_failures" in cn: tally(kf, tc.get("name", "?"), tc)
     if "test_iso_" in cn: tally(extra, "AC-VS-06 ground-truth isolation (AST + blocked-import subprocess)", tc)
 names = {1: "determinism / wall-clock independence", 2: "linear kinematics", 3: "braking distance + friction", 4: "steering / turning",
@@ -78,7 +80,13 @@ for i in range(1, 11):
     d = com.get(f"COM-{i:02d}")
     if not d: add(f"COM-{i:02d} {cnames[i]}", "NOT_CHECKED", "no test found"); continue
     row(f"COM-{i:02d} {cnames[i]}", d)
-EXPECTED_KF = 5
+fnames = {1: "temporal alignment (original t_meas)", 2: "covariance propagation", 3: "SE(2) transform + covariance", 4: "cross-source association (no truth)", 5: "fusion B0-B4 (CI vs independence)",
+          6: "provenance + duplicate evidence", 7: "stale/contradictory/missing/malformed handling", 8: "world state isolation + determinism", 9: "consistency monitor + identity interface (fail closed)", 10: "protocol integrity + evaluator"}
+for i in range(1, 11):
+    d = fus.get(f"FUS-{i:02d}")
+    if not d: add(f"FUS-{i:02d} {fnames[i]}", "NOT_CHECKED", "no test found"); continue
+    row(f"FUS-{i:02d} {fnames[i]}", d)
+EXPECTED_KF = 8
 kfn = len(kf)
 add("KNOWN-FAILURES registry (xfail strict)", "PASS" if kfn == EXPECTED_KF else "FAIL",
     f"{kfn} explicit known failures still failing as declared (expected {EXPECTED_KF}): " + ", ".join(sorted(re.sub(r'^test_', '', k)[:4] for k in kf)) + "; an unexpected pass or a missing entry is FAIL")

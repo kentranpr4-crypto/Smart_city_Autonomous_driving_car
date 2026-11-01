@@ -78,17 +78,57 @@ M = [  # name, file, old, new[, test targets]
  ("com_comm_imports_truth_side",   "comm/network.py", "import heapq", "import heapq\nimport backend.world", ["tests/comm"]),
  ("com_comm_reads_wall_clock",     "comm/clock.py", "        return t_sim * (1.0 + self.drift_ppm * 1e-6) + self.offset_s", "        import time\n        return t_sim * (1.0 + self.drift_ppm * 1e-6) + self.offset_s + time.time() * 0.0", ["tests/comm"]),
  ("com_telemetry_drops_events",    "comm/telemetry.py", "        self._h.update(b); self.events.append(rec)", "        self._h.update(b); self.events.append(rec) if rec[\"type\"] != \"drop\" else None", ["tests/comm"]),
+ # ---- WP4 fusion mutants (targets: tests/fusion)
+ ("fus_q_scale_wrong",             "fusion/model.py", "    q = sigma_a * sigma_a\n", "    q = 0.5 * sigma_a * sigma_a\n", ["tests/fusion"]),
+ ("fus_no_covariance_growth",      "fusion/model.py", "    Pn = Fm @ P @ Fm.T + Q(abs(dt), sigma_a)", "    Pn = Fm @ P @ Fm.T", ["tests/fusion"]),
+ ("fus_time_sigma_ignored",        "fusion/model.py", "    if time_sigma_s > 0.0:", "    if False:", ["tests/fusion"]),
+ ("fus_predicts_from_arrival_not_obs","fusion/fuser.py", "if abs(t_now - e.t) > 0 else (x, P)", "if False else (x, P)", ["tests/fusion"]),
+ ("fus_transform_jacobian_sign",   "fusion/transform.py", "dR = np.array([[-s, -c], [c, -s]])                           # dR/dtheta", "dR = np.array([[s, c], [c, -s]])", ["tests/fusion"]),
+ ("fus_transform_ignores_uncertainty","fusion/transform.py", "Pn = Jx @ P @ Jx.T + Ju @ Sig @ Ju.T", "Pn = Jx @ P @ Jx.T", ["tests/fusion"]),
+ ("fus_transform_accepts_wrong_frame","fusion/transform.py", "if est.frame != self.src_frame:", "if False:", ["tests/fusion"]),
+ ("fus_association_gate_removed",  "fusion/associate.py", "if v <= gate and not conflict:", "if not conflict:", ["tests/fusion"]),
+ ("fus_class_constraint_removed",  "fusion/associate.py", "conflict = class_gate and ca != cb and \"unknown\" not in (ca, cb)", "conflict = False", ["tests/fusion"]),
+ ("fus_association_not_optimal",   "fusion/associate.py", "pairs = [(i, j, float(raw[i, j])) for i, j in linear_sum_assignment(cost.tolist()) if cost[i, j] < BIG]", "pairs = [(i, int(np.argmin(cost[i])), float(raw[i, int(np.argmin(cost[i]))])) for i in range(len(A)) if cost[i].min() < BIG]", ["tests/fusion"]),
+ ("fus_ambiguity_never_flagged",   "fusion/associate.py", "if any(c < BIG and c <= v + ambiguity_margin for c in others):", "if False:", ["tests/fusion"]),
+ ("fus_info_fusion_averages_P",    "fusion/combine.py", "    Y = sum(_spd_inv(P) for _, P in items)\n    P = _spd_inv(Y)", "    Y = sum(_spd_inv(P) for _, P in items) / len(items)\n    P = _spd_inv(Y)", ["tests/fusion"]),
+ ("fus_ci_omega_fixed_half",       "fusion/combine.py", "    w = min(cands, key=lambda c: (at(c)[0], c))", "    w = 0.5", ["tests/fusion"]),
+ ("fus_ci_is_information_fusion",  "fusion/combine.py", "        return (np.trace(Pw) if criterion == \"trace\" else np.linalg.det(Pw)), Pw", "        return 0.0, _spd_inv(I1 + I2)", ["tests/fusion"]),
+ ("fus_naive_sums_covariances",    "fusion/combine.py", "return xs.mean(axis=0), Ps.mean(axis=0), ()", "return xs.mean(axis=0), Ps.sum(axis=0), ()", ["tests/fusion"]),
+ ("fus_evidence_ledger_removed",   "fusion/fuser.py", "            if any(ev in used_ev for ev in it[0].evidence):\n                dup_ev += 1; continue\n", "", ["tests/fusion"]),
+ ("fus_duplicate_ref_keeps_oldest","fusion/fuser.py", "                if e.t <= old.t: continue", "                if e.t >= old.t: continue", ["tests/fusion"]),
+ ("fus_stale_check_removed",       "fusion/fuser.py", "        if e.kind == \"remote\" and age > p[\"max_remote_age_s\"] + 1e-9:\n            return \"stale\", None\n", "", ["tests/fusion"]),
+ ("fus_future_check_removed",      "fusion/fuser.py", "        if e.t > t_now + 1e-6:\n            return \"future\", None\n", "", ["tests/fusion"]),
+ ("fus_horizon_check_removed",     "fusion/fuser.py", "        if age > p[\"max_horizon_s\"] + 1e-9:\n            return \"horizon\", None\n", "", ["tests/fusion"]),
+ ("fus_nonfinite_check_removed",   "fusion/fuser.py", "        if x.shape != (4,) or not (np.all(np.isfinite(x)) and np.all(np.isfinite(P)) and math.isfinite(e.t)):\n            return \"nonfinite\", None\n", "", ["tests/fusion"]),
+ ("fus_psd_check_removed",         "fusion/fuser.py", "            return \"bad_covariance\", None", "            pass", ["tests/fusion"]),
+ ("fus_frame_check_removed",       "fusion/fuser.py", "        if e.frame != p[\"supported_frame\"]:\n            return \"frame_mismatch\", None", "        if False:\n            return \"frame_mismatch\", None", ["tests/fusion"]),
+ ("fus_auth_policy_ignored",       "fusion/fuser.py", "if e.kind == \"remote\" and p[\"require_assurance\"] == AUTHENTICATED and", "if False and", ["tests/fusion"]),
+ ("fus_verifier_claims_authenticated","fusion/identity.py", "        return ALLOWLIST_ONLY\n\n\nclass _Unsafe", "        return AUTHENTICATED\n\n\nclass _Unsafe", ["tests/fusion"]),
+ ("fus_self_track_not_suppressed", "fusion/fuser.py", "if float(r @ np.linalg.solve(S, r)) <= self._self_gate:", "if False:", ["tests/fusion"]),
+ ("fus_quarantine_inverted",       "fusion/fuser.py", "quarantined = p[\"quarantine_on_flag\"] and key[0] and self.monitor.is_flagged(src)", "quarantined = p[\"quarantine_on_flag\"] and key[0] and not self.monitor.is_flagged(src)", ["tests/fusion"]),
+ ("fus_monitor_threshold_too_high","fusion/monitor.py", "self.hi = chi2_ppf(conf, 2 * window)", "self.hi = 10 * chi2_ppf(conf, 2 * window)", ["tests/fusion"]),
+ ("fus_monitor_no_hysteresis",     "fusion/monitor.py", "elif self.flagged.get(source, False) and s < self.lo:", "elif self.flagged.get(source, False) and s < self.hi:", ["tests/fusion"]),
+ ("fus_fid_not_persistent",        "fusion/fuser.py", "        for _, fid, i in sorted(cand):\n            if out[i] is None and fid not in taken:", "        for _, fid, i in sorted(cand):\n            if False and out[i] is None and fid not in taken:", ["tests/fusion"]),
+ ("fus_b0_uses_remote",            "fusion/fuser.py", "use_local = self.method != \"B1_remote\"; use_remote = self.method != \"B0_local\"", "use_local = self.method != \"B1_remote\"; use_remote = True", ["tests/fusion"]),
+ ("fus_imports_backend",           "fusion/fuser.py", "import numpy as np\n", "import numpy as np\nimport backend.world\n", ["tests/fusion"]),
+ ("fus_reads_wall_clock",          "fusion/model.py", "import numpy as np\n", "import numpy as np\nimport time\n", ["tests/fusion"]),
+ ("fus_adapter_uses_arrival_time", "fusion/adapters.py", "return Estimate(st.ref[0], st.ref[1], st.t_meas,", "return Estimate(st.ref[0], st.ref[1], st.t_meas + st.age_est,", ["tests/fusion"]),
+ ("fus_evaluator_gate_ignored",    "experiments/metrics.py", "if cost[i][j] <= gate}", "if True}", ["tests/fusion"]),
+ ("fus_evaluator_nees_uses_diag",  "experiments/metrics.py", "n = float(e @ np.linalg.solve(P, e))", "n = float(e @ e / P[0, 0])", ["tests/fusion"]),
 ]
 def main():
     survivors = []
     full = '--full' in sys.argv
+    only = next((a.split('=', 1)[1] for a in sys.argv if a.startswith('--only=')), None)
     for item in M:
+        if only and not any(item[0].startswith(o) or item[0] == o for o in only.split(',')): continue
         name, rel, old, new = item[:4]
         targets = item[4] if len(item) > 4 else PHY
 
         tmp = pathlib.Path(tempfile.mkdtemp())
-        for d in ("backend", "perception", "comm", "integration", "tests", "schemas", "scenarios"):
+        for d in ("backend", "perception", "comm", "integration", "fusion", "experiments", "tests", "schemas", "scenarios"):
             shutil.copytree(ROOT / d, tmp / d, ignore=shutil.ignore_patterns("__pycache__"))
+        shutil.copytree(ROOT / "docs" / "phase2", tmp / "docs" / "phase2", ignore=shutil.ignore_patterns("evidence"))   # tests that pin hashes of the preregistration need the document
         shutil.copy(ROOT / "pytest.ini", tmp / "pytest.ini")
         f = tmp / rel; s = f.read_text(encoding="utf-8")
         if s.count(old) != 1:

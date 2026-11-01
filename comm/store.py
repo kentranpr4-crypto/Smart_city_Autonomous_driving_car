@@ -15,6 +15,8 @@ class StoredTrack:
     ttl_left: float
     hop_count: int
     flags: tuple
+    orig_seq: int = -1               # origin sequence number: with ref[0] it identifies the OBSERVATION (evidence id), invariant across relays
+    relay_path: tuple = ()
 
 
 class ReceiverStore:
@@ -36,10 +38,10 @@ class ReceiverStore:
             if cur is not None and not (m.t_meas > cur[1]):
                 self.ignored_older += 1                          # older/equal observation never overwrites a newer one
                 continue
-            self._d[ref] = (t, m.t_meas, m.t_meas + m.ttl_s, m.hop_count, result.flags)
+            self._d[ref] = (t, m.t_meas, m.t_meas + m.ttl_s, m.hop_count, result.flags, m.origin.orig_seq, tuple(m.relay_path))
 
     def purge(self, t_local: float) -> int:
-        dead = [r for r, (_, tm, exp, _, _) in self._d.items() if t_local - tm > self.max_age_s or t_local > exp]
+        dead = [r for r, (_, tm, exp, *_rest) in self._d.items() if t_local - tm > self.max_age_s or t_local > exp]
         for r in dead:
             del self._d[r]
         return len(dead)
@@ -47,4 +49,4 @@ class ReceiverStore:
     def tracks(self, t_local: float) -> list:
         """Advisory constraints: tracks that are still fresh. A missing track means 'no information', NEVER 'free'."""
         self.purge(t_local)
-        return [StoredTrack(r, e, tm, t_local - tm, exp - t_local, hc, fl) for r, (e, tm, exp, hc, fl) in sorted(self._d.items())]
+        return [StoredTrack(r, e, tm, t_local - tm, exp - t_local, hc, fl, oseq, rp) for r, (e, tm, exp, hc, fl, oseq, rp) in sorted(self._d.items())]

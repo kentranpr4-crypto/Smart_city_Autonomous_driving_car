@@ -80,4 +80,8 @@ KF-1..KF-5 (WP2/WP3) vẫn là xfail strict. WP4 thêm KF-6 nếu thí nghiệm 
 `fusion/preregistration.json` sha256 = `600215ad6454c29d0c8ee81229ea13a540ca0c397637810fee863c0842b9d036`; `experiments/conditions.py` sha256 = `f0108f59f404d0fb0079682770a182884e44a5c7df553d8230952c84a0edb950`.
 
 ## 9. Thay đổi SAU đăng ký
-_(trống tại thời điểm commit đăng ký)_
+| # | Thay đổi | Lý do |
+|---|---|---|
+| 1 | Khoá sổ bằng chứng là `(origin source, origin seq, track_id)` thay vì `(origin source, origin seq)` (R-CPF-06, nền của FI-2) | Phát hiện khi viết test FUS-04: một bản tin chứa nhiều track; khoá hai thành phần sẽ coi hai mục tiêu khác nhau trong cùng bản tin là trùng bằng chứng. Thay đổi chỉ làm khoá **chi tiết hơn**, không đổi ngưỡng/giả thuyết; chưa có benchmark nào chạy |
+| 2 | Thêm triệt tiêu **self-track** (`ego_pose` → lý do `self_track`, ngưỡng χ²₉₉.₉(2)) vào fuser; bộ đánh giá khớp các track với **mọi** actor thật (không chỉ mục tiêu) khi đếm track giả | Phát hiện trên **seed tuning** (C1): `false_tracks_per_cycle` = 0.309 vì CCTV thấy chính xe ego và vì track của xe thật không phải mục tiêu bị tính là giả. Ego biết vị trí của chính nó (đầu vào hợp lệ lúc suy luận, nhiễu σ=0.1 m trong mô phỏng). Không đổi ngưỡng/giả thuyết đã đăng ký; chưa chạy seed đánh giá |
+| 3 | Thêm tham số `monitor_warmup_s` (mặc định **0 = đúng cấu hình đã đăng ký**). Kết quả chính H5a/H5b dùng cấu hình đăng ký; giá trị 1.0 s chỉ được báo cáo như **bổ sung** | Trên **seed tuning**: monitor báo động giả sớm (1.6–1.9 s) vì quá độ khởi tạo track (đối chứng C0: 20% seed trong 3 s). Warm-up 1.0 s: C0 trong 3 s 0%, nhưng phát hiện bias C5a trong 3 s còn 87% (<90%); báo động muộn còn ~13% seed. Không chỉnh thêm; không dùng làm kết luận |

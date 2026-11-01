@@ -1,0 +1,7 @@
+68343e636b910a9f755909799d6d9946a097d0b74aadd3672d3dd846d43017a4  eval/results.json
+ce14e024920e3912abd691b8f2639a99396f73397f1604a4a8b2853f9e7eb2da  eval/verdicts.md
+367c1dc3e40b9bc1a0e5f73e656c2944ec0fa8cf846a41ac37a5e5d83f03e349  eval/eval_run.log
+3b9003224ac7144c5a1913ddfb86a2697416150b3490021d91524cce414fac40  eval/deterministic_digest.txt
+600215ad6454c29d0c8ee81229ea13a540ca0c397637810fee863c0842b9d036  ../../../../../fusion/preregistration.json
+f0108f59f404d0fb0079682770a182884e44a5c7df553d8230952c84a0edb950  ../../../../../experiments/conditions.py
+47096a4ea5957f8e1f7f9a180ef379fdd003af3426b8d3a6090f7d7c2d758760  ../../../../../comm/thresholds.json
