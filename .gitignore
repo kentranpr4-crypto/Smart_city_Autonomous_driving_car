@@ -1,4 +1,5 @@
 # environments / build output
+# Python bytecode anywhere (incl. .claude/skills/*): build artifacts, never evidence. The one tracked .pyc from the kit install was untracked (file kept locally).
 .venv/
 web/node_modules/
 web/dist/
