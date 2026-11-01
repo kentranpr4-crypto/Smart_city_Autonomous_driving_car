@@ -41,6 +41,43 @@ M = [  # name, file, old, new[, test targets]
  ("tracker_imports_truth_side",    "perception/tracker.py", "import numpy as np\n", "import numpy as np\nimport backend.world\n", ["tests/perception/test_iso_ground_truth_separation.py"]),
  ("tracker_reads_frame_labels",    "perception/tracker.py", "from .stats import chi2_ppf", "from .stats import chi2_ppf\nfrom backend.sensors import FrameLabels", ["tests/perception/test_iso_ground_truth_separation.py"]),
  ("rig_leaks_labels_to_tracker",   "backend/rig.py",     "rep = tr.update(frame, t_now=world.t)", "rep = tr.update(frame, t_now=world.t); tr._leak = self.labels", ["tests/perception/test_iso_ground_truth_separation.py"]),
+ # ---- WP3 communication mutants (targets: tests/comm unless stated)
+ ("com_crc_check_removed",         "comm/trackmsg.py", "            ok = crc_of(d) == c", "            ok = True", ["tests/comm"]),
+ ("com_dedup_removed",             "comm/admission.py", "        if key[1] in seen:\n            return rej(\"duplicate\", m, age_r, age_p)\n", "", ["tests/comm"]),
+ ("com_replay_window_removed",     "comm/admission.py", "        if mx >= 0 and key[1] < mx - c.reorder_window:\n            return rej(\"replay_old\", m, age_r, age_p)\n", "", ["tests/comm"]),
+ ("com_future_check_removed",      "comm/admission.py", "        if age_p < -c.clock_tolerance_s:\n            return rej(\"future_obs\", m, age_r, age_p)\n", "", ["tests/comm"]),
+ ("com_ttl_check_removed",         "comm/admission.py", "        if age_p > m.ttl_s:\n            return rej(\"expired_ttl\", m, age_r, age_p)\n", "", ["tests/comm"]),
+ ("com_stale_check_removed",       "comm/admission.py", "        if age_p > c.max_age_s:\n            return rej(\"stale\", m, age_r, age_p)\n", "", ["tests/comm"]),
+ ("com_stale_uses_recv_not_proc",  "comm/admission.py", "        if age_p > c.max_age_s:", "        if age_r > c.max_age_s:", ["tests/comm"]),
+ ("com_nonfinite_check_removed",   "comm/admission.py", "        if not all(math.isfinite(v) for v in _all_numbers(m)):\n            return \"non_finite\"\n", "", ["tests/comm"]),
+ ("com_covariance_not_checked",    "comm/admission.py", "                return \"bad_covariance\"", "                pass", ["tests/comm"]),
+ ("com_frame_check_removed",       "comm/admission.py", "        if m.frame != FRAME:\n            return \"unsupported_frame\"\n", "", ["tests/comm"]),
+ ("com_origin_check_removed",      "comm/admission.py", "        if m.origin_frame_id != c.origin_id:\n            return \"frame_mismatch\"\n", "", ["tests/comm"]),
+ ("com_units_check_removed",       "comm/admission.py", "        if m.units != UNITS:\n            return \"units_mismatch\"\n", "", ["tests/comm"]),
+ ("com_allowlist_removed",         "comm/admission.py", "        if self.registry.sources.get(o.source_id) != o.source_type or", "        if False and self.registry.sources.get(o.source_id) != o.source_type or", ["tests/comm"]),
+ ("com_confirmation_policy_off",   "comm/admission.py", "        if o.provenance.get(\"confirmation\") not in c.accepted_confirmations:\n            return \"unsupported_confirmation\"\n", "", ["tests/comm"]),
+ ("com_hop_limit_removed",         "comm/admission.py", "        if m.hop_count > c.max_hops or", "        if False and m.hop_count > c.max_hops or", ["tests/comm"]),
+ ("com_loop_check_removed",        "comm/admission.py", "        if c.receiver_id in m.relay_path or", "        if False and c.receiver_id in m.relay_path or", ["tests/comm"]),
+ ("com_reject_changes_state",      "comm/admission.py", "        def rej(reason, m=None, age_r=None, age_p=None):\n            self.stats[reason] += 1\n", "        def rej(reason, m=None, age_r=None, age_p=None):\n            self.stats[reason] += 1\n            if m is not None: self._max_seq[m.origin.source_id] = max(self._max_seq.get(m.origin.source_id, -1), m.origin.orig_seq)\n", ["tests/comm"]),
+ ("com_aoi_resets_on_older",       "comm/aoi.py", "if self.fresh is not None and not (t_obs > self.fresh):", "if self.fresh is not None and not (t_obs > self.fresh - 1e9):", ["tests/comm"]),
+ ("com_aoi_average_wrong",         "comm/aoi.py", "total += a0 * dt + 0.5 * dt * dt", "total += a0 * dt + dt * dt", ["tests/comm"]),
+ ("com_store_overwrites_with_older","comm/store.py", "if cur is not None and not (m.t_meas > cur[1]):", "if False:", ["tests/comm"]),
+ ("com_store_purge_ignores_age",   "comm/store.py", "if t_local - tm > self.max_age_s or t_local > exp]", "if False]", ["tests/comm"]),
+ ("com_store_key_not_source_scoped","comm/trackmsg.py", "    return (m.origin.source_id, t.track_id)", "    return (\"*\", t.track_id)", ["tests/comm"]),
+ ("com_channel_rng_conditional",   "comm/channel.py", "        u = self.rng.random(N_DRAWS)\n", "        u = self.rng.random(N_DRAWS) if not any(t0 <= t_now < t1 for t0, t1 in c.blackouts) else self.rng.random(1).repeat(N_DRAWS)\n", ["tests/comm"]),
+ ("com_channel_ge_wrong_recovery",   "comm/channel.py", "else not (u[1] < p_bg)", "else not (u[1] < p_gb)", ["tests/comm"]),
+ ("com_channel_delay_ignores_jitter","comm/channel.py", "delay = c.base_delay_s + u[2] * c.jitter_s", "delay = c.base_delay_s + 0.5 * c.jitter_s", ["tests/comm"]),
+ ("com_channel_dup_never",         "comm/channel.py", "if u[3] < c.dup_p:", "if False:", ["tests/comm"]),
+ ("com_pump_after_publish",        "comm/network.py", "        self.pump(t_sim)\n        for pub, key, dsts in self.pubs:", "        for pub, key, dsts in self.pubs:", ["tests/comm"]),
+ ("com_relay_resets_observation_time","comm/trackmsg.py", "replace(m, msg_id=f\"{node_id}:{tx_seq}\", tx=Tx(node_id, tx_seq, clock_id), t_sent=t_sent_local,", "replace(m, msg_id=f\"{node_id}:{tx_seq}\", tx=Tx(node_id, tx_seq, clock_id), t_sent=t_sent_local, t_meas=t_sent_local,", ["tests/comm"]),
+ ("com_relay_hop_not_incremented", "comm/trackmsg.py", "hop_count=m.hop_count + 1, relay_path", "hop_count=m.hop_count, relay_path", ["tests/comm"]),
+ ("com_publisher_uses_publish_time","comm/publisher.py", "        obs = tracker.last_frame_time\n", "        obs = t_sim\n", ["tests/comm"]),
+ ("com_publisher_republishes_old", "comm/publisher.py", "if not math.isfinite(obs) or not obs > self._last_obs:", "if not math.isfinite(obs):", ["tests/comm"]),
+ ("com_publisher_policy_off",      "comm/publisher.py", "if label != \"3of4\" and not self.experimental:", "if False:", ["tests/comm"]),
+ ("com_publisher_tentative_tracks","comm/publisher.py", "tracker.tracks(obs, confirmed_only=True)", "tracker.tracks(obs, confirmed_only=False)", ["tests/comm"]),
+ ("com_comm_imports_truth_side",   "comm/network.py", "import heapq", "import heapq\nimport backend.world", ["tests/comm"]),
+ ("com_comm_reads_wall_clock",     "comm/clock.py", "        return t_sim * (1.0 + self.drift_ppm * 1e-6) + self.offset_s", "        import time\n        return t_sim * (1.0 + self.drift_ppm * 1e-6) + self.offset_s + time.time() * 0.0", ["tests/comm"]),
+ ("com_telemetry_drops_events",    "comm/telemetry.py", "        self._h.update(b); self.events.append(rec)", "        self._h.update(b); self.events.append(rec) if rec[\"type\"] != \"drop\" else None", ["tests/comm"]),
 ]
 def main():
     survivors = []
@@ -50,7 +87,7 @@ def main():
         targets = item[4] if len(item) > 4 else PHY
 
         tmp = pathlib.Path(tempfile.mkdtemp())
-        for d in ("backend", "perception", "tests", "schemas", "scenarios"):
+        for d in ("backend", "perception", "comm", "integration", "tests", "schemas", "scenarios"):
             shutil.copytree(ROOT / d, tmp / d, ignore=shutil.ignore_patterns("__pycache__"))
         shutil.copy(ROOT / "pytest.ini", tmp / "pytest.ini")
         f = tmp / rel; s = f.read_text(encoding="utf-8")

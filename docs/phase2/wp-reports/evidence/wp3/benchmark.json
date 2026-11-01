@@ -1,0 +1,361 @@
+{
+ "results": {
+  "B0_nominal": {
+   "accounting_identity_violations": 0,
+   "admitted": 5451,
+   "aoi_decreases_caused_by_older_or_duplicate_or_relayed_copies": 0,
+   "aoi_p95_s": 0.20618505786374364,
+   "aoi_p99_s": 0.2131251239749865,
+   "aoi_s": {
+    "max": 0.31259367764915735,
+    "mean": 0.16073560177469348,
+    "n": 54318,
+    "p50": 0.1595435500710476,
+    "p95": 0.20618505786374364,
+    "p99": 0.2131251239749865
+   },
+   "bandwidth_Bps_per_source_mean": 12795.921818181816,
+   "bytes_per_message_mean": 1279.5921818181816,
+   "copies_delivered": 5451,
+   "delivery_ratio": 0.9910909090909091,
+   "dropped_by_reason": {
+    "loss": 49
+   },
+   "duplicate_content_admitted": 0,
+   "duplicates_rejected": 0,
+   "invalid_messages_admitted": 0,
+   "late_admitted": 0,
+   "max_observation_age_accepted_est_s": 0.11499910378111355,
+   "max_observation_age_accepted_s": 0.11499910378111355,
+   "max_observation_age_accepted_true_s": 0.11499910378111355,
+   "network_latency_max_s": 0.039999103781113376,
+   "network_latency_s": {
+    "max": 0.039999103781113376,
+    "mean": 0.03506884098401436,
+    "n": 5451,
+    "p50": 0.03508568880861018,
+    "p95": 0.039511827667688904,
+    "p99": 0.03993220073740131
+   },
+   "obs_to_use_latency_p99_s": 0.11493220073740185,
+   "obs_to_use_latency_s": {
+    "max": 0.11499910378111355,
+    "mean": 0.11006884098401461,
+    "n": 5451,
+    "p50": 0.11008568880861036,
+    "p95": 0.11451182766768864,
+    "p99": 0.11493220073740185
+   },
+   "rejected_by_reason": {},
+   "replay_hash_mismatches": 0,
+   "replay_old_rejected": 0,
+   "run_hash_first_seed": "835d5ea68c1bb48d8edf3289f3b3d218220a5d3d634b1a6b8eba3f86021209dc",
+   "seeds": 50,
+   "sent": 5500,
+   "truth_identifiers_in_wire_bytes": 0
+  },
+  "B1_degraded": {
+   "accounting_identity_violations": 0,
+   "admitted": 4994,
+   "aoi_decreases_caused_by_older_or_duplicate_or_relayed_copies": 0,
+   "aoi_p95_s": 0.35510802072961317,
+   "aoi_p99_s": 0.5135091416701996,
+   "aoi_s": {
+    "max": 0.9653747105966284,
+    "mean": 0.24346547480876415,
+    "n": 53992,
+    "p50": 0.23317420028419455,
+    "p95": 0.35510802072961317,
+    "p99": 0.5135091416701996
+   },
+   "bandwidth_Bps_per_source_mean": 12795.921818181816,
+   "bytes_per_message_mean": 1279.5921818181816,
+   "copies_delivered": 5109,
+   "delivery_ratio": 0.908,
+   "dropped_by_reason": {
+    "loss": 506
+   },
+   "duplicate_content_admitted": 0,
+   "duplicates_rejected": 115,
+   "invalid_messages_admitted": 0,
+   "late_admitted": 121,
+   "max_observation_age_accepted_est_s": 0.33984156720214553,
+   "max_observation_age_accepted_s": 0.33984156720214553,
+   "max_observation_age_accepted_true_s": 0.33984156720214553,
+   "network_latency_max_s": 0.2648415672021458,
+   "network_latency_s": {
+    "max": 0.2648415672021458,
+    "mean": 0.10593818120853124,
+    "n": 5109,
+    "p50": 0.10182762263210243,
+    "p95": 0.14915569894675396,
+    "p99": 0.2328688926025342
+   },
+   "obs_to_use_latency_p99_s": 0.3082211595028255,
+   "obs_to_use_latency_s": {
+    "max": 0.33984156720214553,
+    "mean": 0.18036109978715653,
+    "n": 4994,
+    "p50": 0.17641043976446102,
+    "p95": 0.19499609683413271,
+    "p99": 0.3082211595028255
+   },
+   "rejected_by_reason": {
+    "duplicate": 115
+   },
+   "replay_hash_mismatches": 0,
+   "replay_old_rejected": 0,
+   "run_hash_first_seed": "6142c77148ca887c622b74479744176268f0714403bc6fd02d365b04a7229465",
+   "seeds": 50,
+   "sent": 5500,
+   "truth_identifiers_in_wire_bytes": 0
+  },
+  "B2_severe": {
+   "accounting_identity_violations": 0,
+   "admitted": 3083,
+   "aoi_decreases_caused_by_older_or_duplicate_or_relayed_copies": 0,
+   "aoi_p95_s": 1.0188490445074494,
+   "aoi_p99_s": 1.43879365958969,
+   "aoi_s": {
+    "max": 1.9615212895572762,
+    "mean": 0.4972443557762663,
+    "n": 52893,
+    "p50": 0.4243399349231556,
+    "p95": 1.0188490445074494,
+    "p99": 1.43879365958969
+   },
+   "bandwidth_Bps_per_source_mean": 12795.921818181816,
+   "bytes_per_message_mean": 1279.5921818181816,
+   "copies_delivered": 3889,
+   "delivery_ratio": 0.5605454545454546,
+   "dropped_by_reason": {
+    "blackout": 500,
+    "loss": 1466
+   },
+   "duplicate_content_admitted": 0,
+   "duplicates_rejected": 313,
+   "invalid_messages_admitted": 0,
+   "late_admitted": 59,
+   "max_observation_age_accepted_est_s": 0.4995826133435157,
+   "max_observation_age_accepted_s": 0.4995826133435157,
+   "max_observation_age_accepted_true_s": 0.4995826133435157,
+   "network_latency_max_s": 0.7221529743007267,
+   "network_latency_s": {
+    "max": 0.7221529743007267,
+    "mean": 0.2900968944792773,
+    "n": 3889,
+    "p50": 0.26103591790474967,
+    "p95": 0.5564089103712188,
+    "p99": 0.6484770712032172
+   },
+   "obs_to_use_latency_p99_s": 0.48243807071264216,
+   "obs_to_use_latency_s": {
+    "max": 0.4995826133435157,
+    "mean": 0.3308428711095612,
+    "n": 3083,
+    "p50": 0.3274599767220483,
+    "p95": 0.3743039917800956,
+    "p99": 0.48243807071264216
+   },
+   "rejected_by_reason": {
+    "duplicate": 313,
+    "integrity": 14,
+    "malformed_bytes": 58,
+    "stale": 421
+   },
+   "replay_hash_mismatches": 0,
+   "replay_old_rejected": 0,
+   "run_hash_first_seed": "6ddcefd20fa5fc9411f46151317489070bc6379efa81986d108d51309ff187af",
+   "seeds": 50,
+   "sent": 5500,
+   "truth_identifiers_in_wire_bytes": 0
+  }
+ },
+ "seeds": [
+  20261101,
+  20261150
+ ],
+ "thresholds_sha256": "47096a4ea5957f8e1f7f9a180ef379fdd003af3426b8d3a6090f7d7c2d758760",
+ "verdicts": [
+  {
+   "id": "INV-1",
+   "kind": "invariant",
+   "measured": 0,
+   "metric": "invalid_messages_admitted",
+   "op": "==",
+   "scope": "all",
+   "status": "PASS",
+   "threshold": 0
+  },
+  {
+   "id": "INV-2",
+   "kind": "invariant",
+   "measured": 0,
+   "metric": "duplicate_content_admitted",
+   "op": "==",
+   "scope": "all",
+   "status": "PASS",
+   "threshold": 0
+  },
+  {
+   "id": "INV-3",
+   "kind": "invariant",
+   "measured": 0.4995826133435157,
+   "metric": "max_observation_age_accepted_s",
+   "op": "<=",
+   "scope": "all",
+   "status": "PASS",
+   "threshold": 0.5
+  },
+  {
+   "id": "INV-4",
+   "kind": "invariant",
+   "measured": 0,
+   "metric": "accounting_identity_violations",
+   "op": "==",
+   "scope": "all",
+   "status": "PASS",
+   "threshold": 0
+  },
+  {
+   "id": "INV-5",
+   "kind": "invariant",
+   "measured": 0,
+   "metric": "replay_hash_mismatches",
+   "op": "==",
+   "scope": "all",
+   "status": "PASS",
+   "threshold": 0
+  },
+  {
+   "id": "INV-6",
+   "kind": "invariant",
+   "measured": 0,
+   "metric": "truth_identifiers_in_wire_bytes",
+   "op": "==",
+   "scope": "all",
+   "status": "PASS",
+   "threshold": 0
+  },
+  {
+   "id": "INV-7",
+   "kind": "invariant",
+   "measured": 0,
+   "metric": "aoi_decreases_caused_by_older_or_duplicate_or_relayed_copies",
+   "op": "==",
+   "scope": "all",
+   "status": "PASS",
+   "threshold": 0
+  },
+  {
+   "id": "B0-NET-MAX",
+   "kind": "invariant",
+   "measured": 0.039999103781113376,
+   "metric": "network_latency_max_s",
+   "op": "<=",
+   "scope": "B0_nominal",
+   "status": "PASS",
+   "threshold": 0.0401
+  },
+  {
+   "id": "B0-DR",
+   "kind": "provisional_design",
+   "measured": 0.9910909090909091,
+   "metric": "delivery_ratio",
+   "op": ">=",
+   "scope": "B0_nominal",
+   "status": "PASS",
+   "threshold": 0.97
+  },
+  {
+   "id": "B0-E2E-P99",
+   "kind": "provisional_design",
+   "measured": 0.11493220073740185,
+   "metric": "obs_to_use_latency_p99_s",
+   "op": "<=",
+   "scope": "B0_nominal",
+   "status": "PASS",
+   "threshold": 0.25
+  },
+  {
+   "id": "B0-AOI-P95",
+   "kind": "provisional_design",
+   "measured": 0.20618505786374364,
+   "metric": "aoi_p95_s",
+   "op": "<=",
+   "scope": "B0_nominal",
+   "status": "PASS",
+   "threshold": 0.35
+  },
+  {
+   "id": "B0-AOI-P99",
+   "kind": "provisional_design",
+   "measured": 0.2131251239749865,
+   "metric": "aoi_p99_s",
+   "op": "<=",
+   "scope": "B0_nominal",
+   "status": "PASS",
+   "threshold": 0.5
+  },
+  {
+   "id": "B0-BW",
+   "kind": "provisional_design",
+   "measured": 12795.921818181816,
+   "metric": "bandwidth_Bps_per_source_mean",
+   "op": "<=",
+   "scope": "B0_nominal",
+   "status": "PASS",
+   "threshold": 50000
+  },
+  {
+   "id": "B1-DR",
+   "kind": "provisional_design",
+   "measured": 0.908,
+   "metric": "delivery_ratio",
+   "op": ">=",
+   "scope": "B1_degraded",
+   "status": "PASS",
+   "threshold": 0.75
+  },
+  {
+   "id": "B1-AOI-P95",
+   "kind": "provisional_design",
+   "measured": 0.35510802072961317,
+   "metric": "aoi_p95_s",
+   "op": "<=",
+   "scope": "B1_degraded",
+   "status": "PASS",
+   "threshold": 0.9
+  },
+  {
+   "id": "B1-AOI-P99",
+   "kind": "provisional_design",
+   "measured": 0.5135091416701996,
+   "metric": "aoi_p99_s",
+   "op": "<=",
+   "scope": "B1_degraded",
+   "status": "PASS",
+   "threshold": 1.5
+  },
+  {
+   "id": "B2-DR",
+   "kind": "report_only",
+   "measured": 0.5605454545454546,
+   "metric": "delivery_ratio",
+   "op": ">=",
+   "scope": "B2_severe",
+   "status": "REPORTED",
+   "threshold": 0.0
+  },
+  {
+   "id": "B2-AOI-P99",
+   "kind": "report_only",
+   "measured": 1.43879365958969,
+   "metric": "aoi_p99_s",
+   "op": ">=",
+   "scope": "B2_severe",
+   "status": "REPORTED",
+   "threshold": 0.0
+  }
+ ]
+}

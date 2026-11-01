@@ -43,9 +43,13 @@ add("LOCK-WEB exact + installed", "PASS" if not loose and os.path.exists("web/pa
 
 # --- physics + WP2 gates (map test files -> gate ids from the junit report)
 junit = "results/junit_all.xml"; os.makedirs("results", exist_ok=True)
-sh(PY, "-m", "pytest", "-m", "phy or trk or iso", f"--junitxml={junit}", "-q", "-p", "no:cacheprovider")
-per, extra = {}, {}
+sh(PY, "-m", "pytest", "-m", "phy or trk or iso or com or known_failure", f"--junitxml={junit}", "-q", "-p", "no:cacheprovider")
+per, extra, kf = {}, {}, {}
+com = {}
 def tally(d, key, tc):
+    sk = tc.find("skipped")
+    if sk is not None and "xfail" in (sk.get("type", "") + sk.get("message", "")):    # strict xfail = an EXPLICIT known failure that still fails as declared
+        d = kf; key = tc.get("name", "?")
     s = d.setdefault(key, {"pass": 0, "fail": 0, "skip": 0})
     s["fail" if tc.find("failure") is not None or tc.find("error") is not None else "skip" if tc.find("skipped") is not None else "pass"] += 1
 for tc in ET.parse(junit).getroot().iter("testcase"):
@@ -54,6 +58,9 @@ for tc in ET.parse(junit).getroot().iter("testcase"):
     if m: tally(per, f"PHY-0{m.group(1)}", tc)
     if "test_trk_consistency" in cn: tally(extra, "AC-VS-03 tracker consistency (NEES/NIS chi2)", tc)
     elif "test_trk_" in cn or "test_rig_integration" in cn: tally(extra, "WP2-TRK association/stale/occlusion/failure modes", tc)
+    mc = re.search(r"test_com(\d\d)_", cn)
+    if mc: tally(com, f"COM-{mc.group(1)}", tc)
+    if "test_known_failures" in cn: tally(kf, tc.get("name", "?"), tc)
     if "test_iso_" in cn: tally(extra, "AC-VS-06 ground-truth isolation (AST + blocked-import subprocess)", tc)
 names = {1: "determinism / wall-clock independence", 2: "linear kinematics", 3: "braking distance + friction", 4: "steering / turning",
          5: "accel / jerk / steer limits (+standstill regression)", 6: "collision + pedestrian", 7: "sensors FOV/occlusion/uncertainty", 8: "communication / freshness"}
@@ -65,6 +72,16 @@ for i in range(1, 9):
     if not d: add(f"{pid} {names[i]}", "NOT_CHECKED", "no test exists yet (later WP)"); continue
     row(f"{pid} {names[i]}", d)
 for k in sorted(extra): row(k, extra[k])
+cnames = {1: "TrackMsg contract + (de)serialization", 2: "deterministic channel + replay", 3: "channel statistics", 4: "four timestamps + clock model", 5: "observation-time AoI",
+          6: "fail-closed admission (+fuzz, fault injection)", 7: "source identity, provenance, frame", 8: "relay / retransmission", 9: "comm telemetry + accounting", 10: "isolation + P1 + publish policy"}
+for i in range(1, 11):
+    d = com.get(f"COM-{i:02d}")
+    if not d: add(f"COM-{i:02d} {cnames[i]}", "NOT_CHECKED", "no test found"); continue
+    row(f"COM-{i:02d} {cnames[i]}", d)
+EXPECTED_KF = 5
+kfn = len(kf)
+add("KNOWN-FAILURES registry (xfail strict)", "PASS" if kfn == EXPECTED_KF else "FAIL",
+    f"{kfn} explicit known failures still failing as declared (expected {EXPECTED_KF}): " + ", ".join(sorted(re.sub(r'^test_', '', k)[:4] for k in kf)) + "; an unexpected pass or a missing entry is FAIL")
 img = [p for p in glob.glob("docs/references/*") if p.lower().endswith((".png", ".jpg", ".jpeg", ".webp"))]
 for i in range(1, 11):
     if i == 8: add("VIS-08 reference comparison", "BLOCKED" if not img else "NOT_CHECKED", "no image in docs/references/" if not img else f"{len(img)} reference image(s) present, rubric not yet run")

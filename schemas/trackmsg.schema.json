@@ -1,0 +1,296 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "trackmsg.schema.json",
+  "title": "TrackMsg",
+  "description": "Versioned V2X track message 0.2.0. Track ids are SOURCE-SCOPED: the identity of a track is (origin.source_id, track_id). Observation time t_meas is preserved across retransmission/relay; t_sent is per hop. Receiver timestamps (t_recv, t_proc) are NOT part of the message.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "msg_id",
+    "tx",
+    "origin",
+    "t_meas",
+    "t_sent",
+    "frame",
+    "origin_frame_id",
+    "units",
+    "yaw_convention",
+    "ttl_s",
+    "hop_count",
+    "relay_path",
+    "tracks",
+    "crc32"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.2.0"
+    },
+    "msg_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 96
+    },
+    "tx": {
+      "description": "Transmission identity of THIS hop.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "node_id",
+        "tx_seq",
+        "clock_id"
+      ],
+      "properties": {
+        "node_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "tx_seq": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "clock_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        }
+      }
+    },
+    "origin": {
+      "description": "Observation identity; unchanged by relays.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "source_type",
+        "orig_seq",
+        "orig_msg_id",
+        "clock_id",
+        "clock_sync",
+        "provenance"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "source_type": {
+          "enum": [
+            "vehicle",
+            "cctv",
+            "aggregator"
+          ]
+        },
+        "orig_seq": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "orig_msg_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 96
+        },
+        "clock_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "clock_sync": {
+          "enum": [
+            "synced",
+            "drifting",
+            "unknown"
+          ]
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "sensor_model",
+            "algo_version",
+            "calib_id",
+            "privacy_level",
+            "confirmation"
+          ],
+          "properties": {
+            "sensor_model": {
+              "type": "string",
+              "maxLength": 64
+            },
+            "algo_version": {
+              "type": "string",
+              "maxLength": 64
+            },
+            "calib_id": {
+              "type": "string",
+              "maxLength": 64
+            },
+            "privacy_level": {
+              "const": "object_only"
+            },
+            "confirmation": {
+              "type": "string",
+              "maxLength": 32
+            }
+          }
+        }
+      }
+    },
+    "t_meas": {
+      "type": "number",
+      "description": "Observation time [s] on the ORIGIN clock: the time the state estimates are valid at (<= newest real measurement time)."
+    },
+    "t_sent": {
+      "type": "number",
+      "description": "Transmission time [s] on tx.clock_id of THIS hop."
+    },
+    "frame": {
+      "type": "string",
+      "description": "Supported: 'map' only. Any other value is rejected; no silent transforms."
+    },
+    "origin_frame_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "description": "Identifier of the map origin; must equal the receiver's."
+    },
+    "units": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "length",
+        "time",
+        "angle",
+        "speed"
+      ],
+      "description": "Must equal {length:m,time:s,angle:rad,speed:m/s}; enforced by ADMISSION (reason units_mismatch) so a wrong unit gets an explicit reason, not a generic schema error.",
+      "properties": {
+        "length": {
+          "type": "string",
+          "maxLength": 16
+        },
+        "time": {
+          "type": "string",
+          "maxLength": 16
+        },
+        "angle": {
+          "type": "string",
+          "maxLength": 16
+        },
+        "speed": {
+          "type": "string",
+          "maxLength": 16
+        }
+      }
+    },
+    "yaw_convention": {
+      "type": "string",
+      "description": "Supported: 'ccw_from_+x'."
+    },
+    "ttl_s": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Sender-declared lifetime measured from t_meas."
+    },
+    "hop_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "relay_path": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      }
+    },
+    "tracks": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "$ref": "#/$defs/Track"
+      }
+    },
+    "crc32": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
+      "description": "CRC-32 of the canonical JSON bytes of this message WITHOUT the crc32 field. Detects random corruption only; it is NOT authentication (a forger can recompute it)."
+    }
+  },
+  "$defs": {
+    "Track": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "track_id",
+        "cls",
+        "cls_prob",
+        "x",
+        "y",
+        "yaw",
+        "vx",
+        "vy",
+        "cov",
+        "var_yaw",
+        "existence",
+        "t_upd"
+      ],
+      "properties": {
+        "track_id": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Source-local; NOT a global identity."
+        },
+        "cls": {
+          "enum": [
+            "pedestrian",
+            "vehicle",
+            "unknown"
+          ]
+        },
+        "cls_prob": {
+          "type": "number"
+        },
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "yaw": {
+          "type": "number"
+        },
+        "vx": {
+          "type": "number"
+        },
+        "vy": {
+          "type": "number"
+        },
+        "cov": {
+          "type": "array",
+          "minItems": 16,
+          "maxItems": 16,
+          "items": {
+            "type": "number"
+          },
+          "description": "4x4 row-major over [x, y, vx, vy] in m, m/s units squared."
+        },
+        "var_yaw": {
+          "type": "number"
+        },
+        "existence": {
+          "type": "number",
+          "description": "Heuristic track score mapped to [0,1]; NOT a calibrated probability."
+        },
+        "t_upd": {
+          "type": "number",
+          "description": "Origin-clock time of the newest REAL measurement supporting this track."
+        }
+      }
+    }
+  }
+}

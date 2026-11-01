@@ -1,0 +1,294 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "comm_telemetry.schema.json",
+  "title": "CommTelemetryLine",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "schema_version",
+        "seed",
+        "proc_delay_s"
+      ],
+      "properties": {
+        "type": {
+          "const": "header"
+        },
+        "schema_version": {
+          "const": "0.1.0"
+        },
+        "seed": {
+          "type": "integer"
+        },
+        "proc_delay_s": {
+          "type": "number"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "t",
+        "link",
+        "msg_id",
+        "node",
+        "tx_seq",
+        "origin",
+        "orig_seq",
+        "hop",
+        "bytes",
+        "t_meas",
+        "t_sent",
+        "eval"
+      ],
+      "properties": {
+        "type": {
+          "const": "send"
+        },
+        "t": {
+          "type": "number"
+        },
+        "link": {
+          "type": "string"
+        },
+        "msg_id": {
+          "type": "string"
+        },
+        "node": {
+          "type": "string"
+        },
+        "tx_seq": {
+          "type": "integer"
+        },
+        "origin": {
+          "type": "string"
+        },
+        "orig_seq": {
+          "type": "integer"
+        },
+        "hop": {
+          "type": "integer"
+        },
+        "bytes": {
+          "type": "integer"
+        },
+        "t_meas": {
+          "type": "number"
+        },
+        "t_sent": {
+          "type": "number"
+        },
+        "eval": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "obs_sim"
+          ],
+          "properties": {
+            "obs_sim": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "t",
+        "link",
+        "msg_id",
+        "reason"
+      ],
+      "properties": {
+        "type": {
+          "const": "drop"
+        },
+        "t": {
+          "type": "number"
+        },
+        "link": {
+          "type": "string"
+        },
+        "msg_id": {
+          "type": "string"
+        },
+        "reason": {
+          "enum": [
+            "loss",
+            "blackout",
+            "queue_overflow"
+          ]
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "t",
+        "link",
+        "msg_id",
+        "copy",
+        "t_deliver",
+        "flags"
+      ],
+      "properties": {
+        "type": {
+          "const": "sched"
+        },
+        "t": {
+          "type": "number"
+        },
+        "link": {
+          "type": "string"
+        },
+        "msg_id": {
+          "type": "string"
+        },
+        "copy": {
+          "type": "integer"
+        },
+        "t_deliver": {
+          "type": "number"
+        },
+        "flags": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "dup",
+              "reordered",
+              "corrupted",
+              "injected"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "t",
+        "link",
+        "msg_id",
+        "copy"
+      ],
+      "properties": {
+        "type": {
+          "const": "recv"
+        },
+        "t": {
+          "type": "number"
+        },
+        "link": {
+          "type": "string"
+        },
+        "msg_id": {
+          "type": "string"
+        },
+        "copy": {
+          "type": "integer"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "t",
+        "link",
+        "msg_id",
+        "copy",
+        "verdict",
+        "reason",
+        "age_recv_est",
+        "age_proc_est",
+        "flags",
+        "t_recv",
+        "eval"
+      ],
+      "properties": {
+        "type": {
+          "const": "proc"
+        },
+        "t": {
+          "type": "number"
+        },
+        "link": {
+          "type": "string"
+        },
+        "msg_id": {
+          "type": "string"
+        },
+        "copy": {
+          "type": "integer"
+        },
+        "verdict": {
+          "enum": [
+            "admit",
+            "reject"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "age_recv_est": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "age_proc_est": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "flags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "t_recv": {
+          "type": "number"
+        },
+        "eval": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "obs_sim",
+            "age_true_proc"
+          ],
+          "properties": {
+            "obs_sim": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "age_true_proc": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

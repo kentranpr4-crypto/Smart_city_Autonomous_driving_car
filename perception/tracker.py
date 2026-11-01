@@ -51,6 +51,7 @@ class Track:
     misses: int
     age_s: float
     time_since_update_s: float
+    cls_share: float = 1.0               # vote share of the majority class label (count based, NOT a calibrated probability)
 
 
 @dataclass(frozen=True)
@@ -94,6 +95,11 @@ class Tracker:
         self.frames_ok = 0
         self.seq_gaps = 0
         self._nis = deque(maxlen=self.cfg.nis_window)
+
+    @property
+    def last_frame_time(self) -> float:
+        """Measurement time of the newest ACCEPTED frame (-inf before the first)."""
+        return self._last_t
 
     # ------------------------------------------------------------ validation
     def _validate(self, f: SensorFrame, t_now):
@@ -217,7 +223,8 @@ class Tracker:
             if since > c.max_coast_s: continue                          # too stale to publish
             cls = max(tr.cls_counts.items(), key=lambda kv: (kv[1], kv[0]))[0]
             out.append(Track(tr.tid, t, tuple(float(v) for v in x), tuple(float(v) for v in P.reshape(-1)), tr.confirmed, tr.score,
-                             1.0 / (1.0 + math.exp(-tr.score)), cls, tr.hits, tr.misses, t - tr.t_birth, since))
+                             1.0 / (1.0 + math.exp(-tr.score)), cls, tr.hits, tr.misses, t - tr.t_birth, since,
+                             tr.cls_counts[cls] / sum(tr.cls_counts.values())))
         return out
 
     def health(self) -> dict:

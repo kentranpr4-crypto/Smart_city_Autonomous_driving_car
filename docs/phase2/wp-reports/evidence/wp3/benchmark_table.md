@@ -1,0 +1,20 @@
+| id | kind | scope | metric | op | threshold | measured | status |
+|---|---|---|---|---|---|---|---|
+| INV-1 | invariant | all | invalid_messages_admitted | == | 0 | 0 | PASS |
+| INV-2 | invariant | all | duplicate_content_admitted | == | 0 | 0 | PASS |
+| INV-3 | invariant | all | max_observation_age_accepted_s | <= | 0.5 | 0.4996 | PASS |
+| INV-4 | invariant | all | accounting_identity_violations | == | 0 | 0 | PASS |
+| INV-5 | invariant | all | replay_hash_mismatches | == | 0 | 0 | PASS |
+| INV-6 | invariant | all | truth_identifiers_in_wire_bytes | == | 0 | 0 | PASS |
+| INV-7 | invariant | all | aoi_decreases_caused_by_older_or_duplicate_or_relayed_copies | == | 0 | 0 | PASS |
+| B0-NET-MAX | invariant | B0_nominal | network_latency_max_s | <= | 0.0401 | 0.04 | PASS |
+| B0-DR | provisional_design | B0_nominal | delivery_ratio | >= | 0.97 | 0.9911 | PASS |
+| B0-E2E-P99 | provisional_design | B0_nominal | obs_to_use_latency_p99_s | <= | 0.25 | 0.1149 | PASS |
+| B0-AOI-P95 | provisional_design | B0_nominal | aoi_p95_s | <= | 0.35 | 0.2062 | PASS |
+| B0-AOI-P99 | provisional_design | B0_nominal | aoi_p99_s | <= | 0.5 | 0.2131 | PASS |
+| B0-BW | provisional_design | B0_nominal | bandwidth_Bps_per_source_mean | <= | 50000 | 1.28e+04 | PASS |
+| B1-DR | provisional_design | B1_degraded | delivery_ratio | >= | 0.75 | 0.908 | PASS |
+| B1-AOI-P95 | provisional_design | B1_degraded | aoi_p95_s | <= | 0.9 | 0.3551 | PASS |
+| B1-AOI-P99 | provisional_design | B1_degraded | aoi_p99_s | <= | 1.5 | 0.5135 | PASS |
+| B2-DR | report_only | B2_severe | delivery_ratio | >= | 0 | 0.5605 | REPORTED |
+| B2-AOI-P99 | report_only | B2_severe | aoi_p99_s | >= | 0 | 1.439 | REPORTED |

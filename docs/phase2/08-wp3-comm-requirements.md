@@ -66,3 +66,13 @@ Cổng tồn tại sẵn **không bị đổi nghĩa**: PHY-08 (PRD §12.2) đư
 |---|---|---|
 | Chuẩn của cổng PHY-08: "Lịch giao thông điệp biết trước → AoI răng cưa tính tay; thống kê trễ/mất/jitter khớp tham số"; tiêu chí "AoI khớp chính xác; thống kê trong dung sai" | `tests/comm/test_phy08_aoi_and_link_statistics.py`: lịch xác định, AoI tính tay độc lập; thống kê trễ/mất/jitter | Đúng nguyên văn; dung sai thống kê = χ² 95% như PHY-07 |
 | Chuẩn của AC-VS-04: validator loại stale, replay, `t_meas` tương lai, sai schema, nguồn lạ, mâu thuẫn quan sát trực tiếp; kênh khớp tham số | COM-06/07 phủ stale, replay, future, schema, nguồn lạ | **"Mâu thuẫn quan sát trực tiếp" chỉ phủ phần xung đột lớp** (lớp khác lớp track cục bộ đã xác nhận); phần còn lại cần hợp nhất → **WP4**. Không tuyên bố AC-VS-04 hoàn tất |
+
+## 6. Thay đổi SAU khi viết tài liệu này (nêu thẳng — được phát hiện bằng thực nghiệm khi làm, không phải kế hoạch ban đầu)
+| # | Thay đổi | Lý do / bằng chứng | Hệ quả cho yêu cầu |
+|---|---|---|---|
+| 1 | Thêm trường `crc32` (CRC-32 trên byte chuẩn tắc) và mã từ chối `integrity` | Thí nghiệm nháp: 5/320 gói bị hỏng 1 byte vẫn được chấp nhận (byte hỏng rơi vào chỗ vẫn parse + qua schema + qua kiểm tra số). Sau CRC: quét **toàn bộ** lật 1 byte → 0 lọt | R-MSG-01/R-ADM-01 mở rộng; **CRC không phải xác thực** — kẻ giả mạo tính lại CRC được → known failure KF-3 |
+| 2 | `AoIMeter` gộp các cập nhật cùng thời điểm | Hypothesis tìm được đỉnh AoI độ dài 0 khi hai bản tin xử lý cùng t | R-AOI-01 làm rõ: chỉ quan sát **mới hơn hẳn** mới reset tuổi |
+| 3 | `CommNetwork.step` gọi `pump` trước khi publish | Hash nhật ký phụ thuộc tần suất gọi `step` (0.01 s vs 0.05 s) | R-TIM-02 / COM-02: thứ tự log chuẩn tắc, độc lập bước render |
+| 4 | Khối `units` trong schema là chuỗi tự do, ép đúng giá trị ở admission | Để mã lý do là `units_mismatch` thay vì `schema` chung chung | Không đổi nghĩa; mã lý do cụ thể hơn |
+| 5 | Mutation phát hiện 4 lỗ hổng test (staleness phải xét ở `t_proc`, guard non-finite độc lập parser, tiêu thụ RNG khi blackout, hồi phục Gilbert–Elliott) → thêm 3 test | `scripts/physics_bites.py` (36 mutant comm) | Chỉ tăng test; không đổi ngưỡng |
+| 6 | Hàm benchmark: tên metric INV-3 ánh xạ vào tuổi **thật** (đồng hồ mô phỏng) | Lỗi script `KeyError` lần chạy đầu, không phải đổi ngưỡng; `comm/thresholds.json` giữ nguyên SHA-256 | — |
