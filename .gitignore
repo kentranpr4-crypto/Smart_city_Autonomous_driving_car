@@ -1,0 +1,12 @@
+# environments / build output
+.venv/
+web/node_modules/
+web/dist/
+__pycache__/
+*.pyc
+.pytest_cache/
+.hypothesis/
+# run output (reproducible via `make reproduce`); curated evidence lives in docs/phase2/wp-reports/evidence/
+results/
+*.log
+.DS_Store

@@ -1,0 +1,47 @@
+# clean-room run 2026-11-01T05:44:52Z: working tree copied via 'git ls-files -co --exclude-standard' + .git, WITHOUT .venv/node_modules (verified absent)
+# finding: first attempt reported REG-1 FAIL because refinery.py rewrote a TRACKED bytecode file (.claude/skills/refinery/__pycache__/refinery.cpython-313.pyc).
+#          fix: gates run with PYTHONDONTWRITEBYTECODE=1 and REG-1 excludes **/__pycache__/**; no tracked file was deleted or modified.
+# make setup:
+.venv/bin/python -m pip install --quiet --require-hashes -r requirements.lock
+cd web && npm ci --ignore-scripts --no-audit --no-fund
+
+added 84 packages in 4s
+# make check x2 (idempotent):
+REG-1 registry unchanged                      PASS         git diff 66f1a64 -- data .claude (excl. __pycache__) is empty
+REG-2 refinery.py                             PASS         build digest = a68fc24fbf62a74a
+REG-3 bites.py                                PASS         5 applicable bites all bite; 18 N/A (domain does not declare 
+DOC-1 ref/ID integrity                        PASS         REF_INTEGRITY PASS (references resolve; this is NOT a semanti
+DOC-2 checker selftest                        PASS         SELFTEST PASS
+SCHEMA valid                                  PASS         2 schemas
+LOCK-PY hashed + consistent                   PASS         29 pinned with hashes; pip check: No broken requirements foun
+LOCK-WEB exact + installed                    PASS         8 exact deps, lockfile present, npm ls rc=0
+PHY-01 determinism / wall-clock independence  PASS         8 passed, 0 failed, 0 skipped
+PHY-02 linear kinematics                      PASS         8 passed, 0 failed, 0 skipped
+PHY-03 braking distance + friction            PASS         29 passed, 0 failed, 0 skipped
+PHY-04 steering / turning                     PASS         9 passed, 0 failed, 0 skipped
+PHY-05 accel / jerk / steer limits            PASS         6 passed, 0 failed, 0 skipped
+PHY-06 collision + pedestrian                 PASS         38 passed, 0 failed, 0 skipped
+PHY-07 sensors FOV/occlusion/uncertainty      NOT_CHECKED  no test exists yet (later WP)
+PHY-08 communication / freshness              NOT_CHECKED  no test exists yet (later WP)
+VIS-08 reference comparison                   BLOCKED      no image in docs/references/
+TOTAL {'PASS': 14, 'FAIL': 0, 'BLOCKED': 1, 'NOT_CHECKED': 11}
+
+REG-1 registry unchanged                      PASS         git diff 66f1a64 -- data .claude (excl. __pycache__) is empty
+REG-2 refinery.py                             PASS         build digest = a68fc24fbf62a74a
+REG-3 bites.py                                PASS         5 applicable bites all bite; 18 N/A (domain does not declare 
+DOC-1 ref/ID integrity                        PASS         REF_INTEGRITY PASS (references resolve; this is NOT a semanti
+DOC-2 checker selftest                        PASS         SELFTEST PASS
+SCHEMA valid                                  PASS         2 schemas
+LOCK-PY hashed + consistent                   PASS         29 pinned with hashes; pip check: No broken requirements foun
+LOCK-WEB exact + installed                    PASS         8 exact deps, lockfile present, npm ls rc=0
+PHY-01 determinism / wall-clock independence  PASS         8 passed, 0 failed, 0 skipped
+PHY-02 linear kinematics                      PASS         8 passed, 0 failed, 0 skipped
+PHY-03 braking distance + friction            PASS         29 passed, 0 failed, 0 skipped
+PHY-04 steering / turning                     PASS         9 passed, 0 failed, 0 skipped
+PHY-05 accel / jerk / steer limits            PASS         6 passed, 0 failed, 0 skipped
+PHY-06 collision + pedestrian                 PASS         38 passed, 0 failed, 0 skipped
+PHY-07 sensors FOV/occlusion/uncertainty      NOT_CHECKED  no test exists yet (later WP)
+PHY-08 communication / freshness              NOT_CHECKED  no test exists yet (later WP)
+VIS-08 reference comparison                   BLOCKED      no image in docs/references/
+TOTAL {'PASS': 14, 'FAIL': 0, 'BLOCKED': 1, 'NOT_CHECKED': 11}
+

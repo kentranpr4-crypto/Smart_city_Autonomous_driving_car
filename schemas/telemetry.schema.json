@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "telemetry.schema.json",
+  "title": "PhysicsTelemetryLine",
+  "oneOf": [{"$ref": "#/$defs/Header"}, {"$ref": "#/$defs/Frame"}],
+  "$defs": {
+    "Header": {
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "schema_version", "scenario_id", "seed", "dt", "backend", "params"],
+      "properties": {
+        "type": {"const": "header"}, "schema_version": {"const": "0.1.0"}, "scenario_id": {"type": "string"},
+        "seed": {"type": "integer"}, "dt": {"type": "number"},
+        "backend": {"type": "object"}, "params": {"type": "object"}
+      }
+    },
+    "Frame": {
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "step", "t", "vehicles", "pedestrians", "events"],
+      "properties": {
+        "type": {"const": "frame"}, "step": {"type": "integer", "minimum": 0}, "t": {"type": "number", "minimum": 0},
+        "vehicles": {"type": "array", "items": {"$ref": "#/$defs/Vehicle"}},
+        "pedestrians": {"type": "array", "items": {"$ref": "#/$defs/Ped"}},
+        "events": {"type": "array", "items": {"$ref": "#/$defs/Event"}}
+      }
+    },
+    "Vehicle": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "x", "y", "psi", "v", "a", "delta", "delta_eff", "wheel_rot", "friction_limited", "cmd"],
+      "properties": {
+        "id": {"type": "string"}, "x": {"type": "number"}, "y": {"type": "number"}, "psi": {"type": "number"},
+        "v": {"type": "number", "minimum": 0}, "a": {"type": "number"}, "delta": {"type": "number"},
+        "delta_eff": {"type": "number"}, "wheel_rot": {"type": "number"}, "friction_limited": {"type": "boolean"},
+        "cmd": {"type": "object", "additionalProperties": false, "required": ["a_cmd", "delta_cmd", "mode"],
+                "properties": {"a_cmd": {"type": "number"}, "delta_cmd": {"type": "number"}, "mode": {"enum": ["comfort", "emergency"]}}}
+      }
+    },
+    "Ped": {
+      "type": "object", "additionalProperties": false, "required": ["id", "x", "y", "vx", "vy"],
+      "properties": {"id": {"type": "string"}, "x": {"type": "number"}, "y": {"type": "number"},
+                     "vx": {"type": "number"}, "vy": {"type": "number"}}
+    },
+    "Event": {
+      "type": "object", "required": ["type"],
+      "properties": {"type": {"enum": ["collision", "outside_model_validity", "outside_odd"]}}
+    }
+  }
+}

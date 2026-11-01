@@ -1,0 +1,140 @@
+{
+ "gates": [
+  {
+   "gate": "REG-1 registry unchanged",
+   "status": "PASS",
+   "note": "git diff 66f1a64 -- data .claude (excl. __pycache__) is empty"
+  },
+  {
+   "gate": "REG-2 refinery.py",
+   "status": "PASS",
+   "note": "build digest = a68fc24fbf62a74a"
+  },
+  {
+   "gate": "REG-3 bites.py",
+   "status": "PASS",
+   "note": "5 applicable bites all bite; 18 N/A (domain does not declare those gates)"
+  },
+  {
+   "gate": "DOC-1 ref/ID integrity",
+   "status": "PASS",
+   "note": "REF_INTEGRITY PASS (references resolve; this is NOT a semantic-correctness check)"
+  },
+  {
+   "gate": "DOC-2 checker selftest",
+   "status": "PASS",
+   "note": "SELFTEST PASS"
+  },
+  {
+   "gate": "SCHEMA valid",
+   "status": "PASS",
+   "note": "2 schemas"
+  },
+  {
+   "gate": "LOCK-PY hashed + consistent",
+   "status": "PASS",
+   "note": "29 pinned with hashes; pip check: No broken requirements found."
+  },
+  {
+   "gate": "LOCK-WEB exact + installed",
+   "status": "PASS",
+   "note": "8 exact deps, lockfile present, npm ls rc=0"
+  },
+  {
+   "gate": "PHY-01 determinism / wall-clock independence",
+   "status": "PASS",
+   "note": "8 passed, 0 failed, 0 skipped"
+  },
+  {
+   "gate": "PHY-02 linear kinematics",
+   "status": "PASS",
+   "note": "8 passed, 0 failed, 0 skipped"
+  },
+  {
+   "gate": "PHY-03 braking distance + friction",
+   "status": "PASS",
+   "note": "29 passed, 0 failed, 0 skipped"
+  },
+  {
+   "gate": "PHY-04 steering / turning",
+   "status": "PASS",
+   "note": "9 passed, 0 failed, 0 skipped"
+  },
+  {
+   "gate": "PHY-05 accel / jerk / steer limits",
+   "status": "PASS",
+   "note": "6 passed, 0 failed, 0 skipped"
+  },
+  {
+   "gate": "PHY-06 collision + pedestrian",
+   "status": "PASS",
+   "note": "38 passed, 0 failed, 0 skipped"
+  },
+  {
+   "gate": "PHY-07 sensors FOV/occlusion/uncertainty",
+   "status": "NOT_CHECKED",
+   "note": "no test exists yet (later WP)"
+  },
+  {
+   "gate": "PHY-08 communication / freshness",
+   "status": "NOT_CHECKED",
+   "note": "no test exists yet (later WP)"
+  },
+  {
+   "gate": "VIS-01",
+   "status": "NOT_CHECKED",
+   "note": "frontend city not built yet (WP6)"
+  },
+  {
+   "gate": "VIS-02",
+   "status": "NOT_CHECKED",
+   "note": "frontend city not built yet (WP6)"
+  },
+  {
+   "gate": "VIS-03",
+   "status": "NOT_CHECKED",
+   "note": "frontend city not built yet (WP6)"
+  },
+  {
+   "gate": "VIS-04",
+   "status": "NOT_CHECKED",
+   "note": "frontend city not built yet (WP6)"
+  },
+  {
+   "gate": "VIS-05",
+   "status": "NOT_CHECKED",
+   "note": "frontend city not built yet (WP6)"
+  },
+  {
+   "gate": "VIS-06",
+   "status": "NOT_CHECKED",
+   "note": "frontend city not built yet (WP6)"
+  },
+  {
+   "gate": "VIS-07",
+   "status": "NOT_CHECKED",
+   "note": "frontend city not built yet (WP6)"
+  },
+  {
+   "gate": "VIS-08 reference comparison",
+   "status": "BLOCKED",
+   "note": "no image in docs/references/"
+  },
+  {
+   "gate": "VIS-09",
+   "status": "NOT_CHECKED",
+   "note": "frontend city not built yet (WP6)"
+  },
+  {
+   "gate": "VIS-10",
+   "status": "NOT_CHECKED",
+   "note": "frontend city not built yet (WP6)"
+  }
+ ],
+ "totals": {
+  "PASS": 14,
+  "FAIL": 0,
+  "BLOCKED": 1,
+  "NOT_CHECKED": 11
+ }
+}

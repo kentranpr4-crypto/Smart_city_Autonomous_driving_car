@@ -1,0 +1,32 @@
+{
+  "name": "smartcity-v2x-web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "R3F frontend; renders authoritative backend state only (I10/I12).",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4173"
+  },
+  "dependencies": {
+    "@react-three/drei": "10.7.9",
+    "@react-three/fiber": "9.8.2",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "three": "0.186.1",
+    "zustand": "5.0.15"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "6.1.2",
+    "vite": "8.3.4"
+  },
+  "overrides": {
+    "rolldown": "1.2.14",
+    "@oxc-project/types": "0.154.0",
+    "postcss": "8.5.31",
+    "@monogrid/gainmap-js": "3.6.0",
+    "@types/three": "0.186.0",
+    "hls.js": "1.7.3"
+  }
+}
