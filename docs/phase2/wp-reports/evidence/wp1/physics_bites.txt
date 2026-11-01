@@ -1,0 +1,14 @@
+# scripts/physics_bites.py   captured 2026-11-01T05:40:35Z
+integrator_wrong_cubic_term        BITES  FAILED tests/physics/test_phy02_kinematics.py::test_trajectory_matches_closed_form[0.0-1.5
+jerk_limit_removed                 BITES  FAILED tests/physics/test_phy02_kinematics.py::test_trajectory_matches_closed_form[0.0-1.5
+friction_clip_removed              BITES  FAILED tests/physics/test_phy03_braking.py::test_stopping_distance_matches_closed_form_and
+wheelbase_error_in_curvature       BITES  FAILED tests/physics/test_phy04_steering.py::test_steady_turn_radius_and_heading[3.0-0.1]
+lateral_friction_circle_off        BITES  FAILED tests/physics/test_phy04_steering.py::test_friction_limits_curvature_to_mu_g_over_v
+steer_rate_limit_removed           BITES  FAILED tests/physics/test_phy04_steering.py::test_steering_rate_limit_and_delay
+actuator_delay_ignored             BITES  FAILED tests/physics/test_phy02_kinematics.py::test_trajectory_matches_closed_form[0.0-1.5
+sat_missing_second_box_axes        BITES  FAILED tests/physics/test_phy06_collision.py::test_sat_table[b5-False] - asse...
+segment_distance_endpoints_only    BITES  FAILED tests/physics/test_phy06_collision.py::test_point_and_segment_distance
+stop_on_collision_ignored          BITES  FAILED tests/physics/test_phy06_collision.py::test_first_contact_time_matches_analytic_wit
+wall_clock_noise_in_world          BITES  FAILED tests/physics/test_phy01_determinism.py::test_same_seed_same_hash_in_process
+stop_snap_exact_removed            BITES  FAILED tests/physics/test_phy03_braking.py::test_step_aligned_ramps_are_exact_to_float_pre
+PHYSICS BITES: ALL CAUGHT

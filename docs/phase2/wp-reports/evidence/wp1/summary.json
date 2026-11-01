@@ -1,0 +1,19 @@
+{
+ "cases": 16,
+ "max_err_vs_closed_form_m": 4.736609758282384e-05,
+ "max_err_vs_numeric_m": 4.73662750408721e-05,
+ "criteria_m": {
+  "closed_form": 0.001,
+  "numeric": 0.005
+ },
+ "throughput": {
+  "sim_seconds": 10.0,
+  "wall_seconds": 0.03,
+  "real_time_factor": 333.7,
+  "note": "informational; one vehicle; includes telemetry capture in memory"
+ },
+ "environment": {
+  "python": "3.13.18",
+  "platform": "Linux-6.18.44-fc-v185-x86_64-with-glibc2.39"
+ }
+}

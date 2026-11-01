@@ -1,0 +1,57 @@
+{
+  "backend": {
+    "carla_equivalent": false,
+    "limitations": [
+      "Flat horizontal plane; no slope or road elevation.",
+      "Kinematic bicycle + friction circle; no tyre slip, load transfer, suspension, pitch, aero or rolling resistance.",
+      "Uniform friction mu (a parameter); no source for Vietnamese inner-city roads.",
+      "Jerk limit is NOT enforced at the standstill transition: acceleration snaps to 0 within one step when v reaches 0 (enforced everywhere else; PHY-05 excludes exactly that step).",
+      "Rigid bodies; contact ends the run; no deformation, injury or post-impact dynamics.",
+      "Pedestrians are kinematic and non-reactive (no gap acceptance, no crowd behaviour).",
+      "Sensors/channel (later WPs) are statistical models over ground truth, not raw sensors or real V2X PHY/MAC.",
+      "Not equivalent to CARLA or any commercial simulator; results hold only inside this model.",
+      "Valid only inside the ODD: v <= 40 km/h and lateral accel <= ay_validity_fraction * mu * g, clear weather.",
+      "Bit-exact determinism is guaranteed only within one recorded environment (Python/numpy/OS)."
+    ],
+    "name": "lightweight-planar-physics",
+    "version": "0.1.0"
+  },
+  "config_sha256": "206941b5b93e045cad2bb466370a41f3d1051263e8385cd580ff762fea47fd60",
+  "environment": {
+    "machine": "x86_64",
+    "numpy": "2.5.4",
+    "platform": "Linux-6.18.44-fc-v185-x86_64-with-glibc2.39",
+    "python": "3.13.18"
+  },
+  "git": {
+    "commit": "66f1a640fca649320608940f5acd807b7cc5f2d8",
+    "dirty": true
+  },
+  "scenario": "/home/user/Smart_city_Autonomous_driving_car/scenarios/s00b_physics_sandbox_brake_late.yaml",
+  "scenario_id": "s00b_brake_late",
+  "schema_version": "0.1.0",
+  "seed": 7,
+  "summary": {
+    "collision": true,
+    "counts": {
+      "friction_limited_steps": 0,
+      "outside_model_validity_steps": 0,
+      "outside_odd_steps": 0
+    },
+    "impact_speed": 2.8156214467999394,
+    "min_clearance": 0.0,
+    "steps": 295,
+    "t_end": 2.95,
+    "telemetry_lines": 297,
+    "vehicles": {
+      "ego": {
+        "a": -6.0,
+        "v": 2.3333333333333472,
+        "x": 21.493333333333375,
+        "y": 0.0
+      }
+    }
+  },
+  "telemetry_lines": 297,
+  "telemetry_sha256": "45aa916b4bfa7d18b409ed6663293de7d47acd0a16dabf139f2fe75dfc0577c1"
+}

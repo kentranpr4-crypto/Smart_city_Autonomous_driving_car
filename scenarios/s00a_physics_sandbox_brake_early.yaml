@@ -1,0 +1,20 @@
+# Physics sandbox S00a: scripted (open-loop) emergency brake issued EARLY. No perception/comm yet (WP2+).
+# Ego rear axle starts at x=0 heading +x at 30 km/h; a pedestrian crosses the lane at x=25.
+schema_version: "0.1.0"
+id: s00a_brake_early
+description: "Scripted emergency brake at t=0.5 s; expected to stop short of the crossing (stopping distance from command 9.45 m)."
+dt: 0.01
+duration: 8.0
+stop_when_all_stopped: true
+road: {mu: 0.8}
+vehicles:
+  - id: ego
+    init: {x: 0.0, y: 0.0, psi: 0.0, v: 8.333333333333334}
+    script:
+      - {t: 0.5, a_cmd: -6.0, delta_cmd: 0.0, mode: emergency}
+pedestrians:
+  - id: ped1
+    radius: 0.3
+    path: [[25.0, -3.0], [25.0, 3.0]]
+    start_time: {dist: uniform, low: 1.5, high: 2.5}
+    speed: {dist: uniform, low: 1.2, high: 1.6}
