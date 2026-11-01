@@ -1,0 +1,240 @@
+   Office of Safety and Operations
+   Research and Development
+
+
+                                                                                                                             © Getty Images Plus.
+
+
+
+        Perception Sharing for Cooperative Driving Automation (CDA)
+        Using Sensor-Data-Sharing Messages
+        Pedestrians and bicyclists face challenges
+                                        Trafﬁc Camera
+        navigating intersections safely.    Limited lines of
+        sight and blind spots can make detecting
+        pedestrians difficult for drivers and automated
+        vehicles; each year, pedestrians and bicyclists
+        account for roughly 20 percent of all traffic
+        fatalities.(1) Because pedestrians and bicyclists are
+        especially at risk for fatalities and serious injuries,
+        improving their safety at intersections is key to
+        ensuring that roadways are safe for all road users.
+
+        CDA and cooperative perception (CP)
+        technologies are improving the safety of
+                                                                                                    Obstructed View
+        pedestrians and bicyclists at signalized
+        intersections. CP can help drivers and automated                                                              !
+        vehicles perceive all road users and obstacles on
+        the road by sharing location data based on
+        measurements from sensors of other vehicles
+                                                             Source: FHWA.
+        and the roadside. The vehicles  can then
+                                 Edge Computing   assess
+                                                Device (ECD)
+                                                                           Figure 1. Illustration. CDA and CP technologies
+        whether the pedestrian or bicyclist poses a                        alerting a vehicle to an obstructed pedestrian
+        potential hazard and, if necessary, warn the                                  at a signalized intersection.
+        driver or take automated action to help avoid a
+        collision. For example, a roadside sensor can detect a pedestrian in a crosswalk and send a message to nearby
+        vehicles, alerting them to the pedestrian’s presence (figure 1).
+
+        BENEFITS TO TRANSPORTATION
+        CP improves the perception performance of automated vehicles and infrastructure, leading to enhanced
+        situational awareness that can potentially enable more effective CDA applications for safety and mobility.(2) The
+        enhanced situational awareness not only improves safety performance in immediate collision avoidance scenarios,
+        but also supports automated driving system (ADS) and CDA algorithms to better plan the vehicle’s path, speed,
+        and acceleration.(2)
+
+
+
+
+                                                                   1
+
+Source: FHWA.
+           Perception Sharing for Cooperative Driving Automation (CDA) Using Sensor Data Sharing Messages
+
+
+
+
+           RESEARCH FOCUS                                     View of the 3D environment               View of LiDAR point clouds and C-ADS
+                                                                                                          object detection leveraging CP
+                                                                                       LiDAR and OBU
+           This research explores how CDA                                         broadcasting SDSM
+                                                  C-ADS-equipped vehicle
+           and CP technologies can work            traveling with intent to
+                                                           turn left
+           together to improve the safety of                                    Pedestrian
+                                                                                 crossing
+           pedestrians and bicyclists at
+           signalized intersections. Using
+           sensors, such as LiDAR, radar, and
+           camera, vehicles and roadside          Delivery vehicles concealing
+                                                          the pedestrian
+           infrastructure detect objects in
+           their surroundings and share
+           this information through             Source: FHWA.
+                                                3D = three dimensional; C-ADS = cooperative ADS; LiDAR = light detection and ranging;
+           vehicle-to-everything (V2X)          OBU = onboard system.
+           communication. The SAE
+                                                       Figure 2. Illustration. Simulation of a pedestrian detection by
+           International® J3224™ sensor data
+                                                C-ADS-equipped vehicle, despite no line-of-sight, using J3224 SDSM
+           sharing message (SDSM) format
+                                                                            broadcast by the infrastructure.(3)
+           enables the exchange of detailed
+           sensor data among V2X participants.(3) By improving how vehicles and infrastructure detect, track, and
+           combine information about objects—such as bicyclists and pedestrians—SDSMs help create a more
+           complete and accurate understanding of the intersection environment, supporting safer and more
+           coordinated responses to avoid crashes.
+           The research team first simulated a scenario(2) in CDASim,(4) a low-cost and efficient simulation tool for testing CDA
+           technology. CDASim integrates a C-ADS-equipped vehicle running CARMA PlatformSM(5)—an open-source software
+           that provides navigation and guidance functions for automated vehicle motion—with CARMA StreetsSM(6) as the
+           roadway infrastructure component, V2X Hub(7) as the communications component, and a traffic simulator. The
+           CARMA Platform vehicle was integrated with CARLA®,(8) enabling vehicle control algorithms to be tested in realistic
+           simulated environments. The simulation, as shown in figure 2, depicts a pedestrian being hidden from the view
+           of nearby vehicles by large delivery trucks. Despite having no direct line of sight to the pedestrian, a nearby
+           C-ADS-equipped vehicle detects the pedestrian via J3224 SDSMs broadcast by the infrastructure.
+
+           FROM SIMULATION TO LIVE DEMONSTRATION
+           This technology was demonstrated in real vehicles during a live demonstration at the 2025 ITS World Congress
+           in Atlanta, GA.(9) The event focused on deployment-ready technologies and how these technologies are reshaping
+           the surface transportation roadmap. The demonstration offered a ride-along experience in a CARMA Platform
+           vehicle for more than 500 participants, who represented original equipment manufacturers, infrastructure
+           owner-operators (IOOs), V2X vendors, and engineering consultants.
+           In the demonstration, an infrastructure-mounted camera detected a pedestrian crossing in front of an
+           emergency response vehicle (figure 3-A). The camera sent this detection to a roadside unit connected to
+           V2X Hub, which generated an SDSM and broadcast it through the roadside unit. A C-ADS-equipped vehicle
+           approaching from behind the emergency vehicle received the message and detected the pedestrian in
+           advance, allowing the C-ADS-equipped vehicle to smoothly yield, despite not having a direct line of sight
+           (figure 3-B). To showcase the benefits of the technology, the demonstration included two scenarios: one
+           without CDA and one with CDA, both conducted by a facilitator inside the vehicle.
+
+
+                                                                        2
+
+Source: FHWA.
+        Perception Sharing for Cooperative Driving Automation (CDA) Using Sensor Data Sharing Messages
+OFFICE NAME
+
+
+
+
+                                                               C-ADS-Equipped Vehicle
+ Infrastructure-Mounted Camera
+    (camera is just outside the
+           field of view.)
+
+                                                                                               Emergency
+                                                                                               Response Vehicle
+
+                                                                                Hidden Pedestrian
+
+
+
+
+                                  Source: FHWA.
+                                    A. Infrastructure components detecting a hidden pedestrian crossing
+                                                  in front of an emergency response vehicle.
+
+
+
+
+ Infrastructure-Mounted Camera
+    (camera is just outside the                        C-ADS-Equipped Vehicle
+           field of view.)                                                                      Emergency
+                                                                                                Response Vehicle
+
+
+
+
+                                  Source: FHWA.
+                                          B. Nearby C-ADS-equipped vehicle yielding to the pedestrian.
+                                        Figure 3. Photos. Live demonstration at ITS World Congress in
+                                                              Atlanta, Georgia.(9)
+
+
+      RESULTS
+       The simulations and live demonstration showed how
+          CDA technology can prevent a pedestrian collision in the
+          CP scenario.
+       CP simulation achieved up to a 98-percent reduction in
+          pedestrian collisions for the specific test scenarios. The
+          approach also smoothed yielding trajectories in most
+          simulation runs.                                                                                         98%
+       The C-ADS-equipped vehicle successfully received real-time                                         CP simulation achieved up to a
+          SDSM data from infrastructure-based cameras detecting                                         98-percent reduction in pedestrian
+          pedestrians and then automatically yielded to the pedestrians                               collisions for the specific test scenarios.
+                                                                                                      Source: FHWA.
+          during the live demonstration.
+
+
+
+                                                                         3
+                     Perception Sharing for Cooperative Driving Automation (CDA) Using Sensor Data Sharing Messages
+
+
+
+
+                     FUTURE WORK
+                      Expand simulation                                  Advance                                             Explore scalable                                    Conduct follow-up
+                         and live vehicle testing                             interoperability and                                 deployment and                                       demonstrations and
+                         across varied roadway                                standard alignment                                   industry transition                                  collaborative testing
+                         environments, geometries,                            by coordinating with                                 pathways, including                                  with stakeholders to
+                         and traffic conditions to                            the industry and                                     integration with IOOs,                               inform deployment
+                         evaluate CP performance                              SAE International.                                   to move from                                         strategies and ensure
+                         under varying latency,                                                                                    demonstrations to                                    CDA technologies
+                         packet loss, and sensor                                                                                   deployment-ready                                     meet real-world
+                         error conditions.                                                                                         solutions.                                           operational needs.
+
+
+
+
+Source: FHWA.
+
+                REFERENCES
+                1.   FHWA. n.d. “Pedestrian and Bicycle Safety” (web page). https://highways.dot.gov/safety/pedestrian-bicyclist, last accessed October 29, 2025.
+                2.   Lou, Y., A. Ghiasi, M. Jannat, S. Racha, D. Hale, W. Goforth, and P. Bujanovic. 2022. Cooperative Automation Research: CARMA Proof-of-Concept TSMO Use Case Testing:
+                     CARMA Cooperative Perception Concept of Operations. Report No. FHWA-HRT-22-062. Washington, DC: Federal Highway Administration. https://www.fhwa.dot.gov/
+                     publications/research/operations/22062/22062.pdf, last accessed October 29, 2025.
+                3.   SAE International®. 2022. V2X Sensor-Sharing for Cooperative and Automated Driving. SAE J3224™_202208. Warrendale, PA: SAE International. https://www.sae.org/
+                     standards/content/j3224_202208/, last accessed October 29, 2025.
+                4.   FHWA. n.d. “usdot-fhwa-stol/cdaSim” (CDASim software and configuration files in GitHub® repository). https://github.com/usdot-fhwa-stol/cdasim,
+                     last accessed October 29, 2025.
+                5.   FHWA. n.d. “usdot-fhwa-stol/carma-platform” (CARMA Platform software and configuration files in GitHub repository). https://github.com/usdot-fhwa-stol/carma-platform,
+                     last accessed October 29, 2025.
+                6.   FHWA. n.d. “usdot-fhwa-stol/carma-streets” (CARMA Streets software and configuration files in GitHub repository). https://github.com/usdot-fhwa-stol/carma-streets,
+                     last accessed October 29, 2025.
+                7.   FHWA. 2023. “usdot-fhwa-OPS/V2X-Hub” (V2X Hub software and configuration files in GitHub repository). https://github.com/usdot-fhwa-OPS/V2X-Hub,
+                     last accessed November 5, 2025.
+                8.   CARLA. 2022. CARLA (software). Version 0.9.14.
+                9.   ITS America. 2024. “2025 ITS World Congress: August 24–28, 2025” (web page). https://itsa.org/event/2025-its-world-congress-august-24-28-2025/,
+                     last accessed November 5, 2025.
+
+                Notice—This document is disseminated under the sponsorship of the U.S. Department of Transportation in the interest of information exchange. The U.S. Government assumes no liability for the use of the
+                information contained in this document.
+
+                Non-Binding Contents—Except for the statutes and regulations cited, the contents of this document do not have the force and effect of law and are not meant to bind the States or the public in any way.
+                This document is intended only to provide information regarding existing requirements under the law or agency policies.
+
+                Quality Assurance Statement—The Federal Highway Administration (FHWA) provides high-quality information to serve Government, industry, and the public in a manner that promotes public understanding.
+                Standards and policies are used to ensure and maximize the quality, objectivity, utility, and integrity of its information. FHWA periodically reviews quality issues and adjusts its programs and processes to ensure
+                continuous quality improvement.
+
+                Disclaimer for Product Names and Manufacturers—The U.S. Government does not endorse products or manufacturers. Trademarks or manufacturers’ names appear in this document only because they are
+                considered essential to the objective of the document. They are included for informational purposes only and are not intended to reflect a preference, approval, or endorsement of any one product or entity.
+
+
+
+                TO LEARN MORE AND FOLLOW UPDATES:
+                V2X GitHub                                                                                                               CARMA Platform
+                https://github.com/usdot-fhwa-OPS/V2X-Hub                                                                                https://github.com/usdot-fhwa-stol
+                                                                                                                                         /carma-platform
+
+
+                                                                                                                                       For more information, please contact Pavle Bujanovic,
+                                                                                                                                         HRSO-40, (202) 493-3271, pavle.bujanovic@dot.gov
+                                                                                                                                                                                                 FHWA-HRT 26-028
+                                                                                                 Recommended citation: Federal Highway Administration, Perception Sharing For Cooperative Driving Automation (CDA)
+                                                                                                                 Using Sensor-Data-Sharing Messages (Washington, DC: 2026) https://doi.org/10.21949/ypw2-wn65
+

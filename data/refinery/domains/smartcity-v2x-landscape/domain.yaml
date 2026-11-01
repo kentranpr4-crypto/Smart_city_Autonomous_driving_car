@@ -1,17 +1,27 @@
 domain: smartcity-v2x-landscape
 entity_label: Chuẩn / dataset / pilot / quy định cho Smart City V2X
 schema:
-  type_field: category
+  type_field: null
   fields:
-  - category        # standard | dataset | pilot | regulation | deployment
-  - issuer          # tổ chức ban hành / nhóm tác giả
-  - status          # trạng thái/phiên bản theo nguồn
-  - scope           # phạm vi áp dụng theo nguồn
-  - date            # ngày/kỳ theo nguồn
+  - category
+  - issuer
+  - status
+  - scope
+  - date
+  - duration
+  - operating_limits
+  - sensing_stack
+  - system_components
+  - safety_supervision
+  - obligations
+  - data_privacy
 rollup_field: category
 universe:
-  estimate: null
-  basis: Chưa xác định; danh mục mở, không công bố coverage. Seed list ở SOURCES.md là ứng viên, chưa phải mẫu số.
+  estimate: 25
+  basis: Danh mục ĐÓNG gồm 25 thực thể do người nghiên cứu chọn có chủ đích (chuẩn,
+    dataset, pilot, quy định, triển khai liên quan đến cooperative perception cho
+    smart city VN). KHÔNG đại diện toàn bộ lĩnh vực; coverage chỉ có nghĩa trong danh
+    mục này.
 refresh_days:
   default: 90
 alias_map: {}

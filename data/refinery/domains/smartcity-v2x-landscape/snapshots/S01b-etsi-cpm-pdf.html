@@ -1,0 +1,2164 @@
+       ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+
+
+TECHNICAL SPECIFICATION
+
+
+
+
+             Intelligent Transport System (ITS);
+                 Vehicular Communications;
+                  Basic Set of Applications;
+               Collective Perception Service;
+                           Release 2
+                                                                2                             ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+
+
+                                                            Reference
+                                                         DTS/ITS-00167
+
+                                                            Keywords
+                                                           ITS, protocol
+
+
+
+
+                                                               ETSI
+                                                  650 Route des Lucioles
+                                         F-06921 Sophia Antipolis Cedex - FRANCE
+
+                                       Tel.: +33 4 92 94 42 00 Fax: +33 4 93 65 47 16
+
+                                              Siret N° 348 623 562 00017 - APE 7112B
+                                            Association à but non lucratif enregistrée à la
+                                           Sous-Préfecture de Grasse (06) N° w061004871
+
+
+
+                                                       Important notice
+                                       The present document can be downloaded from:
+                                            https://www.etsi.org/standards-search
+The present document may be made available in electronic versions and/or in print. The content of any electronic and/or
+print versions of the present document shall not be modified without the prior written authorization of ETSI. In case of any
+   existing or perceived difference in contents between such versions and/or in print, the prevailing version of an ETSI
+                    deliverable is the one made publicly available in PDF format at www.etsi.org/deliver.
+    Users of the present document should be aware that the document may be subject to revision or change of status.
+                    Information on the current status of this and other ETSI documents is available at
+                                  https://portal.etsi.org/TB/ETSIDeliverableStatus.aspx
+          If you find errors in the present document, please send your comment to one of the following services:
+                                   https://portal.etsi.org/People/CommiteeSupportStaff.aspx
+                   If you find a security vulnerability in the present document, please report it through our
+                                         Coordinated Vulnerability Disclosure Program:
+                              https://www.etsi.org/standards/coordinated-vulnerability-disclosure
+
+                                       Notice of disclaimer & limitation of liability
+The information provided in the present deliverable is directed solely to professionals who have the appropriate degree of
+         experience to understand and interpret its content in accordance with generally accepted engineering or
+                                  other professional standard and applicable regulations.
+                No recommendation as to products and services or vendors is made or should be implied.
+  No representation or warranty is made that this deliverable is technically accurate or sufficient or conforms to any law
+and/or governmental rule and/or regulation and further, no representation or warranty is made of merchantability or fitness
+                     for any particular purpose or against infringement of intellectual property rights.
+        In no event shall ETSI be held liable for loss of profits or any other incidental or consequential damages.
+
+   Any software contained in this deliverable is provided "AS IS" with no warranties, express or implied, including but not
+ limited to, the warranties of merchantability, fitness for a particular purpose and non-infringement of intellectual property
+ rights and ETSI shall not be held liable in any event for any damages whatsoever (including, without limitation, damages
+for loss of profits, business interruption, loss of information, or any other pecuniary loss) arising out of or related to the use
+                                                 of or inability to use the software.
+
+                                                   Copyright Notification
+No part may be reproduced or utilized in any form or by any means, electronic or mechanical, including photocopying and
+                             microfilm except as authorized by written permission of ETSI.
+             The content of the PDF version shall not be modified without the written authorization of ETSI.
+                    The copyright and the foregoing restriction extend to reproduction in all media.
+
+                                                          © ETSI 2023.
+                                                       All rights reserved.
+
+
+
+
+                                                              ETSI
+                                                                                         3                                       ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+
+Contents
+Intellectual Property Rights ................................................................................................................................5
+Foreword.............................................................................................................................................................5
+Modal verbs terminology....................................................................................................................................5
+Introduction ........................................................................................................................................................5
+1         Scope ........................................................................................................................................................6
+2         References ................................................................................................................................................6
+2.1           Normative references ......................................................................................................................................... 6
+2.2           Informative references ........................................................................................................................................ 6
+3         Definition of terms, symbols and abbreviations .......................................................................................7
+3.1           Terms.................................................................................................................................................................. 7
+3.2           Symbols .............................................................................................................................................................. 8
+3.3           Abbreviations ..................................................................................................................................................... 8
+4         CPS introduction ......................................................................................................................................9
+5         CPS functional specification ....................................................................................................................9
+5.1           CPS in the ITS architecture ................................................................................................................................ 9
+5.2           CPS functional architecture .............................................................................................................................. 10
+5.3           Interfaces of the CPS ........................................................................................................................................ 11
+5.3.1             Interface to ITS applications ....................................................................................................................... 11
+5.3.2             Interface to data provisioning facilities ....................................................................................................... 11
+5.3.3             Interface to MCO_FAC .............................................................................................................................. 11
+5.3.4             Interface to the Networking & Transport layer ........................................................................................... 13
+5.3.5             Interface to the IPv6 stack and the combined IPv6/GeoNetworking stack ................................................. 13
+5.3.6             Interface to the ITS management entity ...................................................................................................... 13
+5.3.7             Interface to the security entity..................................................................................................................... 14
+6         CPM dissemination ................................................................................................................................14
+6.1           CPM generation................................................................................................................................................ 14
+6.1.1           CPM generation management ..................................................................................................................... 14
+6.1.2           CPM data inclusion..................................................................................................................................... 15
+6.1.2.1            CPM generation events ......................................................................................................................... 15
+6.1.2.2            Sensor Information Container Inclusion Management .......................................................................... 16
+6.1.2.3            Perceived Object Inclusion Management .............................................................................................. 16
+6.1.3           CPM assembly ............................................................................................................................................ 18
+6.1.3.1            General .................................................................................................................................................. 18
+6.1.3.2            Object utility function ........................................................................................................................... 19
+6.1.3.3            Perception region based ........................................................................................................................ 20
+6.2           CPM dissemination constraints ........................................................................................................................ 20
+6.2.1           Security constraints ..................................................................................................................................... 20
+6.2.1.1            Introduction ........................................................................................................................................... 20
+6.2.1.2            Service Specific Permissions (SSP) ...................................................................................................... 21
+6.2.2           General priority constraints......................................................................................................................... 21
+7         CPM Specification .................................................................................................................................21
+7.1           CPM structure .................................................................................................................................................. 21
+7.1.1           General structure of a CPM PDU ............................................................................................................... 21
+7.1.2           ITS PDU Header ......................................................................................................................................... 23
+7.1.3           Management Container ............................................................................................................................... 23
+7.1.4           Originating Vehicle Container .................................................................................................................... 23
+7.1.5           Originating RSU Container ........................................................................................................................ 24
+7.1.6           Sensor Information Container ..................................................................................................................... 24
+7.1.7           Perception Region Container ...................................................................................................................... 27
+7.1.8           Perceived Object Container ........................................................................................................................ 28
+7.1.8.1            General .................................................................................................................................................. 28
+7.1.8.2            Object ID and time management ........................................................................................................... 29
+
+
+
+                                                                                      ETSI
+                                                                                   4                                    ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+7.1.8.3            Kinematic and attitude state description ............................................................................................... 30
+7.1.8.4            Object dimensions and age .................................................................................................................... 30
+7.1.8.5            Link to Sensor Information Container................................................................................................... 30
+7.1.8.6            Object perception quality ...................................................................................................................... 30
+7.1.8.7            Object classification .............................................................................................................................. 31
+7.1.8.8            Link to MAPEM ................................................................................................................................... 32
+7.2           CPM format specification ................................................................................................................................ 32
+
+Annex A (normative):                          ASN.1 modules ...............................................................................................33
+Annex B (informative):                        Specification of CPM in readable format ....................................................35
+Annex C (informative):                        Interpretation of the kinematic and attitude state description ..................36
+Annex D (normative):                          Frequency and Content Management..........................................................37
+Annex E (informative):                        Object Inclusion Rate Control ......................................................................38
+Annex F (normative):                          Configuration parameter values...................................................................39
+History ..............................................................................................................................................................42
+
+
+
+
+                                                                                ETSI
+                                                             5                          ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+
+Intellectual Property Rights
+Essential patents
+
+IPRs essential or potentially essential to normative deliverables may have been declared to ETSI. The declarations
+pertaining to these essential IPRs, if any, are publicly available for ETSI members and non-members, and can be
+found in ETSI SR 000 314: "Intellectual Property Rights (IPRs); Essential, or potentially Essential, IPRs notified to
+ETSI in respect of ETSI standards", which is available from the ETSI Secretariat. Latest updates are available on the
+ETSI Web server (https://ipr.etsi.org/).
+
+Pursuant to the ETSI Directives including the ETSI IPR Policy, no investigation regarding the essentiality of IPRs,
+including IPR searches, has been carried out by ETSI. No guarantee can be given as to the existence of other IPRs not
+referenced in ETSI SR 000 314 (or the updates on the ETSI Web server) which are, or may be, or may become,
+essential to the present document.
+
+Trademarks
+
+The present document may include trademarks and/or tradenames which are asserted and/or registered by their owners.
+ETSI claims no ownership of these except for any which are indicated as being the property of ETSI, and conveys no
+right to use or reproduce any trademark and/or tradename. Mention of those trademarks in the present document does
+not constitute an endorsement by ETSI of products, services or organizations associated with those trademarks.
+
+DECT™, PLUGTESTS™, UMTS™ and the ETSI logo are trademarks of ETSI registered for the benefit of its
+Members. 3GPP™ and LTE™ are trademarks of ETSI registered for the benefit of its Members and of the 3GPP
+Organizational Partners. oneM2M™ logo is a trademark of ETSI registered for the benefit of its Members and of the
+oneM2M Partners. GSM® and the GSM logo are trademarks registered and owned by the GSM Association.
+
+
+
+Foreword
+This Technical Specification (TS) has been produced by ETSI Technical Committee Intelligent Transport Systems
+(ITS).
+
+
+
+Modal verbs terminology
+In the present document "shall", "shall not", "should", "should not", "may", "need not", "will", "will not", "can" and
+"cannot" are to be interpreted as described in clause 3.2 of the ETSI Drafting Rules (Verbal forms for the expression of
+provisions).
+
+"must" and "must not" are NOT allowed in ETSI deliverables except when used in direct citation.
+
+
+
+Introduction
+The present document specifies the Collective Perception Service (CPS) and how a transmitting ITS station (ITS-S) can
+inform other ITS-Ss about the kinematic and attitude dynamics and other attributes of objects (e.g. vehicles, pedestrians,
+animals and others) detected by sensors such as radars, lidars and cameras to which the transmitting ITS-S has access.
+The CPS increases awareness among ITS-Ss by sharing information about perceived objects in the local environment.
+
+The Collective Perception Message (CPM) enables the interoperable sharing of basic information about the
+disseminating ITS-S (required for the interpretation of the transmitted data), its sensory capabilities, perceived objects
+and road-related perception regions. CPMs are generated quasi-periodically as determined by CPM generation events.
+
+
+
+
+                                                           ETSI
+                                                              6                          ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+
+1             Scope
+The present document specifies the CPS. Conceptually, Collective Perception involves sharing safety-relevant
+information about the current context of the ITS-S's environment. This includes the definition of the syntax and
+semantics of the CPM and the specification of the data and message handling of the CPM to increase the awareness of
+the environment in a cooperative manner.
+
+
+
+2             References
+
+2.1           Normative references
+References are either specific (identified by date of publication and/or edition number or version number) or
+non-specific. For specific references, only the cited version applies. For non-specific references, the latest version of the
+referenced document (including any amendments) applies.
+
+Referenced documents which are not found to be publicly available in the expected location might be found at
+https://docbox.etsi.org/Reference/.
+
+    NOTE:     While any hyperlinks included in this clause were valid at the time of publication, ETSI cannot guarantee
+              their long-term validity.
+
+The following referenced documents are necessary for the application of the present document.
+
+    [1]               ETSI TS 103 097: "Intelligent Transport Systems (ITS); Security; Security header and certificate
+                      formats; Release 2".
+
+    [2]               Recommendation ITU-T X.691 (2021-02): "Information technology - ASN.1 encoding rules:
+                      Specification of Packed Encoding Rules (PER)".
+
+    [3]               ETSI TS 102 894-2 (V2.1.1): "Intelligent Transport Systems (ITS); Users and applications
+                      requirements; Part 2: Applications and facilities layer common data dictionary; Release 2".
+
+    [4]               ETSI EN 302 890-2: "Intelligent Transport Systems (ITS); Facilities Layer function;
+                      Part 2: Position and Time management (PoTi); Release 2".
+
+    [5]               ETSI TS 103 836-4-1: "Intelligent Transport Systems (ITS); Vehicular Communications;
+                      GeoNetworking; Part 4: Geographical addressing and forwarding for point-to-point and
+                      point-to-multipoint communications; Sub-part 1: Media-Independent Functionality; Release 2".
+
+    [6]               ETSI TS 103 836-5-1: "Intelligent Transport Systems (ITS); Vehicular Communications;
+                      GeoNetworking; Part 5: Transport Protocols; Sub-part 1: Basic Transport Protocol; Release 2".
+
+    [7]               ETSI TS 103 141: "Intelligent Transport Systems (ITS); Facilities layer function; Multi-Channel
+                      Operation (MCO) for Cooperative ITS (C-ITS); Release 2".
+
+
+2.2           Informative references
+References are either specific (identified by date of publication and/or edition number or version number) or
+non-specific. For specific references, only the cited version applies. For non-specific references, the latest version of the
+referenced document (including any amendments) applies.
+
+    NOTE:     While any hyperlinks included in this clause were valid at the time of publication, ETSI cannot guarantee
+              their long-term validity.
+
+The following referenced documents are not necessary for the application of the present document, but they assist the
+user with regard to a particular subject area.
+
+    [i.1]             ETSI TR 103 562: "Intelligent Transport Systems (ITS); Vehicular Communications; Basic Set of
+                      Applications; Analysis of the Collective Perception Service (CPS); Release 2".
+
+
+
+
+                                                            ETSI
+                                                            7                          ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+    [i.2]            ETSI TS 103 898: "Intelligent Transport Systems (ITS); Communications Architecture;
+                     Release 2".
+
+    [i.3]            ETSI EN 302 895: "Intelligent Transport Systems (ITS); Vehicular Communications; Basic Set of
+                     Applications; Local Dynamic Map (LDM)".
+
+    [i.4]            Car 2 Car Communication Consortium: "Technical Report on CPM Object Quality".
+
+    [i.5]            ISO EN 17419: "Intelligent Transport Systems -- Cooperative Systems -- Classification and
+                     management of ITS applications in a global context" Definition of terms, symbols and
+                     abbreviations".
+
+    [i.6]            ETSI TS 103 836-3: "Intelligent Transport Systems (ITS); Vehicular Communications;
+                     GeoNetworking; Part 3: Network Architecture; Release 2".
+
+    [i.7]            ETSI TS 102 723-5: "Intelligent Transport Systems (ITS); OSI cross-layer topics; Part 5: Interface
+                     between management entity and facilities layer; Release 2".
+
+    [i.8]            ETSI TR 102 965: "Intelligent Transport Systems (ITS); Application Object Identifier (ITS-AID);
+                     Registration list".
+
+    [i.9]            ETSI TS 102 940: "Intelligent Transport Systems (ITS); Security; ITS communications security
+                     architecture and security management; Release 2".
+
+    [i.10]           ETSI TR 103 460: "Intelligent Transport Systems (ITS); Security; Pre-standardization study on
+                     Misbehavior Detection; Release 2".
+
+    [i.11]           ETSI TS 102 890-1: "Intelligent Transport Systems (ITS); Facilities layer function;
+                     Part 1: Services Announcement (SA) specification".
+
+    [i.12]           ETSI TS 103 300-3: "Intelligent Transport Systems (ITS); Vulnerable Road Users (VRU)
+                     awareness; Part 3: Specification of VRU awareness basic service; Release 2".
+
+    [i.13]           ETSI TS 103 301: "Intelligent Transport Systems (ITS); Vehicular Communications; Basic Set of
+                     Applications; Facilities layer protocols and communication requirements for infrastructure
+                     services; Release 2".
+
+
+
+3             Definition of terms, symbols and abbreviations
+
+3.1           Terms
+For the purposes of the present document, the following terms apply:
+
+central ITS-S: ITS-S in a backend, e.g. traffic control centre, traffic management centre, or cloud system from road
+authorities, ITS application suppliers or automotive OEMs
+
+classification confidence level: measure related to the certainty, generally a probability, with which a perceived object
+can be linked to a specific object class or type (e.g. with X % probability the object is of type A)
+
+    NOTE:     The sum of the object classification confidence levels for each perceived object may not exceed 100 %
+              (e.g. in the example above, the classification confidence for an object to be of type B will not exceed
+              (100-X) %).
+
+Collective Perception (CP): concept involving sharing of information (generated by sensor systems) about the
+perceived environment of an ITS-S
+
+Collective Perception Message (CPM): message generated by the CPS
+
+Collective Perception Message (CPM) data: some or all data included in a CPM
+
+Collective Perception Service (CPS): functionality in the ITS-S facilities layer to support ITS-S applications, CPM
+management and CPM dissemination
+
+
+
+
+                                                          ETSI
+                                                              8                        ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+Collective Perception Service (CPS) protocol: ITS facilities layer protocol for CPM dissemination and reception
+
+confidence level: probability with which the estimate of a statistical parameter (e.g. an arithmetic mean) in a sample
+survey is also true for the entire population from which the samples were taken
+
+confidence value: estimated absolute accuracy (i.e. closeness of a measured value to a standard or known value) of a
+measured value of a parameter with a specified confidence level (generally 95 % in the present document)
+
+ITS station (ITS-S): functional entity specified by the ITS station (ITS-S) reference architecture
+
+object: material thing that can be seen and touched and therefore detected and with which parameters can be associated
+that can be measured and/or estimated
+
+object list: collection of objects
+
+object perception quality: quantification of the estimated likelihood that a detected object exists, i.e. has been detected
+previously and has continuously been detected by a sensor
+
+perception region confidence: quantification of the estimated likelihood that objects or unoccupied regions may be
+detected within a perception region
+
+roadside ITS-S: ITS-S operating in the context of roadside ITS equipment
+
+state space representation: mathematical description of a detected object consisting of state variables such as position,
+velocity, attitude, angular rate, etc.
+
+Vehicle-to-Everything (V2X): type of communication that includes Vehicle-to-Vehicle (V2V), Vehicle-to-
+Infrastructure (V2I), Infrastructure-to-Vehicle (I2V), or Vehicle-to-Network (V2N), and Network-to-Vehicle (N2V)
+communications
+
+Vehicle ITS-S: ITS-S operating in the context of vehicular ITS equipment
+
+
+3.2            Symbols
+For the purposes of the present document, the following symbols apply:
+
+   IF.CPS             Interface between CPS and LDM or ITS applications
+   IF.APP             Interface between CPS and ITS applications
+   IF.FAC             Interface between CPS and other facilities layer entities
+   IF.MCO             Interface between CPS and the MCO facility layer entity
+   IF.Mng             Interface between CPS and ITS management entity
+   IF.N&T             Interface between CPS and ITS network & transport layer
+   IF.SEC             Interface between CPS and ITS security entity
+
+
+3.3            Abbreviations
+For the purposes of the present document, the following abbreviations apply:
+
+   API                Application Programming Interface
+   ASN.1              Abstract Syntax Notation One
+   CAM                Cooperative Awareness Message
+   CP                 Collective Perception
+   CPM                Collective Perception Message
+   CPS                Collective Perception Service
+   DCC                Decentralized Congestion Control
+   DDP                Device Data Provider
+   DE                 Data Element
+   DF                 Data Frame
+   FoV                Field of View
+   I2V                Infrastructure to Vehicle
+   ITS                Intelligent Transport Systems
+   ITS-S              Intelligent Transport Systems Station
+   LDM                Local Dynamic Map
+
+
+
+                                                           ETSI
+                                                             9                          ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+    MCI              MCO Control Information
+    MCO              Multi Channel Operations
+    MIB              Management Information Base
+    MTU              Maximum Transmission Unit
+    PCI              Protocol Control Information
+    R-ITS-S          Roadside ITS Station
+    SA               Service Announcement
+    SCH              Service Channel
+    SCO              Single Channel Operations
+    UPER             Unaligned Packed Encoding Rule
+    V2I              Vehicle-to-Infrastructure
+    V2V              Vehicle-to-Vehicle
+    VAM              VRU Awareness Message
+    VoI              Value of Information
+    VRU              Vulnerable Road User
+
+
+
+4             CPS introduction
+Collective Perception Messages (CPMs) are transmitted by ITS-Ss in order to share information about perceived objects
+(such as vehicles, pedestrians, animals and other collision relevant objects) and perception regions (road regions that
+allow receiving ITS-Ss to determine unoccupied regions) in the local environment. This enhances the environmental
+perception of CPS-enabled ITS-Ss by providing information about non-V2X-equipped road users, other collision
+relevant objects, unoccupied regions and also increases the number of information sources for V2X-equipped road
+users. The availability of multiple sources of information associated with an object or an unoccupied region allows
+ITS-Ss to perform data fusion which generally leads to lower uncertainty in both the classification of objects and in
+their properties such as their sizes and their kinematic and attitude states. Even if data manipulated or corrupted at the
+source are received, a sufficient number of independent sources that maintain integrity may allow identification of such
+data.
+
+A CPM contains a set of perceived objects and regions, along with their observed status and attributes. The content may
+vary depending on the type of the road user or object and the detection capabilities of the originating ITS-S. For
+perceived objects, the status information is expected to include at least the detection time, position, and optionally other
+elements of the kinematic and attitude state. To support the CPM interpretation at any receiving ITS-S, a sender can
+also include information about its sensors, such as sensor types and fields of view.
+
+On reception of a CPM, receiving ITS-Ss become aware of the presence, type, and status of a recognized road user,
+object or region that was detected by the transmitting ITS-S. The received information can then be used by the receiving
+ITS-S to support ITS applications that increase safety and improve traffic efficiency thereby generally decreasing travel
+time. For example, by monitoring the status of a detected road user or object, a receiving ITS-S can estimate the
+collision risk with that road user or object and can inform the user via the HMI of the receiving ITS-S or take corrective
+actions automatically. Data distributed by the CPS is clearly useful for a large number of ITS safety and efficiency-
+related applications making the CPS an essential component of any ITS deployment, especially where any form of
+autonomous activity is anticipated.
+
+ETSI TR 103 562 [i.1] provides an analysis of the Collective Perception Service with further information and
+simulation results.
+
+
+
+5             CPS functional specification
+
+5.1           CPS in the ITS architecture
+The CPS is a facilities layer entity in the ITS-S architecture as defined in ETSI TS 103 898 [i.2]. It may interface with
+other entities of the Facilities layer and with ITS applications to collect relevant information for CPM generation and
+for forwarding received CPM content for further processing. Figure 1 depicts the CPS within the ITS-S architecture
+along with the logical interfaces to other layers and entities within the Facilities layer.
+
+
+
+
+                                                           ETSI
+                                                             10                          ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+The entities for the collection of data to generate a CPM may be the Device Data Provider (DDP), the Position and
+Time management (POTI) and the Local Dynamic Map (LDM). For vehicle ITS-Ss, the DDP may be connected to the
+in-vehicle network to provide the vehicle state information. For roadside ITS-Ss and central ITS-S, the DDP may be
+connected to sensors mounted on the roadside infrastructure such as poles or gantries. The POTI entity provides
+estimates of the kinematic state of the ITS-S and time information as specified in ETSI EN 302 890-2 [4]. An LDM as
+outlined in ETSI EN 302 895 [i.3] is a database in an ITS-S, which in addition to on-board sensor data may be updated
+with received CAM and CPM data. ITS applications may retrieve information from the LDM for further processing.
+The CPS may also interface with the Service Announcement (SA) Service [i.11] to indicate an ITS-S's ability to
+generate CPMs and to provide details about the communication technology used.
+
+Figure 1 presents the CPS in the ITS-S architecture as well as its logical interfaces with other entities and layers.
+
+   NOTE:      The CPS may exchange information with additional facilities layer entities for the purpose of generation,
+              transmission, forwarding and reception of CPM. For simplicity reason, these interfaces are not illustrated
+              in Figure 1.
+
+The functionalities of the CPS are defined in clause 5.2 and the interfaces are defined in clause 5.3.
+
+
+
+
+                                    Figure 1: CPS within the ITS-S architecture
+
+   NOTE:      IF.App in Figure 1 can be implemented as IF.CPS as shown in Figure 2.
+
+
+5.2           CPS functional architecture
+For sending and receiving CPMs, the CPS shall provide the following sub-functions:
+
+   •     Encode CPM: This sub-function shall construct the CPM according to the format specified in Annex A. The
+         most recent abstract CP object information, sensor information and perception region information data shall be
+         included in the CPM.
+
+   •     Decode CPM: This sub-function shall decode the received CPM.
+
+   •     CPM transmission management: This sub-function implements the protocol of the originating ITS-S
+         including:
+
+         -     Activation and termination of CPM transmission operation.
+
+         -     Determination of the CPM generation event frequency.
+
+         -     Triggering the generation of the CPM.
+
+   •     CPM reception management: This sub-function implements the protocol in the receiving ITS-S including:
+
+         -     Triggering the decoding of the CPM upon receiving an incoming CPM.
+
+
+
+                                                            ETSI
+                                                            11                          ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+         -     Provisioning of the decoded CPM to the LDM and/or ITS applications of the receiving ITS-S.
+
+         -     Optionally, checking the validity of the information of received CPMs.
+
+   NOTE:      Details for checking the validity of received CPM information is provided in ETSI TR 103 460 [i.10].
+
+Figure 2 shows the functional block diagram of the CPS and interfaces to other facilities and layers (clause 5.3).
+
+
+
+
+                                 Figure 2: Functional block diagram of the CPS
+
+
+5.3           Interfaces of the CPS
+5.3.1         Interface to ITS applications
+An ITS application is an application layer functionality that implements the logic for fulfilling one or more ITS use
+cases.
+
+For the provision of received data, the CPS provides the interface IF.CPS to LDM or ITS application as illustrated in
+Figure 2.
+
+
+5.3.2         Interface to data provisioning facilities
+For the generation of CPMs, the CPS interacts with other Facilities layer entities to obtain the required data. This set of
+other facilities is referred to as data provisioning facilities, e.g. the ITS-S's POTI, DDP or LDM. Data is exchanged
+between the data provisioning facilities and the CP basic service via the interface IF.FAC.
+
+   NOTE:      Specifications of the interface to the data provisioning facilities and the corresponding protocols are out
+              of scope of the present document.
+
+
+5.3.3         Interface to MCO_FAC
+If the ITS-S supports MCO, the CPS shall exchange information with the MCO_FAC via the interface IF.MCO
+specified in ETSI TS 103 141 [7] and depicted in Figure 2. This interface can be used to configure the default MCO
+settings for the generated CPMs and can also be used to configure the MCO parameters on a per message basis.
+
+If the ITS-S supports MCO, the CPS shall provide the CPM embedded in a Facility-layer Service Data Unit (FL-SDU)
+together with protocol control information (PCI) to the MCO_FAC. In addition, it can also provide MCO Control
+Information (MCI) following ETSI TS 103 141 [7] to configure the MCO parameters of the CPM being provided. At
+the receiving ITS-S, the MCO_FAC shall pass the received CPM to the CPS.
+
+The data set that is passed between CPS and the MCO_FAC for the originating and receiving ITS-S is specified in
+Table 1.
+
+
+
+
+                                                           ETSI
+                                                          12                        ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+                        Table 1: Data exchanged between the CPS and the MCO_FAC
+         Category                 Data                   Data requirement                 Mandatory/Conditional
+                                                                                                 /Optional
+  Data passed from the      CPM             {cpm} as specified in Annex A                 Mandatory
+  CPS to the MCO_FAC        PCI             Depending on the protocol stack applied in    Optional
+                                            the networking and transport layer as
+                                            specified in Table 2
+                            MCI             MCO parameters configuration. Needed if       Conditional
+                                            the default MCO parameters have not been
+                                            configured or want to be overwritten for a
+                                            specific CPM
+  Data passed from the      Received        {cpm} as specified in Annex A                 Mandatory
+  MCO_FAC to the CPS        CPM
+
+
+If the GeoNetworking/BTP stack is used and GeoNetworking is used as the network layer protocol, the PCI being
+passed from CPS to the GeoNetworking/BTP stack shall comply with Table 2.
+
+                  Table 2: PCI from CPS to GeoNetworking/BTP at the originating ITS-S
+       Category                 Data                Data requirement                  Mandatory/Conditional
+                                                                                              /Optional
+ Data passed from the    BTP type              BTP header type B             Conditional
+ CPS to                                        ETSI TS 103 836-5-1 [6],      The data shall be passed if the value
+ GeoNetworking/BTP                             (clause 7.2.2)                is not provided by the ITS-S
+                                                                             configuration, e.g. defined in a
+                                                                             Management Information Base (MIB)
+                                                                             or if the value is different from the
+                                                                             default value as set in the MIB.
+                         Destination port      As specified in ETSI          Conditional
+                                               TS 103 836-5-1 [6] (see note) The data shall be passed if the value
+                                                                             is not provided by the ITS-S
+                                                                             configuration, e.g. defined in a
+                                                                             Management Information Base (MIB)
+                                                                             or if the value is different from the
+                                                                             default value as set in the MIB.
+                         Destination port      As specified in ETSI          Conditional
+                         info                  TS 103 836-5-1 [6]            The data shall be passed if the value
+                                                                             is not provided by the ITS-S
+                                                                             configuration, e.g. defined in a
+                                                                             Management Information Base (MIB)
+                                                                             or if the value is different from the
+                                                                             default value as set in the MIB.
+                         GN Packet             GeoNetworking SHB             Conditional
+                         transport type                                      The data shall be passed if the value
+                                                                             is not provided by the ITS-S
+                                                                             configuration, e.g. defined in a
+                                                                             Management Information Base (MIB)
+                                                                             or if the value is different from the
+                                                                             default value as set in the MIB.
+                         GN                    Unspecified, ITS-G5 or        Conditional
+                         Communication         LTE-V2X                       The data shall be passed if the value
+                         profile                                             is not provided by the ITS-S
+                                                                             configuration, e.g. defined in a
+                                                                             Management Information Base (MIB)
+                                                                             or if the value is different from the
+                                                                             default value as set in the MIB.
+                         GN Security profile   SECURED or UNSECURED Conditional
+                                                                             The data shall be passed if the value
+                                                                             is not provided by the ITS-S
+                                                                             configuration, e.g. defined in a
+                                                                             Management Information Base (MIB)
+                                                                             or if the value is different from the
+                                                                             default value as set in the MIB.
+                         GN Traffic Class      As defined in ETSI            Mandatory
+                                               TS 103 836-4-1 [5]
+
+
+
+
+                                                         ETSI
+                                                            13                         ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+        Category                 Data                Data requirement                Mandatory/Conditional
+                                                                                          /Optional
+                         GN Maximum            Shall not exceed 1 000 ms        Mandatory
+                         packet lifetime
+                         Length                Length of the CPM                 Mandatory
+ NOTE:      When a global registration authority for ITS application as specified in ISO EN 17419 [i.5] is operational,
+            the BTP destination port registered with this authority shall be used.
+
+
+
+5.3.4        Interface to the Networking & Transport layer
+If the ITS-S does not support MCO, the CPS exchanges information with the ITS Networking & Transport Layer via
+the interface IF.N&T, as depicted in Figure 2.
+
+At the originating ITS-S, the CPS shall provide the CPM embedded in a Facility-layer Service Data Unit (FL-SDU)
+together with protocol control information (PCI) to the ITS Networking & Transport Layer. At the receiving ITS-S, the
+ITS Networking & Transport Layer passes the received CPM to the CPS, if available.
+
+The data set that shall be passed between CPS and the ITS Networking & Transport Layer for the
+originating and receiving ITS-S is specified in Table 3.
+
+           Table 3: Data passed between the CPS and the ITS Networking & Transport Layer
+          Category                Data                     Data requirement                  Mandatory/Conditional
+                                                                                                    /Optional
+  Data passed from the       CPM             {cpm} as specified in Annex A                   Mandatory
+  CPS to the ITS             PCI             Depending on the protocol stack applied in      Optional
+  Networking & Transport                     the networking and transport layer as
+  Layer                                      specified in Table 2
+  Data passed from the ITS   Received        {cpm} as specified in Annex A                   Mandatory
+  Networking & Transport     CPM
+  Layer to the CPS
+
+
+If the GeoNetworking/BTP stack is used and GeoNetworking is used as the network layer protocol, the PCI being
+passed from CPS to the GeoNetworking/BTP stack shall comply with Table 2.
+
+
+5.3.5        Interface to the IPv6 stack and the combined IPv6/GeoNetworking
+             stack
+The CPS may use the IPv6 stack or the combined IPv6/GeoNetworking stack for CPM dissemination as specified in
+ETSI TS 103 836-3 [i.6].
+
+   NOTE 1: The specifications of the interface between the CPS and the IPv6 stack is out of scope of the present
+           document.
+
+   NOTE 2: If IP-based transport is used to transfer the facility layer CPM between interconnected actors, security
+           constraints as outlined in clause 6.2.1 may not be applicable. In this case trust enforcement among the
+           participating actors, e.g. using mutual authentication, and authenticity of information can be based on
+           other standard IT security methods, such as IPSec, DTLS, TLS or other VPN solutions that provide an
+           end-to-end secure communication path between known actors.
+
+   NOTE 3: Security methods, sharing methods and other transport related information, such as messaging queuing
+           protocols, transport layer protocol, ports to use, etc. can be agreed among interconnected actors.
+
+When the CPM dissemination makes use of the combined IPv6/GeoNetworking stack, the interface between the CPS
+and the combined IPv6/GeoNetworking stack may be identical to the interface between the CPS and IPv6 stack.q
+
+
+5.3.6        Interface to the ITS management entity
+The CPS of an originating ITS-S obtains configuration parameters and other control information from the Management
+Information Base (MIB) located in the management entity via the IF.Mng interface, as depicted in Figure 2.
+
+
+
+
+                                                          ETSI
+                                                           14                          ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+    NOTE 1: A list of primitives exchanged with the management layer are provided in ETSI TS 102 723-5 [i.7].
+
+    NOTE 2: Specifications of IF.Mng and the corresponding protocol are out of scope of the present document.
+
+
+5.3.7         Interface to the security entity
+The CPS may exchange primitives with the Security entity of the ITS-S (see Figure 1) using the IF.SEC interface
+provided by the Security entity, as depicted in Figure 2.
+
+In case the facility layer security is used, for ITS stations that use the trust model according to ETSI TS 102 940 [i.9]
+and ITS certificates according to ETSI TS 103 097 [1] and that are of type [Itss_WithPrivacy] as defined in ETSI
+TS 102 940 [i.9], the CPS shall interact with the ID management functionality of the Security entity to set the actual
+value of the ITS-S ID in the ITS PDU Header of the CPM. When the Security entity is triggering an Authorization
+Ticket change, the CPS shall change the value of the ITS-ID in the component ItsPduHeader.stationId accordingly and
+shall not send CPM messages with the previous ID anymore.
+
+    NOTE 1: Due to priority mechanisms implemented at MCO_FAC or at lower layers, the sending ITS-S may apply
+            reordering of the messages contained in its buffer. Queued messages which are identified with the old
+            ITS-ID are discarded as soon as a message with the new ITS-ID is sent. Implementers should be aware
+            that whether or not messages previously queued prior to an ID change event get transmitted or not is
+            implementation dependent.
+
+    NOTE 2: ITS stations of type [Itss_NoPrivacy] as defined in ETSI TS 102 940 [i.9] and ITS stations that do not use
+            the trust model according to ETSI TS 102 940 [i.9] and ITS certificates according to ETSI TS 103 097 [1]
+            do not need to implement functionality that changes ITS-S IDs (pseudonyms).
+
+In order to avoid similarities between successive CPMs, all detected objects shall be reported as newly detected objects
+in the CPM following a pseudonym change. Additionally, the SensorInformationContainer may be omitted for a certain
+time as described in clause 6.1.2.2.
+
+
+
+6             CPM dissemination
+
+6.1           CPM generation
+6.1.1         CPM generation management
+The functional scheme of the CPM generation management is illustrated in Figure 3. for single channel operation and in
+Figure 4. for multi-channel operation. Its different entities related to the CPM data inclusion management and the CPM
+assembly are specified in clause 6.1.2 and clause 6.1.3, respectively. The CPM Generation Frequency and Content
+Management is specified in Annex D.
+
+
+
+
+                                                          ETSI
+                                                           15                         ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+
+
+                Figure 3: CPM generation management scheme: single channel operation
+
+
+
+
+                 Figure 4: CPM generation management scheme: multi-channel operation
+
+
+6.1.2         CPM data inclusion
+
+6.1.2.1          CPM generation events
+CPMs are generated during periodic CPM generation events. The time elapsed between the triggering of consecutive
+CPM generation events shall be equal to T_GenCpm. T_GenCpm is limited to T_GenCpmMin ≤ T_GenCpm
+≤ T_GenCpmMax. During each generation event, the inclusion of the SensorInformationContainer, PerceivedObject,
+and PerceptionRegion shall be determined as defined in clause 6.1.2.2, clause 6.1.2.3 and clause 6.1.2.3, respectively.
+Based on these inclusion rules, each generation may result in the generation of none, one or a set of CPMs.
+
+
+
+
+                                                          ETSI
+                                                            16                          ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+If the ITS-S supports MCO, T_GenCpm and the number of perceived objects and regions selected for inclusion during a
+generation event shall be managed to satisfy the maximum amount of channel resources resources_limit that can be
+consumed by the CPS provided by MCO_FAC, as specified in ETSI TS 103 141 [7], and following the process
+described in Annex D.
+
+   NOTE:       Depending on its size, data selected for inclusion is assembled into complementary data segments, each
+               representing an independently interpretable CPM, following the assembly process specified in
+               clause 6.1.3.
+
+6.1.2.2           Sensor Information Container Inclusion Management
+A CPM shall include a SensorInformationContainer in the first generated CPM and whenever the time elapsed since the
+last time a CPM included a SensorInformationContainer is equal or greater than T_AddSensorInformation.Perception
+Region Inclusion Management.
+
+A CPM shall include a perception region whenever the CPS detects relevant deviations of the available dynamic
+perception capabilities (perceptionRegionShape, perceptionRegionConfidence, shadowingApplies) with respect to the
+static perception capabilities described in the Sensor Information Container or previously included Perception Region
+Containers.
+
+If two perception regions overlap and involve the same sensor (as described in the sensorIdList of the
+PerceptionRegion), the perception region added later to the PerceptionRegionContainer is referred to as dominating,
+i.e. it defines the perception region confidence and the shadowingApplies value of the intersection between the 2
+regions. Additionally, perceived objects are only referenced in the component perceivedObjectIds in the most
+dominating region at the reference location of the object. The other region is called dominated.
+
+To reduce the load on the communication channel:
+
+   •      the number of PerceptionRegion instances in the Perception Region Container shall be limited to
+          MaxPerceptionRegions;
+
+   •      the amount of data contained in the Perception Region Container shall be limited, in order that the Sensor
+          Information Container and the Perception Region Container may fit into one CPM.
+
+6.1.2.3           Perceived Object Inclusion Management
+A CPM shall include available information about perceived objects inside the perceivedObjectContainer using one
+instance of PerceivedObject per object in accordance with their type. The inclusion management depends on the CPS
+configuration, e.g. as a configuration stored in the MIB and listed in Annex F:
+
+   •      If ObjectInclusionConfig is set to "0", no rules are defined in the present document. The sender decides based
+          on its own rules about the inclusion of perceived objects.
+
+   •      If ObjectInclusionConfig is set to "1", the inclusion rules defined in the present document shall apply.
+
+The perceived object inclusion rules depend on the object type. Two object types are defined based on the object class
+with highest classification confidence:
+
+   •      Type-A objects are objects of class vruSubclass with a VRU profile pedestrian, bicyclistAndLightVruVehicle
+          or animal or class groupSubclass or otherSubclass.
+
+   •      Type-B objects are objects of any class not included in Type-A (i.e. objects of class vehicleSubclass, or
+          vruSubclass with a VRU profile motorcyclist).
+
+   NOTE 1: Both object types are introduced only for the readability of this clause and have no implications outside of
+           the present document
+
+An object whose object perception quality exceeds ObjectPerceptionQualityThreshold shall be selected for
+transmission from the object list as a result of the current CPM generation event if the object complies to any of the
+following conditions (all CPS configuration parameters and their recommended values can be found in Annex F):
+
+   1)     If the object is of Type-A:
+
+          a)   The object has first been detected by the perception system after the last CPM generation event.
+
+
+
+                                                           ETSI
+                                                           17                         ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+         b)   If the object list contains at least one object of Type-A which has not been included in a CPM for a time
+              equal or larger than T_GenCpmMax/2, all objects of Type-A should be included in the currently
+              generated CPM.
+
+   2)    If the object is of Type-B:
+
+         a)   The object has first been detected by the perception system after the last CPM generation event.
+
+         b)   The Euclidean distance between the current estimated position of the reference point of the object and
+              the estimated position of the reference point of this object lastly included in a CPM exceeds
+              minPositionChangeThreshold.
+
+         c)   The difference between the current estimated ground speed of the reference point of the object and the
+              estimated absolute speed of the reference point of this object lastly included in a CPM exceeds
+              minGroundSpeedChangeThreshold.
+
+         d)   The orientation of the object's estimated ground velocity at its reference point has changed by at least
+              minGroundVelocityOrientationChangeThreshold since the last inclusion of the object in a CPM.
+
+         e)   The time elapsed since the last time the object was included in a CPM is equal or larger than
+              T_GenCpmMax.
+
+To reduce the number of generated messages, at each message generation event, objects belonging to Type-B that are to
+be included in a CPM in the next generation event (i.e. after T_GenCpm) may be included in the currently generated
+CPM. For this purpose, objects that are not selected for transmission in the currently generated CPM may be predicted
+to the next CPM generation event (i.e. after T_GenCpm), for example assuming a constant velocity model. Following
+this prediction, all objects that would then need to be included in a CPM in the next generation event may also be
+selected for inclusion in the currently generated CPM by including the latest available kinematic and attitude state. If
+applied, this mechanism may lead to generation events that do not result in the generation of CPMs.
+
+If the ITS-S supports MCO, T_GenCpm and the amount of data generated per channel and generation event shall be
+adjusted by the CPS to satisfy the limits provided by MCO_FAC as defined in ETSI TS 103 141 [7]. To this end,
+perceived objects selected for transmission in the currently generated CPM that have the lowest Value of Information
+(VoI) should be omitted.
+
+   NOTE 2: Annex E describes possible methods to compute the VoI.
+
+
+
+
+                                                          ETSI
+                                                          18                         ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+
+
+   Figure 5: CPM generation management (data selection and assembly) if the ITS-S supports MCO
+
+If the ITS-S supports MCO, when objects are omitted from the currently generated CPM due to low VoI, one or more
+additional CPMs can be generated for transmission on alternative channels. To this aim, the VoI is used to rank the
+objects and select the alternative channel where each of them can be included in a CPM, taking into account the limits
+provided by MCO_FAC. The VoI of an object to be transmitted on a channel shall depend only on data transmitted or
+received on channels of higher or equal priority than the channel where the object is to be transmitted.
+
+
+6.1.3         CPM assembly
+
+6.1.3.1           General
+The size of an ASN.1 UPER encoded CPM shall not exceed MTU_CPM, i.e. the MTU_CPM depends on the MTU of
+the access layer technology (MTU_AL) over which the CPM is transported. If multiple channels are available and,
+e.g. the ITS-S supports MCO, these restrictions shall apply to each channel individually.
+
+MTU_CPM shall be less than or equal to MTU_AL reduced by the header size of the facilities layer protocol
+(HD_CPM) and the header size of the networking and transport layer protocol (HD_NT) with MTU_CPM ≤ MTU_AL
+- HD_CPM - HD_NT.
+
+CPM assembly shall be performed taking these size constraints into account by following one of the following
+configuration-specific assembly mechanisms:
+
+   •      If the configuration parameter MessageAssemblyConfig is set to "0", the CPM assembly shall be performed
+          based on an object utility function following clause 6.1.3.2.
+
+   •      If the configuration parameter MessageAssemblyConfig is set to "1", the CPM assembly shall be performed
+          based on the perception regions selected for inclusion following clause 6.1.3.3.
+
+All assembled CPMs shall indicate the same referenceTime.
+
+
+
+
+                                                         ETSI
+                                                                    19                                 ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+   NOTE:       CPMs should be transmitted in the same order in which they have been generated. This is to ensure that
+               CPMs containing information of higher priority are not deferred in favour of CPMs containing
+               information of lower priority by lower layer mechanisms.
+
+6.1.3.2           Object utility function
+If the SensorInformationContainer or the PerceptionRegions need to be transmitted, they shall be added to the first
+CPM generated for transmission on the preferred CPM channel.
+
+Perceived objects selected for transmission shall be included in CPMs in a descending priority order following a per-
+object utility function defined as the sum of the following parameters:
+
+   •      Object perception quality:
+
+          The priority contribution of the object perception quality shall be determined as:
+                                  0                          if                   is unknown or unavailable
+          p୯୳ୟ୪ = ൜
+                                  /15                                            else
+
+
+
+          where the computation of the parameter                           is defined in clause 7.1.8.6.
+
+   •      Object position change:
+
+          The priority contribution of the object position change shall be determined as follows:
+                                                         0                     ∆    ≤ ∆   ௠௜௡
+                                                ⎧   ∆   − ∆   ௠௜௡
+                                    p   ୮୭ୱ =                            ∆   ௠௜௡ < ∆      < ∆   ௠௔௫
+                                                ⎨∆ ௠௔௫ − ∆ ௠௜௡
+                                                ⎩      1                      ∆    ௠௔௫ ≤ ∆
+
+          where ∆ corresponds to the Euclidean distance between the current estimated position of the reference point
+          of the object and the estimated position of the reference point of this object lastly included in a CPM by the
+          disseminating ITS-S. The parameters     ℎ   ℎℎ  ∆ ௠௜௡ and
+             ℎ   ℎℎ  ∆ ௠௔௫ are defined in Annex F.
+
+   •      Object speed change:
+
+          The priority contribution of the object speed change shall be determined as follows:
+                                                          0                    ∆    ≤ ∆௠௜௡
+                                                ⎧
+                                                − ∆௠௜௡
+                                                    ∆
+                                   pୱ୮ୣୣୢ =                              ∆   ௠௜௡ < ∆ < ∆௠௔௫
+                                            ⎨∆௠௔௫ − ∆௠௜௡
+                                            ⎩      1                           ∆   ௠௔௫ ≤ ∆
+          where ∆ corresponds to the difference between the current estimated ground speed of the reference point of
+          the object and the estimated absolute speed of the reference point of this object lastly included in a CPM by the
+          disseminating ITS-S. The parameters             ℎ   ℎℎ  ∆௠௜௡ and
+                  ℎ   ℎℎ  ∆௠௔௫ are defined in Annex F.
+
+   •      Object orientation change:
+
+          The priority contribution of the object orientation change shall be determined as follows:
+
+                                                          0                    ∆
+                                                                                          ௭
+                                                                                   ௭ ≤ ∆௠௜௡
+                                                ⎧       ௭
+                                              ∆ ௭ − ∆
+                                                       ௠௜௡                    ௭ < ∆ < ∆ ௭
+                                  p୭୰୧ୣ୬୲ =
+                                                ௭         ௭              ∆   ௠௜௡   ௭    ௠௔௫
+                                            ⎨∆௠௔௫  − ∆
+                                                          ௠௜௡
+                                                ⎩         1                    ∆
+                                                                                    ௭
+                                                                                   ௠௔௫ ≤ ∆௭
+
+
+
+          where ∆௭ corresponds to the difference between the orientation of the vector of the current estimated ground
+          velocity of the reference point of the object and the estimated orientation of the vector of the ground velocity
+          of the reference point of this object lastly included in a CPM by the disseminating ITS-S. The parameters
+                         ℎ   ℎℎ  ∆௠௜௡            ௭ and
+                                                             ௭
+                        ℎ   ℎℎ  ∆௠௔௫ are defined in Annex F.
+
+
+
+
+                                                                ETSI
+                                                             20                           ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+   •      Object last inclusion time:
+
+          The priority contribution of the object last inclusion time shall be determined as follows:
+                                                      0                 ∆   ! ≤ ∆!௠௜௡
+                                             ⎧   ∆! − ∆!௠௜௡
+                                    p୲୧୫ୣ =                       ∆   !௠௜௡ < ∆! < ∆!௠௔௫
+                                            ⎨ ௠௔௫ − ∆!௠௜௡
+                                              ∆ !
+                                            ⎩        1                  ∆   !௠௔௫ ≤ ∆!
+          where ∆! corresponds to the time elapsed since the last time the object was included in a CPM by the
+          disseminating ITS-S. The parameters  "#      ℎℎ  ∆!௠௜௡ and
+          "#      ℎℎ  ∆!௠௔௫ are defined in Annex F.
+A CPM should be populated with selected objects as long as the resulting ASN.1 UPER encoded message size of the
+CPM to be assembled does not exceed MTU_CPM. CPMs are assembled in this fashion until all perceived objects
+selected for transmission are included in a CPM. Each CPM is made available to the corresponding entities of the
+protocol stack for transmission.
+
+   NOTE:       All generated CPMs can be made available over the interface to the Networking and Transport layer or, if
+               the ITS-S supports MCO, over the MCO_FAC interface.
+
+6.1.3.3           Perception region based
+In case the SensorInformationContainer also needs to be transmitted, it shall be added to the first CPM transmitted on
+the preferred CPM channel. In case only one channel is available the preferred CPM channel corresponds to this
+channel.
+
+Every set of overlapping perception region and the objects selected for inclusion contained within these regions shall be
+included into the same CPM. If the MTU_CPM does not allow to transmit this set of information in the same CPM, the
+regions shall be divided into smaller regions, so that each separate region and the corresponding perceived objects
+contained within them fit into one CPM.
+
+As long as the resulting ASN.1 UPER encoded CPM to be generated does not exceed MTU_CPM a CPM should be
+populated in arbitrary order with:
+
+   •      perception regions and the corresponding perceived objects selected for transmission within these regions in
+          the same CPM;
+
+   •      perceived objects that are not contained in any of the transmitted perception regions. These perceived objects
+          shall be added in the order as defined in clause 6.1.3.2, and may be spread over several assembled CPMs.
+
+CPMs are generated in this fashion until all perception regions and objects selected for transmission are included in a
+CPM. Each CPM is made available to the corresponding entities of the protocol stack for transmission.
+
+   NOTE:       All generated CPMs can be made available over the interface to the Networking and Transport layer or, if
+               the ITS-S supports MCO, over the MCO_FAC interface.
+
+
+6.2            CPM dissemination constraints
+6.2.1          Security constraints
+
+6.2.1.1           Introduction
+Clause 6.2.1 is applicable to ITS stations that use the trust model according to ETSI TS 102 940 [i.9] and ITS
+certificates according to ETSI TS 103 097 [1].
+
+   NOTE:       For other scenarios, the trust model and the mechanisms for trust enforcement for inter-connected ITS
+               stations can be agreed among participating actors.
+
+The security mechanisms for ITS consider the authentication of messages transferred between ITS-Ss with certificates.
+A certificate indicates its holder's permissions to send a certain set of messages and optional privileges for specific
+data elements within these messages. The format for the certificates is specified in ETSI TS 103 097 [1].
+
+
+
+                                                           ETSI
+                                                             21                        ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+Within the certificate, the permissions and privileges are indicated by an identifier (the ITS-AID) and optional attributes
+of a given AID, allowing for definition of different levels of permissions/ rights (the SSP).
+
+The ITS-Application Identifier (ITS-AID) as given in ETSI TR 102 965 [i.8] indicates the overall type of permissions
+being granted. For example, there is an ITS-AID indicating that the sender is entitled to send CPMs.
+The Service Specific Permissions (SSP) is a field that indicates specific sets of permissions within the overall
+permissions indicated by the ITS-AID: for example, there may be an SSP value associated with the ITS-AID for CPM
+that indicates that the sender is entitled to send CPMs for a specific role.
+
+The following security objectives and required security services are identified:
+
+      •   For establishing CPM secure communications, the Message Signature service as specified in ETSI
+          TS 103 097 [1] shall be supported by ITS-S sending/receiving CPM.
+
+      •   A CPM shall be accepted by a receiving ITS-S if it is consistent with the ITS-AID and SSP of the signing
+          certificate (authorization ticket).
+
+      •   Signed message shall use the ITS-AID as specified in ETSI TR 102 965 [i.8].
+
+6.2.1.2           Service Specific Permissions (SSP)
+CPMs shall be signed using private keys associated to Authorization Tickets that contain SSPs of type BitmapSsp as
+specified in ETSI TS 103 097 [1].
+
+The SSP for the CPM shall be of CHOICE BitmapSsp. It is defined by a variable number of octets and shall correspond
+to the octet scheme illustrated in Figure 6. This octet scheme allows the SSP format to accommodate current and future
+versions of the present document.
+                                               0
+                                               0   1   2    3 4 5        6   7
+                                                           Octet 0
+
+                             Figure 6: Format for SSP Octet Scheme (BitmapSsp)
+
+The SSP has a maximum length as specified in ETSI TS 103 097 [1]. The first octet shall reflect the version of the SSP
+(see Table 4). In the current version of the present document, the SSP field contains only the SSP version byte.
+
+                                       Table 4: Octet Scheme for CPM SSPs
+
+      Octet #                     Description                                              Value
+  0             SSP version control                                  1
+
+
+At reception of a message, the ITS-S shall check whether the message content is consistent with the ITS-AID and SSP
+contained in the Authorization Ticket in its signature. If the consistency check fails, the message shall be discarded.
+
+
+6.2.2           General priority constraints
+If the GeoNetworking/BTP stack is used, the priority constraint shall be as given by the Traffic Class as specified in
+ETSI TS 103 836-4-1 [5].
+
+
+
+7               CPM Specification
+
+7.1             CPM structure
+7.1.1           General structure of a CPM PDU
+A CPM is a PDU composed of one common ITS PDU header and multiple containers, which together constitute the
+CPM payload.
+
+
+
+                                                            ETSI
+                                                              22                      ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+The general structure of a CPM is illustrated in Figure 7.
+
+
+
+
+                                       Figure 7: General Structure of a CPM
+
+The component header is a common header for facility layer PDUs.
+
+The component payload represents the CPM payload and consists of two components: the component
+managementContainer containing the Management Container and the component cpmContainers containing the other
+CPM containers wrapped in a structure called WrappedCpmContainer that includes the type identifier of the container
+and the container data itself.
+
+The Management Container provides basic information which is necessary to process the other information in the CPM.
+To allow for simplified future extensibility of the CPM, 1 to 8 further CPM containers of type
+OriginatingVehicleContainer (clause 7.1.4), OriginatingRsuContainer (clause 7.1.5), SensorInformationContainer
+(clause 7.1.6), PerceptionRegionContainer (clause 7.1.7), or PerceivedObjectContainer (clause 7.1.8) may be included
+in the component cpmContainers (wrapped in WrappedCpmContainer, as shown in Figure 7) as follows:
+
+In case of a CPM generated by a vehicle ITS-S, one Originating Vehicle Container of type
+OriginatingVehicleContainer shall be present and contain information regarding the orientation of the vehicle and
+possible trailers attached to it.
+
+In case of a CPM generated by a roadside ITS-S, one Originating RSU Container of type OriginatingRsuContainer
+shall be present.
+
+A CPM shall contain only one container describing the disseminating ITS-S: in the present document either the
+Originating Vehicle Container or the Originating RSU Container. In future versions of the present document other
+additional originating containers may be specified.
+
+One Sensor Information Container of type SensorInformationContainer may be present to provide information about
+the sensory capabilities that are available to an ITS-S. The Sensor Information Container shall be included as defined in
+clause 6.1.2.2.
+
+One Perception Region Container of type PerceptionRegionContainer may be present to describe deviations from the
+sensing capabilities described in the Sensor Information Container. Perception regions shall be selected for inclusion in
+a Perception Region Container as defined in clause 6.1.2.3.
+
+
+
+                                                             ETSI
+                                                            23                         ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+One Perceived Object Container of type PerceivedObjectContainer shall be present to provide information about
+objects that have been perceived through the sensory capabilities. Perceived objects shall be selected for inclusion in a
+Perceived Object Container as defined in clause 6.1.2.4.
+
+Each container is composed of a sequence of components, their component type being either a Data Element (DE) or a
+Data Frame (DF). A component is either optional or mandatory in the CPM Format. If not specified as optional in the
+ASN.1 specification of the present document, a component is considered as mandatory.
+
+
+7.1.2         ITS PDU Header
+The ITS PDU Header is a common header that includes the information of the protocol version, the message type and
+the ITS-S ID of the originating ITS-S.
+
+The ITS PDU header shall be included as specified in ETSI TS 102 894-2 [3]. Detailed data presentation rules of the
+ITS PDU header in the context of a CPM shall be as specified in Annex A.
+
+
+7.1.3         Management Container
+The management container shall include the components referenceTime and referencePosition.
+
+For vehicle ITS-Ss, the reference position shall refer to the ground position of the centre of the front of the bounding
+box of the vehicle. The vehicle reference position is further detailed in ETSI EN 302 890-2 [4]. This position is used to
+determine the offset to other data points.
+
+In case of roadside ITS-S disseminating the CPM, the reference position shall be chosen by the disseminating ITS-S.
+
+The management container shall include information about the data segment contained in the CPM as part of the
+component messageSegmentInfo, if more than one CPM is assembled from the data selected for transmission, as
+specified in clause 6.1.3.
+
+The management container may further include information about the planned or expected message rate as part of the
+component messageRateRange.
+
+
+7.1.4         Originating Vehicle Container
+The Originating Vehicle Container shall include the component orientationAngle. The vehicle orientation angle
+represents the actual orientation of the vehicle opposed to the vehicle heading which references the orientation of the
+provided velocity vector magnitude only, as depicted in Figure 8 and as defined in ETSI EN 302 890-2 [4]. Such
+information is required to interpret the data contained in the Sensor Information Container.
+
+
+
+
+                                        Figure 8: Vehicle Orientation Angle
+
+The Originating Vehicle Container may include the components pitchAngle and rollAngle. If pitchAngle and rollAngle
+are not included, they are assumed to be zero.
+
+
+
+
+                                                           ETSI
+                                                           24                         ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+The Originating Vehicle Container shall include the component trailerData if some of the sensors that provide data to
+the CPS are mounted on a trailer.
+
+The component trailerDataSet shall include an instance of TrailerData for each trailer up to the last trailer on which
+sensors are mounted that provide data to the CPS. Figure 9 depicts several possible layouts.
+
+
+
+
+            Figure 9: Describing the setup of trailers attached to a towing vehicle in the CPM
+
+Each TrailerData instance shall include in the component refPointId a new reference point ID, incrementing from 1.
+The reference point ID 0 shall refer to the reference point of the towing vehicle. More configurations for providing
+reference points for ITS-S can be found in ETSI EN 302 890-2 [4].
+
+Each TrailerData instance shall include the component hitchPointOffset and shall include the component hitchAngle.
+
+TrailerData instance shall not include the components frontOverhang, rearOverhang, trailerWidth.
+
+
+7.1.5         Originating RSU Container
+The Originating RSU Container may contain the component mapReference if a corresponding MAPEM [i.13] is being
+transmitted to ITS-S that receive the CPM, otherwise the component mapReference shall be omitted.
+
+If mapReference is used, either the IntersectionReferenceID or the RoadSegmentID component of the component
+mapReference may be used to refer to the road infrastructure information provided by the road lane topology service.
+
+
+7.1.6         Sensor Information Container
+The Sensor Information Container shall list information about individual sensors or sensor systems which originated the
+perceived object information using the type SensorInformation.
+
+SensorInformation shall include the component sensorId. This identifier is in turn utilized in the
+PerceivedObjectContainer to connect information about an object to the sensor that provided that information. After a
+pseudonym change the current sensorId of all SensorInformation may be replaced by a new sensorId randomly selected
+among identifiers which were not used for UnusedSensorIdRetentionPeriod.
+
+
+
+
+                                                          ETSI
+                                                           25                         ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+SensorInformation shall include the component sensorType.
+
+SensorInformation shall include the component perceptionRegionShape except for sensors with type value: undefined
+(0), localAggregation (12), itssAggregation (13). For these values of sensorType, perceptionRegionShape may be
+included.
+
+The sensor perception region shape is specified as a geographical area or volume with respect to the reference position.
+For vehicle sensors, it shall be expressed in the body-fixed coordinate system of the vehicle. Figure 10 illustrates two
+possible perception regions of vehicle sensors.
+
+   NOTE:      This definition of the vehicle sensor perception region coordinate system overwrites the definition of
+              ETSI TS 102 894-2 [3], which defines the components of the DF Shape in an East-North-Up coordinate
+              system.
+
+
+
+
+                        Figure 10: Exemplary perception regions of vehicle sensors
+
+For infrastructure sensors, the perception region is expressed in the East-North-Up coordinate system, as shown in
+Figure 11.
+
+
+
+
+                                                          ETSI
+                                                          26                         ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+
+
+                    Figure 11: Exemplary perception regions of infrastructure sensors
+
+SensorInformation shall include the component shadowingApplies to indicate the application of the shadowing
+mechanism within the given perceptionRegionShape. If the perceptionRegionConfidence provided in
+SensorInformation is not valid for shadowed regions in the given perceptionRegionShape, shadowingApplies shall be
+set to "True" for this SensorInformation. If the perceptionRegionConfidence provided in SensorInformation is also valid
+for shadowed regions in the given perceptionRegionShape, shadowingApplies shall be set to "False" for this
+SensorInformation.
+
+The component perceptionRegionConfidence describes the sender's confidence level for correctly detecting objects and
+unoccupied subregions present in a perception region. If present, the component perceptionRegionConfidence shall
+indicate the corresponding confidence as specified in clause 7.1.7.
+
+The received geometric extension of a PerceivedObject can be used by a CPM receiver to compute the resulting
+shadowed regions for each object and sensor. For this purpose, a simple ray tracing approach can be utilized. A ray
+thereby connects from the origin of a particular sensor (indicated by the component shapeReferencePoint of
+perceptionRegionShape) to the outermost corner-points of the received object geometry and extends to the perception
+range of a particular sensor. The region behind the object from the perspective of the sensor mounting point is
+considered as shadowed, as visualized in Figure 12. The handling of shadowed regions can be evaluated as described by
+the component shadowingApplies to determine, if the specified perceptionRegionConfidence also applies to the
+shadowed region or if there may be occluded and undetected objects. A description in three dimensions may be applied,
+as depicted in Figure 12. In case an object is detected by a sensor with a certain height above ground (e.g. a signage
+gantry), the same ray tracing approach should be employed for a three-dimensional representation.
+
+   NOTE:      Not all objects known to a transmitter are reported in every CPM. The receiver therefore has to ensure
+              that suitable tracking and prediction mechanisms for previously transmitted objects are employed to
+              update the shadowed region accordingly.
+
+
+
+
+                                                         ETSI
+                                                           27                          ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+
+
+    Figure 12: Three-dimensional representation of the derived shadowed and unoccupied regions
+
+The perception capabilities specified in the SensorInformation (i.e. perceptionRegionShape,
+perceptionRegionConfidence, shadowingApplies) can be detailed or overruled using PerceptionRegion as defined in
+clause 7.1.7.
+
+
+7.1.7         Perception Region Container
+A Perception Region Container shall list information about perception regions using the type PerceptionRegion.
+
+PerceptionRegion shall include the components measurementDeltaTime, perceptionRegionConfidence and
+perceptionRegionShape for a specific perception region.
+
+A PerceptionRegion can be used to indicate a perceptionRegionConfidence different from the
+perceptionRegionConfidence given in the SensorInformation, or to mark regions where the shadowing model (detailed
+in clause 7.1.6) does not apply for a particular object (e.g. in case of a radar sensor measuring two vehicles driving
+behind each other).
+
+The component perceptionRegionShape shall be specified as a geographical area or volume with respect to the
+reference position (in case of a vehicle ITS-S disseminating the CPM) or a reference point (in case of a roadside ITS-S
+disseminating the CPM) in the East-North-Up coordinate system.
+
+Additionally, a PerceptionRegion can be used to divide the perception region of a sensor into smaller parts, e.g. in case
+more than one CPM needs to be assembled (clause 6.1.3).
+
+
+
+
+       Figure 13: Perception Region to indicate different levels of perception region confidence
+
+
+
+
+                                                          ETSI
+                                                              28                          ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+Figure 13 depicts two possible applications of the PerceptionRegion: The homogeneous perception region confidence
+provided in the SensorInformation of level l1 does not apply to the entire perception region of the sensor. Instead, part of
+the computed shadowed region behind one of the objects has a different perception region confidence of level l2 (e.g. as
+a result of sensor fusion processes). This region is described by providing a perceptionRegionShape as part of the
+PerceptionRegion 1. Additionally, the sensor system can provide a perception region confidence indication for a
+confined region within its sensor's perceptionRegionShape. A different perception region confidence level l3 applies to
+the depicted grey region, expressed as an additional PerceptionRegion.
+
+PerceptionRegion shall include the component shadowingApplies to indicate the application of the shadowing
+mechanism within the given perceptionRegionShape. The shadowingApplies applies for the PerceptionRegion as stated
+in clause 7.1.6 for the SensorInformation.
+
+PerceptionRegion may include the component sensorIdList. If present, sensorIdList shall list the values of the
+component sensorId of the sensors described in the SensorInformation which are involved in perceiving the region.
+
+PerceptionRegion may include the component numberOfPerceivedObjects. If present, numberOfPerceivedObjects shall
+contain the number of all currently perceived objects in the PerceptionRegion.
+
+PerceptionRegion may include the component perceivedObjectIds. If present, perceivedObjectIds shall list the values of
+the component objectId of all perceived objects that are contained in PerceptionRegionShape that are not dominated by
+any other PerceptionRegion. Thus, each objectId is contained in at most one PerceptionRegion, while the value of
+numberOfPerceivedObjects may be higher than the number of elements in perceivedObjectIds.
+
+
+7.1.8         Perceived Object Container
+
+7.1.8.1           General
+The Perceived Object Container shall include the component numberOfPerceivedObjects, describing the total number
+of perceived objects contained in the LDM at the time of generating the CPM. Due to the message generation rules as
+specified in clause 6.1.1 and the associated object inclusion scheme, the number of included objects does not have to
+equal the value of numberOfPerceivedObjects.
+
+   NOTE:      In this context a VRU group or cluster generated as specified in clause 7.1.8.7 increases
+              numberOfPerceivedObjects by 1 and not by the number of objects it contains, i.e. by the
+              clusterCardinalitySize.
+
+The Perceived Object Container shall include the component perceivedObjects to provide information about detected
+objects selected for transmission as defined in clause 6.1.2.3, using the type PerceivedObject constrained to have the
+component objectId always present.
+
+In case of a vehicle ITS-S disseminating the CPM, an East-North-Up coordinate system centred around the vehicle
+reference position $%ோ௘௙ , &ோ௘௙ ' shall be used for the description of the perceived object's state variables, as depicted in
+Figure 14.
+
+
+
+
+                                                            ETSI
+                                                            29                          ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+
+
+         Figure 14: Coordinate system for detected objects given a disseminating vehicle ITS-S
+
+In case of a roadside ITS-S disseminating the CPM, an East-North-Up coordinate system centred around a reference
+point shall be used for the description of the perceived object's state variables.
+
+For state variables in polar coordinates, angles shall be expressed with positive values turning around the z-axis using
+the right-hand rule, starting from the x-axis.
+
+The Perceived Object Container shall be encoded as specified in Annex A. More specifically, the rules following
+subclauses shall apply.
+
+7.1.8.2           Object ID and time management
+An objectID shall be assigned to each detected object. This ID is taken from a range of allowed numbers and is
+maintained per object, as long as an object is perceived and new sensor measurements are assigned to the object and
+there is no pseudonym change. The range of allowed objectIDs is between 0 and 65535. A new object shall be
+randomly assigned an available ID within the allowed range. IDs not used for UnusedObjectIdRetentionPeriod become
+available again. After a pseudonym change, the current object identifiers of all objects shall be replaced by new object
+identifiers randomly selected among identifiers which were not used for UnusedObjectIdRetentionPeriod.
+
+A measurement delta time shall be provided for each object as the time difference for the provided measurement
+information with respect to the reference time of type TimestampIts stated in the Management Container. Figure 15
+illustrates the measurementDeltaTime which describes the time associated to the given object state space of an object
+and is relative to the referenceTime encoded in the message. The measurement delta time shall therefore include any
+processing time of a sensor or data fusion system. In case the fused object state information is transmitted, the time of
+measurement shall reference the point in time to which the state space has been predicted.
+
+
+
+
+                      Figure 15: Transmitter-side for computing Time of Measurement
+
+
+
+                                                           ETSI
+                                                                       30                                  ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+7.1.8.3           Kinematic and attitude state description
+The full kinematic and attitude state of an object can be represented in a 13-dimensional kinematic and attitude space.
+The corresponding state vector can be written as:
+                                                                                                                       ்
+                    stateObj = $ ௫ , ௬ , ௭ , ௠ , ௗ , ௫ , ௬ , ௭ , ௠ , ௗ , ௫ , ௬ , ௭ , ௭ , ௬ , ௫ , (௭ , '
+
+with ௜ , ௜ , ௜ representing the position, velocity and acceleration components and ௜ , (௜ representing Euler angles and
+angular speed components. Note that, ௠ , ௗ (polar planar speed magnitude and direction) and ௫ , ௬ (cartesian planar
+speed) are mutually exclusive. The same applies to acceleration. Hence, the kinematic state is at most 13 dimensional.
+
+PerceivedObject shall include at least the position components, i.e. the coordinates of the object using the component
+position.
+
+PerceivedObject may include the component velocity appropriately configured to represent the polar or cartesian
+components of the velocity relative to ground, optionally including the z component.
+
+PerceivedObject may include the component acceleration appropriately configured to represent the polar or cartesian
+components of the acceleration relative to ground, optionally including the z component.
+
+PerceivedObject may include the component angles appropriately configured to represent at least the z-angle and
+optionally the y-angle and x-angle of the bounding box of the perceived object.
+
+PerceivedObject may include the component CartesianAngularVelocityComponent representing the angular velocity
+around the z-axis.
+
+For every component provided in the kinematic state and attitude space of an object in the CPM the corresponding
+confidence value shall be provided to a confidence level of 95 %.
+
+PerceivedObject may include up to 4 LowerTriangularPositiveSemidefiniteMatrix as part of the component
+lowerTriangularCorrelationMatrices. Each LowerTriangularPositiveSemidefiniteMatrix contains
+componentsIncludedIntheMatrix describing the components of the kinematic and attitude state being part of this
+correlation matrix.
+
+Correlations are represented in a vectorised form for each column of the corresponding lower-triangular positive
+semidefinite correlation matrix as described in Annex C. The rows and columns are ordered as stated in
+componentsIncludedIntheMatrix.
+
+The correlation is mathematically symmetric i.e. corr(x,y)=corr(y,x) for any two given random variables. Therefore,
+every component of the kinematic and attitude state shall only provide the correlation information with the remaining,
+subsequent components.
+
+If n components are indicated in componentsIncludedIntheMatrix, then the matrix has k=n-1 columns and each column i
+(with i=1..k) has k-i+1 entries.
+
+7.1.8.4           Object dimensions and age
+One or more of the components objectDimensionX, objectDimensionY, objectDimensionZ may be included for each
+object, indicating the size of the bounding box of the perceived object in each direction.
+
+The component objectAge may be included for each perceived object. If present, the objectAge shall reflect the time the
+object is already known to the transmitting ITS-S at the time of message generation.
+
+7.1.8.5           Link to Sensor Information Container
+The component sensorIdList may be included. If present, it shall contain a list of SensorInformation.sensorId values
+from the Sensor Information Container, corresponding to sensors that provided the measurement data.
+
+7.1.8.6           Object perception quality
+A scalar-value indication about the overall information quality on a perceived object may be provided in the component
+objectPerceptionQuality.
+
+
+
+
+                                                                      ETSI
+                                                              31                              ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+The object characteristics contributing to the perception quality of an object first detected at time t=0, where t represents
+discrete time instants, are defined based on [i.4]:
+
+   1)     Object age 𝑜𝑎 in milliseconds.
+
+   2)     Sensor or system specific detection confidence at time 𝑡: 𝑐𝑡 (between 0 for no detection confidence and 1 for
+          high detection confidence).
+
+   3)     Detection success, describing the assessment whether a given measurement has successfully perceived the
+          object (binary assessment) at time 𝑡: 𝑑𝑡 (0 if not detected or 1 if detected).
+
+The objectAge is provided in the CPM, whereas the detection confidence and the detection success indication are
+system specific assessments of the ITS-S's object detection system.
+
+The objectPerceptionQuality at a discrete time instant t, shall be determined according to the following process:
+
+   1)     Compute the exponential moving average for the system specific detection confidence 𝑐𝑡 with factor 𝛼, 0 ≤
+          𝛼≤1
+
+          a)     If 𝑡 == 0: 𝐸𝑀𝐴0 = 𝑐0
+
+          b)     If 𝑡 > 0: 𝐸𝑀𝐴𝑡 = 𝛼 ∗ 𝑐𝑡 + (1 − 𝛼) ∗ 𝐸𝑀𝐴𝑡−1
+
+   2)     Compute the rating 𝑟𝑐 = 𝑓𝑙𝑜𝑜𝑟(𝐸𝑀𝐴𝑡 ∗ 15)
+
+   3)     Repeat steps 1) and 2) for the detection success 𝑑𝑡 to obtain rating 𝑟𝑑
+
+   4)     Compute the object age rating 𝑟𝑜𝑎 = min {⌊𝑜𝑎 ⁄100⌋, 15}
+
+   5)     Compute object perception quality as the weighted average of 𝑟𝑜𝑎 , 𝑟𝑐 , 𝑟𝑑 :
+                                                    𝑤 ∗𝑟𝑑 +𝑤𝑐 ∗𝑟𝑐 +𝑤𝑜𝑎 ∗𝑟𝑜𝑎
+               𝑜𝑏𝑗𝑒𝑐𝑡𝑃𝑒𝑟𝑐𝑒𝑝𝑡𝑖𝑜𝑛𝑄𝑢𝑎𝑙𝑖𝑡𝑦 = 𝑓𝑙𝑜𝑜𝑟( 𝑑                             ) with weights 𝑤𝑑 , 𝑤𝑐 and 𝑤𝑜𝑎 .
+                                                         𝑤𝑑 +𝑤𝑐 +𝑤𝑜𝑎
+
+
+
+7.1.8.7            Object classification
+The component classification may be included for a perceived object to describe the class and associated subclass of a
+detected object. Several object classes and subclasses associated with a classification confidence level may be reported
+for the same object, if the disseminating ITS-S is not fully confident on the object class and associated subclass.
+
+   NOTE:        A detected object may for example be classified using "vehicleSubClass" with the associated subclass
+                "passengerCar" with a certain classification confidence level and "vehicleSubClass" with the associated
+                subclass "lightTruck" with another classification confidence level.
+
+The object class "groupSubClass" shall be used to report a VRU group or cluster.
+
+A VRU group contains a set of VRUs perceived by the ITS-station generating the CPM. Reporting of group of VRUs as
+a single object aims at reducing the size of the CPM.
+
+A VRU cluster contains a set of VRUs reported in a VRU Awareness Message (VAM) received by the ITS station
+generating the CPM.
+
+VRU clustering operations are part of the VRU basic service specified in ETSI TS 103 300-3 [i.12] and are intended to
+optimize the resource usage in the ITS-S by reducing the number of individual messages.
+
+In a CPM, a VRU group or cluster is characterized by parameters defining the size of the group in terms of number of
+objects (clusterCardinalitySize) and optionally the type of the group (clusterProfiles) to identify all the VRU profile
+types that are believed to be in the VRU group or cluster.
+
+If the group is associated to a VRU cluster as indicated in a received VAM, the component clusterId shall indicate the
+identifier of the associated VRU cluster. Otherwise, no clusterId shall be indicated.
+
+A VRU cluster or a VRU group can be updated by adding information (shape, cardinality, VRU profile) perceived by
+the ITS-S generating the CPM. Conditions for clustering operations are specified in ETSI TS 103 300-3 [i.12].
+
+
+
+
+                                                            ETSI
+                                                        32                          ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+7.1.8.8          Link to MAPEM
+The component mapPosition may be included for a perceived object only if the Originating RSU Container is present in
+the CPM. If mapPosition is present, the component MapPosition.mapReference shall be absent and the component
+laneId or connectionId shall refer to the MAPEM referenced in the Originating RSU Container.
+
+
+7.2          CPM format specification
+The CPM format shall be as specified in ASN.1 in Annex A of the present document.
+
+DEs and DFs that are not defined in the present document shall be imported from the common data dictionary ETSI
+TS 102 894-2 [3] as specified in Annex A.
+
+Detailed descriptions of all components of CPM are in Annex B of the present document.
+
+Unaligned Packed Encoding Rules (UPER) as defined in Recommendation ITU-T X.691 [2] shall be used for CPM
+encoding and decoding.
+
+
+
+
+                                                       ETSI
+                                                           33                          ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+
+Annex A (normative):
+ASN.1 modules
+This clause provides the normative ASN.1 modules containing the syntactical definitions of the CPM PDU, its
+containers, and the data frames, and data elements defined in the present document. The semantical specification of the
+CPM components, its containers, the data frames, and data elements is contained in the same module, in the form of
+ASN.1 comments. For readability, the same semantical specification is presented in a different format in Annex B.
+
+The CPM-PDU-Descriptions module is identified by the Object Identifier {itu-t (0) identified-organization (4) etsi (0)
+itsDomain (5) wg1 (1) ts (103324) cpm (1) major-version-1 (1) minor-version-1(1)}. The module can be downloaded as
+a file as indicated in Table A.1. The associated SHA-256 cryptographic hash digest of the referenced file offers a means
+to verify the integrity of that file.
+
+                        Table A.1: CPM-PDU-Descriptions ASN.1 module information
+   Module name        CPM-PDU-Descriptions
+      OID             {itu-t (0) identified-organization (4) etsi (0) itsDomain (5) wg1 (1) ts (103324) cpm (1) major-
+                      version-1 (1) minor-version-1(1)}
+      Link            https://forge.etsi.org/rep/ITS/asn1/cpm_ts103324/-/raw/v2.1.1/asn/CPM-PDU-Descriptions.asn
+  SHA-256 hash        90c6b015bdc99917dd36bc8e7d1ede9355374f5d3a1c12e14bb4d560340fdfa2
+
+
+The CPM-OriginatingStationContainers module is identified by the Object Identifier {itu-t (0) identified-organization
+(4) etsi (0) itsDomain (5) wg1 (1) ts (103324) originatingStationContainers (2) major-version-1 (1) minor-version-
+1(1)}. The module can be downloaded as a file as indicated in Table A.2. The associated SHA-256 cryptographic hash
+digest of the referenced file offers a means to verify the integrity of that file.
+
+                 Table A.2: CPM-OriginatingStationContainers ASN.1 module information
+   Module name        CPM-OriginatingStationContainers
+      OID             {itu-t (0) identified-organization (4) etsi (0) itsDomain (5) wg1 (1) ts (103324)
+                      originatingStationContainers (2) major-version-1 (1) minor-version-1(1)}
+        Link          https://forge.etsi.org/rep/ITS/asn1/cpm_ts103324/-/raw/v2.1.1/asn/CPM-
+                      OriginatingStationContainers.asn
+  SHA-256 hash        333146879622e54a75969ee5d18c0b839ca5426f9f42c05744fc996ba921e10d
+
+
+The CPM-SensorInformationContainer module is identified by the Object Identifier {itu-t (0) identified-organization (4)
+etsi (0) itsDomain (5) wg1 (1) ts (103324) sensorInformationContainer (3) major-version-1 (1) minor-version-1(1)}.
+The module can be downloaded as a file as indicated in Table A.3. The associated SHA-256 cryptographic hash digest
+of the referenced file offers a means to verify the integrity of that file.
+
+                 Table A.3: CPM-SensorInformationContainer ASN.1 module information
+   Module name        CPM-SensorInformationContainer
+      OID             {itu-t (0) identified-organization (4) etsi (0) itsDomain (5) wg1 (1) ts (103324)
+                      sensorInformationContainer (3) major-version-1 (1) minor-version-1(1)}
+        Link          https://forge.etsi.org/rep/ITS/asn1/cpm_ts103324/-/raw/v2.1.1/asn/CPM-
+                      SensorInformationContainer.asn
+  SHA-256 hash        662653e5854b3d4057b98be70277d12fae2d14e8ea61808a9325b947201da462
+
+
+The CPM-PerceptionRegionContainer module is identified by the Object Identifier {itu-t (0) identified-organization (4)
+etsi (0) itsDomain (5) wg1 (1) ts (103324) perceptionRegionContainer (5) major-version-1 (1) minor-version-1(1)}. The
+module can be downloaded as a file as indicated in Table A.4. The associated SHA-256 cryptographic hash digest of the
+referenced file offers a means to verify the integrity of that file.
+
+
+
+
+                                                          ETSI
+                                                            34                          ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+                 Table A.4: CPM-PerceptionRegionContainer ASN.1 module information
+   Module name        CPM-PerceptionRegionContainer
+      OID             {itu-t (0) identified-organization (4) etsi (0) itsDomain (5) wg1 (1) ts (103324)
+                      perceptionRegionContainer (5) major-version-1 (1) minor-version-1(1)}
+       Link           https://forge.etsi.org/rep/ITS/asn1/cpm_ts103324/-/raw/v2.1.1/asn/CPM-
+                      PerceptionRegionContainer.asn
+  SHA-256 hash        e8fc77e0b10fe8cec191192f49d2049add8f3c1c3c4c63a364e6b64f77750910
+
+
+The CPM-PerceivedObjectContainer module is identified by the Object Identifier {itu-t (0) identified-organization (4)
+etsi (0) itsDomain (5) wg1 (1) ts (103324) perceivedObjectContainer (4) major-version-1 (1) minor-version-1(1)}. The
+module can be downloaded as a file as indicated in Table A.5. The associated SHA-256 cryptographic hash digest of the
+referenced file offers a means to verify the integrity of that file.
+
+                  Table A.5: CPM-PerceivedObjectContainer ASN.1 module information
+   Module name        CPM-PerceivedObjectContainer
+      OID             {itu-t (0) identified-organization (4) etsi (0) itsDomain (5) wg1 (1) ts (103324)
+                      perceivedObjectContainer (4) major-version-1 (1) minor-version-1(1)}
+       Link           https://forge.etsi.org/rep/ITS/asn1/cpm_ts103324/-/raw/v2.1.1/asn/CPM-
+                      PerceivedObjectContainer.asn
+  SHA-256 hash        71f3482ba2a43f874aaa5dce990baeb37c892f277529de83d1275f577ce2d533
+
+
+
+
+                                                           ETSI
+                                                          35                        ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+
+Annex B (informative):
+Specification of CPM in readable format
+The specification of CPM containers, data elements and data frames is available at the following URL:
+
+   •     https://forge.etsi.org/rep/ITS/asn1/cpm_ts103324/-/blob/v2.1.1/docs/.
+
+
+
+
+                                                         ETSI
+                                                                  36                        ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+
+Annex C (informative):
+Interpretation of the kinematic and attitude state description
+Given a transmitting ITS-S provides distance and speed in the x-y-plane as well as the yaw angle, the corresponding
+                                           ்
+state vector is $௫ , ௬ , ௫ , ௬ , ௬௔௪ ' with correlation matrix:
+
+                                   1          ൛ௗೣௗ೤ ൟ    ൛ௗೣ௩೤ ൟ   ൛ௗೣ ௩೤ ൟ  ൛ௗೣ ఏ೤ೌೢൟ
+                             ⎡                                                                      ⎤
+                             ⎢  ൛ௗೣ ௗ೤ ൟ      1          ൛ௗ೤ ௩ೣൟ,  ൛ௗ೤ ௩೤ ൟ  ൛ௗ೤ ఏ೤ೌೢൟ ⎥
+                             ⎢                                                        ൛௩ೣ ఏ೤ೌೢൟ ⎥⎥,
+                        = ⎢  ሼௗೣ௩ೣሽ,    ൛ௗ೤ ௩ೣൟ,      1         ൛௩ೣ ௩೤ ൟ
+                             ⎢  ൛ௗೣ ௩೤ ൟ   ൛ௗ೤ ௩೤ ൟ   ൛௩ೣ௩೤ ൟ      1         ൛௩೤ ఏ೤ೌೢൟ ⎥
+                             ⎢                                                                      ⎥
+                             ⎣ ൛ௗೣ ఏ೤ೌೢൟ  ൛ௗ೤ ఏ೤ೌೢൟ  ൛௩ೣఏ೤ೌೢൟ  ൛௩೤ ఏ೤ೌೢൟ      1
+                                                                                                   ⎦
+
+It follows that given a received state vector of length 5, to represent the corresponding correlation information in the
+CPM for this object, 5-1 columns with 5-i correlation values in column i are required.
+
+In this example, the correlation matrix for the state vector shall be represented by
+
+LowerTriangularPositiveSemidefiniteMatrix = [
+[ܿ‫ݎݎ݋‬൛ௗೣௗ೤ൟ , ܿ‫ݎݎ݋‬ሼௗೣ௩ೣሽ ܿ‫ݎݎ݋‬൛ௗೣ௩೤ൟ , ܿ‫ݎݎ݋‬൛ௗೣఏ೤ೌೢൟ],
+                        ,
+
+
+
+[ܿ‫ݎݎ݋‬൛ௗ೤௩ೣൟ ܿ‫ݎݎ݋‬൛ௗ೤௩೤ൟ , ܿ‫ݎݎ݋‬൛ௗ೤ఏ೤ೌೢൟ ],
+              ,
+
+
+
+[ܿ‫ݎݎ݋‬൛௩ೣ௩೤ൟ , ܿ‫ݎݎ݋‬൛௩ೣఏ೤ೌೢൟ],
+[ܿ‫ݎݎ݋‬൛௩೤ఏ೤ೌೢൟ ]
+],
+
+where every list of correlations corresponds to a data frame of type correlationColumn and every entry within a
+correlationColumn corresponds to a data element of type correlationRowValue.
+
+From here, the receiver can compute the corresponding covariance matrix :. Given the diagonal matrix ; =
+diag(<ଵ , … , <௡ ) of standard deviations for the received kinematic state and attitude vector, and the correlation matrix
+
+         1        ⋯     
+==(       ⋮       ⋱         ⋮   , constructed from the received lower triangular matrix components, the covariance matrix can
+                                )
+
+               ⋯         1
+
+be computed as : = ;=;.
+
+
+
+
+                                                                 ETSI
+                                                          37                        ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+
+Annex D (normative):
+Frequency and Content Management
+If the ITS-S supports MCO, the Frequency and Content Management entity determines the optimal CPM generation
+period T_GenCpm and the number of perceived objects and regions to be included in the CPM, while ensuring that the
+amount of channel resources consumed by the CP service does not exceed the value resources_limit specified by
+MCO_FAC in ETSI TS 103 141 [7]. resources_limit is the upper bound of resources (in bits/s, measured at the facilities
+layer) that the CPS can use in its preferred and alternative channels. In particular, T_GenCpm, the number of perceived
+objects and the number of perception regions to be included in the CPM are chosen such that the estimated CPM size in
+bits (considering all included containers on the facility layer) divided by T_GenCpm is smaller or equal than
+resources_limit.
+
+Furthermore, T_GenCpm, the number of perceived objects and the number of perception regions to be included in the
+CPM are selected based on the VoI of the perceived objects and regions in the last generated CPM (see computation
+methods in Annex E). On the one hand, if the perceived objects and regions are homogeneous with respect to their VoI,
+the CPM frequency is reduced (i.e. T_GenCpm is increased) before reducing the message size (i.e. the number of
+perceived objects and regions to be included in the CPM). The CPM size is only reduced if T_GenCpm is equal to
+T_GenCpmMax and the resources limit from MCO_FAC is still violated. On the other hand, if the VoI of perceived
+objects and regions is highly heterogeneous, the CPM size is reduced before reducing the CPM frequency (T_GenCpm
+is set to T_GenCpmMin), in order to include the perceived objects and the number of perception regions with highest
+VoI as often as possible. In a general case, T_GenCpm and the number of perceived objects and regions to be included
+in the CPM are chosen in a way that maximizes the overall VoI rate of the generated CPMs. The VoI rate is defined as
+the sum of the VoI of all objects and regions to be included in the CPM divided by T_GenCpm.
+
+
+
+
+                                                         ETSI
+                                                            38                         ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+
+Annex E (informative):
+Object Inclusion Rate Control
+In case of multiple ITS-Ss perceiving the same (physical) object (i.e. non-V2X capable object) or an ITS-S perceiving
+an object which is an ITS-S, i.e. capable to transmit and receive V2X messages such as the CAM, VAM or the CPM
+(i.e. V2X capable object), unnecessarily frequent updates about that object may be broadcasted, thereby increasing the
+network channel load. High channel load levels may lead to losses of CPMs, which may in turn degrade performance of
+the CPS. To address this problem, objects are included or not in a CPM based on their VoIs (see clause 6.1.2.3). The
+following table describes possible methods to compute the VoI of a given perceived object. Multiple methods can be
+combined. In all methods, a received CAM, VAM or CPM is considered to include information about the object only if
+the transmitting ITS-S can associate the information in the received messages with the locally perceived object with a
+confidence higher than a threshold C_InclusionRateControl. This association confidence corresponds to the overlap of
+the probability distributions related to the perceived and received object's kinematic and attitude state, respectively. In
+addition, only the messages received during the most recent time window of length W_InclusionRateControl.are used
+for the computation of the VoI. Additional rules could be added, e.g. to avoid that an object is not omitted more than
+N_InclusionRateControl times in a row.
+
+                   Table E.1: Possible methods to compute the VoI of a perceived object
+    Score                               Method                                              Interpretation
+Frequency-     The VoI of the perceived object is inversely                 Perceived objects with a lower VoI have
+based          proportional to the number of CPMs that the                  lower priority because data related to the
+               transmitting ITS-S has received from remote ITS-Ss           perceived object has been recently
+               containing information about the object in a given time      broadcasted by a high number of remote
+               window W_InclusionRateControl.                               ITS-Ss.
+Dynamics-      The VoI of the perceived object is equal to the              Perceived objects with a lower VoI have
+based          Euclidean absolute distance between the current              lower priority because the position and
+               position of the object and the position of the object in     speed of the object have not significantly
+               the last CPM received from a remote ITS-S. In                changed since the last time, they were
+               addition, the VoI could take into account the difference     received in a CPM transmitted by a remote
+               between the current estimated absolute speed of the          ITS-S.
+               object and the absolute speed of the same object
+               received from a remote ITS-S in the last CPM.
+Distance-based The VoI of the perceived object is equal to the             Perceived objects with a lower VoI have
+               Euclidean absolute distance between the transmitting        lower priority because the perceived object
+               ITS-S and the farthest remote ITS-S that is transmitting    has been recently broadcasted by a remote
+               CPMs including the object.                                  ITS-S that is close to the transmitting ITS-S.
+Angle-based    The VoI of the perceived object is equal to the highest     Perceived objects with a lower VoI have
+               absolute difference between the orientation of the          lower priority because the perceived object
+               transmitting ITS-S to object vector in the WGS84            has been recently broadcasted by a remote
+               coordinate system with respect to true north, and the       ITS-S that is detecting it with a similar
+               orientation of all remote ITS-Ss to object vectors.         orientation.
+Classification The VoI of the perceived object is equal to the             Perceived objects with a lower VoI have
+confidence     difference between the object confidence of the             lower priority because the perceived object
+based          transmitting ITS-S and the highest object confidence of     has been recently broadcasted by a remote
+               the remote ITS-Ss transmitting CPMs about the object.       ITS-S that is detecting it with higher
+                                                                           classification confidence.
+Perception        The VoI of the perceived object is equal to the          Perceived objects with a lower VoI have
+quality based     difference between the object perception quality         lower priority because the perceived object
+                  (defined in clause 7.1.8.6) of the transmitting ITS-S    has been recently broadcasted by a remote
+                  and the highest object perception quality of the remote ITS-S that is detecting it with higher object
+                  ITS-Ss transmitting CPMs about the object.               perception quality.
+Utility-based     The VoI of the perceived object is equal to the highest Perceived objects with a lower VoI have
+                  utility of including the object in the CPM for all the   lower priority because the utility of the
+                  remote ITS-Ss. A possible utility metric is the relative perceived object is low for the remote
+                  entropy that indicates the information gain between the ITS-Ss.
+                  prior and posterior knowledge of a remote ITS-S about
+                  the state of a locally perceived object.
+Object Self-      The VoI of the perceived object is inversely             Perceived objects with a lower VoI have
+Announcement      proportional to the number of CAMs, VAMs and CPMs lower priority because the perceived object
+                  transmitted by the object (i.e. it is a V2X capable      has recently broadcasted a high number of
+                  object) and received by the transmitting ITS-S.          messages informing about its presence.
+
+
+
+
+                                                           ETSI
+                                                          39                        ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+
+ Annex F (normative):
+ Configuration parameter values
+ A list of the required system parameters and their recommended values or value ranges is provided below.
+
+   Table F.1: Configuration parameter values recommended for the CPS data inclusion management
+
+            Parameter                    Type       Default Value                         Description
+                                                                    Lower limit for the time T_GenCpm elapsed
+                                                                    between two consecutive CPM generation events.
+                                                                    A value of 100 ms is recommended for vehicle
+T_GenCpmMin                           Time (ms)          100
+                                                                    ITS-S. For some use cases, roadside ITS-S may
+                                                                    require a value down to 50 ms. It is used in
+                                                                    clause 6.1.2.1.
+                                                                    Upper limit for the time T_GenCpm elapsed
+T_GenCpmMax                           Time (ms)         1 000       between two consecutive CPM generation events.
+                                                                    It is used in clause 6.1.2.1.
+                                                                    Time after which the SensorInformationContainer is
+T_AddSensorInformation                Time (ms)         1 000       usually included again into a CPM. For details see
+                                                                    clause 6.1.2.2.
+                                                                    Maximum number of perception regions included
+MaxPerceptionRegions                   Number             8         into a CPM to constrain the message size. It is
+                                                                    used in clause 6.1.2.3.
+                                                                    CPS configuration parameter that indicates the
+                                                                    object inclusion management to be employed by
+                                                                    the disemminating ITS-S. ObjectInclusionConfig=1
+ObjectInclusionConfig                  Identifier         1         is recommended for vehicle ITS-S. For some use
+                                                                    cases, roadside ITS-S may use
+                                                                    ObjectInclusionConfig=0 in some cases. For its
+                                                                    application see clause 6.1.2.4.
+                                                                    Threshold of the objectPerceptionQuality defining
+                                                                    the lower limit for objects to be included into a
+ObjectPerceptionQualityThreshold         Ratio            3
+                                                                    CPM. For its computation see clause 7.1.8.6 and
+                                                                    for its application see clause 6.1.2.4.
+                                                                    Minimum Euclidean distance between the current
+                                                                    estimated position of the reference point of a
+                                       Distance                     perceived object and the estimated position of the
+minPositionChangeThreshold                                4
+                                          (m)                       reference point lastly included in a CPM. It is used
+                                                                    for the perceived object inclusion management in
+                                                                    clause 6.1.2.4.
+                                                                    Minimum difference between the current estimated
+                                                                    ground speed of the reference point of a perceived
+                                                                    object and the estimated ground speed of the
+minGroundSpeedChangeThreshold        Speed (m/s)         0,5
+                                                                    reference point lastly included in a CPM. It is used
+                                                                    for the perceived object inclusion management in
+                                                                    clause 6.1.2.4.
+                                                                    Minimum difference between the current orientation
+                                                                    of the vector of the current estimated ground
+                                                                    velocity of the reference point of a perceived object
+minGroundVelocityOrientationChang     Orientation                   and the estimated orientation of the vector of the
+                                                          4
+eThreshold                            (degrees)                     current estimated ground velocity of the reference
+                                                                    point lastly included in a CPM. It is used for the
+                                                                    perceived object inclusion management in
+                                                                    clause 6.1.2.4.
+
+
+
+
+                                                         ETSI
+                                                         40                          ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+             Table F.2: Configuration parameter values recommended for the CPM assembly
+
+            Parameter                    Type       Default Value                         Description
+                                                                    CPS configuration parameter that indicates the
+                                                                    CPM assembly mechanism to be employed by the
+                                                                    disemminating ITS-S. MessageAssemblyConfig=0
+MessageAssemblyConfig                  Identifier       0; 1
+                                                                    is recommended if ObjectInclusionConfig=1. For
+                                                                    some roadside ITS-S, MessageAssemblyConfig=0
+                                                                    may be beneficial. It is used in clause 6.1.3.1.
+                                                                    Lower limit for which the Euclidean distance
+                                                                    between the current estimated position of the
+                                       Distance                     reference point of the object and the estimated
+minPositionChangePriorityThreshold                       0
+                                          (m)                       position of the reference point of this object lastly
+                                                                    included in a CPM starts to contribute to the object
+                                                                    utility function defined in clause 6.1.3.2.
+                                                                    Upper limit for which the Euclidean distance
+                                                                    between the current estimated position of the
+                                       Distance                     reference point of the object and the estimated
+maxPositionChangePriorityThreshold                       8
+                                          (m)                       position of the reference point of this object lastly
+                                                                    included in a CPM stops to contribute to the object
+                                                                    utility function defined in clause 6.1.3.2.
+                                                                    Lower limit for which the difference between the
+                                                                    current estimated ground speed of the reference
+minGroundSpeedChangePriorityThre                                    point of the object and the estimated absolute
+                                 Speed (m/s)             0
+shold                                                               speed of the reference point of this object lastly
+                                                                    included in a CPM starts to contribute to the object
+                                                                    utility function defined in clause 6.1.3.2.
+                                                                    Upper limit for which the difference between the
+                                                                    current estimated ground speed of the reference
+maxGroundSpeedChangePriorityThr                                     point of the object and the estimated absolute
+                                      Speed (m/s)        1
+eshold                                                              speed of the reference point of this object lastly
+                                                                    included in a CPM stops to contribute to the object
+                                                                    utility function defined in clause 6.1.3.2.
+                                                                    Lower limit for which the difference between the
+                                                                    orientation of the vector of the current estimated
+                                                                    ground velocity of the reference point of the object
+minGroundVelocityOrientationChang     Orientation
+                                                         0          and the estimated orientation of the vector of the
+ePriorityThreshold                    (degrees)
+                                                                    ground velocity of the reference point of this object
+                                                                    lastly included in a CPM starts to contribute to the
+                                                                    object utility function defined in clause 6.1.3.2.
+                                                                    Upper limit for which the difference between the
+                                                                    orientation of the vector of the current estimated
+                                                                    ground velocity of the reference point of the object
+maxGroundVelocityOrientationChan      Orientation
+                                                         8          and the estimated orientation of the vector of the
+gePriorityThreshold                   (degrees)
+                                                                    ground velocity of the reference point of this object
+                                                                    lastly included in a CPM stops to contribute to the
+                                                                    object utility function defined in clause 6.1.3.2.
+                                                                    Lower limit for which the time elapsed since the last
+minLastInclusionTimePriorityThresho                                 time the object was included in a CPM starts to
+                                      Time (ms)         100
+ld                                                                  contribute to the object utility function defined in
+                                                                    clause 6.1.3.2.
+                                                                    Upper limit for which the time elapsed since the last
+maxLastInclusionTimePriorityThresh                                  time the object was included in a CPM stops to
+                                      Time (ms)         1000
+old                                                                 contribute to the object utility function defined in
+                                                                    clause 6.1.3.2.
+
+
+    Table F.3: Configuration parameter values recommended for sensor and object ID management
+
+            Parameter                    Type       Default Value                        Description
+                                                                    Minimum time to ellapse before an ID used to
+UnusedSensorIdRetentionPeriod          Time (s)          60         identify a sensor can be reused after it has last
+                                                                    been used. See clause 7.1.6.
+                                                                    Minimum time to ellapse before an ID used to
+UnusedObjectIdRetentionPeriod          Time (s)          60         identify an object can be reused after it has last
+                                                                    been used. See clause 7.1.8.2.
+
+
+
+
+                                                        ETSI
+                                                   41                         ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+                     Table F.4: Configuration parameter values recommended for the
+                                  object perception quality assessment
+
+            Parameter               Type      Default Value                       Description
+ߙ                                   Ratio          0,5        Moving average factor used in clause 7.1.8.6.
+                                                              Weight factor for detection success rating used in
+‫ݓ‬ௗ                                  Ratio          1
+                                                              clause 7.1.8.6.
+wୡ                                  Ratio          1
+                                                              Weight factor for detection confidence rating used
+                                                              in clause 7.1.8.6.
+w୭ୟ                                 Ratio          1
+                                                              Weight factor for object age rating used in
+                                                              clause 7.1.8.6.
+
+
+      Table F.5: Configuration parameter values recommended for the object inclusion rate control
+
+            Parameter               Type      Default Value                       Description
+                                                              Minimum required association confidence
+                                 Confidence                   necessary to assume a perceived object
+C_InclusionRateControl                            50 %
+                                   level                      corresponds to an object received by means of a
+                                                              CPM, CAM or VAM. It is defined in Annex E.
+                                                              Time window defined from the beginning of the
+                                                              current CPM generation event to the past, for which
+W_InclusionRateControl            Time (s)         2          received CAM, VAM and CPM messages are
+                                                              considered for the computation of the VoI in
+                                                              Annex E.
+                                                              Maximum number of times an object may be
+N_InclusionRateControl             Number          10         omitted due to low VoI before it is included into a
+                                                              CPM again. It is used in Annex E.
+
+
+
+
+                                                  ETSI
+                                           42          ETSI TS 103 324 V2.1.1 (2023-06)
+
+
+
+History
+                                    Document history
+V2.1.1    June 2023   Publication
+
+
+
+
+                                          ETSI
+
