@@ -1,8 +1,9 @@
 // WP0 toolchain smoke (NOT a VIS gate): serve the production build, open it in headless Chromium, record the WebGL renderer,
-// measure frame timing over 120 frames, and save a screenshot. Output goes to docs/phase2/wp-reports/evidence/wp0/.
+// measure frame timing over 120 frames, and save a screenshot.
 const { spawn } = require('child_process'); const fs = require('fs'); const path = require('path');
 const { chromium } = require('playwright');
-const OUT = path.resolve(__dirname, '../docs/phase2/wp-reports/evidence/wp0'); fs.mkdirSync(OUT, { recursive: true });
+// Default output is untracked (results/); set EVIDENCE=1 to deliberately refresh the committed evidence under docs/.
+const OUT = process.env.EVIDENCE === '1' ? path.resolve(__dirname, '../docs/phase2/wp-reports/evidence/wp0') : path.resolve(__dirname, '../results/web_smoke'); fs.mkdirSync(OUT, { recursive: true });
 const PORT = 4173;
 (async () => {
   const srv = spawn('npx', ['vite', 'preview', '--host', '127.0.0.1', '--port', String(PORT), '--strictPort'], { cwd: path.resolve(__dirname, '../web'), stdio: 'ignore' });
