@@ -141,3 +141,15 @@ Chủ việc đã duyệt có điều kiện: OD-1 → P1 cho MVP (P2 để nghi
 | Registry / evidence Refinery | **không đổi** | REG-1/2/3 PASS |
 Phát hiện cần bạn biết: (i) repo đang theo dõi một file bytecode `.pyc` trong `.claude/skills/refinery/__pycache__/` (từ lần cài kit), làm REG-1 báo sai khi đổi interpreter — gate đã được sửa, không xoá file; (ii) gia tốc snap về 0 khi xe dừng hẳn (giới hạn jerk không thi hành tại bước đó, đã ghi vào danh sách hạn chế); (iii) sandbox chạy bằng **SwiftShader (render phần mềm)** nên số đo FPS không đại diện sản phẩm.
 **Điểm dừng:** dừng sau WP0 + physics sandbox để review trước khi dựng thành phố và các WP kế tiếp. Còn mở: OD-3 (ngưỡng đăng ký trước), OD-8 (ảnh tham chiếu), OD-9 (máy tham chiếu), OD-11 (nguồn tham số vật lý).
+
+## 10. WP2 (2026-11-01) — cảm biến 2.5D, tracker, cô lập truth
+Báo cáo: `docs/phase2/wp-reports/WP2-report.md`; đối chiếu PHY-07/08 với PRD: `docs/phase2/wp-reports/PHY07-08-reconciliation.md`; bằng chứng: `docs/phase2/wp-reports/evidence/wp2/`.
+| Hạng mục | Trạng thái | Ghi chú |
+|---|---|---|
+| Cổng PHY-07 | **PASS** (55 test) | Giải tích ≤ 1 mm (đo 1.4e-14 m); thống kê χ² 95% |
+| Cổng AC-VS-03 | **PASS** (7 test) | ANEES 3.958, NIS 1.994; kiểm tra nhất quán được chứng minh bắt lỗi |
+| Cổng AC-VS-06 | **PASS** (15 test) | AST + tiến trình chặn import truth |
+| Cổng PHY-08 | NOT_CHECKED | WP3 |
+| Cổng VIS-08 | **BLOCKED** | chưa có ảnh gốc |
+| Mutation bites | 35/35 bị bắt | |
+Điểm cần chủ việc quyết định: mặc định xác nhận track 2-of-3 (độ trễ thấp, 4.65% track giả/frame ở λ=2) hay 3-of-4 (0.15%/frame, chậm hơn một frame); tracker gộp mục tiêu đi sát < ~0.5 m và mất ID sau che khuất dài; bias hằng số của một nguồn chỉ phát hiện được bằng nguồn thứ hai. **Điểm dừng:** dừng sau WP2 để review trước WP3.

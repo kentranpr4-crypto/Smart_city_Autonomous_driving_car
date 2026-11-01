@@ -27,6 +27,7 @@ class StepInfo:
     friction_limited: bool
     ay: float
     s: float
+    stop_jerk_equiv: float = 0.0     # |a_before|/dt when the vehicle reaches v=0 and a snaps to 0 (0.0 otherwise)
 
 
 def mode_limits(mode: str, p: VehicleParams) -> tuple[float, float]:
@@ -104,7 +105,9 @@ def step_vehicle(st: VehicleState, a_cmd: float, delta_cmd: float, mode: str,
     # --- exact longitudinal integration for linear a(tau) on [0, dt]
     a0, v0 = st.a, st.v
     v1 = v0 + 0.5 * (a0 + a1) * dt
+    stop_jerk = 0.0
     if v1 <= 0.0:
+        stop_jerk = abs(a0) / dt if v0 > 0.0 else 0.0     # a0 -> 0 inside one step: NOT jerk-limited, reported, never hidden
         jp = (a1 - a0) / dt
         tau = _stop_time(v0, a0, jp, dt)
         s = v0 * tau + 0.5 * a0 * tau * tau + jp * tau ** 3 / 6.0
@@ -119,4 +122,4 @@ def step_vehicle(st: VehicleState, a_cmd: float, delta_cmd: float, mode: str,
     x, y, psi = _rk4_path(st.x, st.y, st.psi, s, t0 / p.wheelbase, t1 / p.wheelbase)
     ay = v_ref * v_ref * abs(t1) / p.wheelbase
     new = VehicleState(x, y, psi, v1, a1, d1, math.atan(t1), st.wheel_rot + s / p.wheel_radius)
-    return new, StepInfo(limited, ay, s)
+    return new, StepInfo(limited, ay, s, stop_jerk)

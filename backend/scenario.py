@@ -3,7 +3,9 @@ from __future__ import annotations
 import hashlib, json, pathlib
 from dataclasses import dataclass, field, fields
 import jsonschema, yaml
+import math
 from .params import VehicleParams, Friction
+from .sensor_spec import SensorSpec
 
 SCHEMA_PATH = pathlib.Path(__file__).resolve().parent.parent / "schemas" / "scenario.schema.json"
 
@@ -34,6 +36,7 @@ class PedSpec:
     path: tuple
     start_time: object   # float or dict(uniform)
     speed: object
+    height: float = 1.7
 
 
 @dataclass(frozen=True)
@@ -56,6 +59,7 @@ class Scenario:
     vehicles: tuple
     pedestrians: tuple
     obstacles: tuple
+    sensors: tuple = ()
     raw: dict = field(compare=False, default_factory=dict)
 
     def config_sha256(self) -> str:
@@ -103,7 +107,7 @@ def scenario_from_dict(d: dict) -> Scenario:
     for p in d.get("pedestrians", []):
         for lo, hi in [(_lo(p["speed"]), _upper(p["speed"]))]:
             if lo > hi: raise ScenarioError(f"pedestrian {p['id']}: speed low > high")
-        peds.append(PedSpec(p["id"], p.get("radius", 0.3), tuple(tuple(q) for q in p["path"]), p.get("start_time", 0.0), p["speed"]))
+        peds.append(PedSpec(p["id"], p.get("radius", 0.3), tuple(tuple(q) for q in p["path"]), p.get("start_time", 0.0), p["speed"], p.get("height", 1.7)))
     # tunnelling guard: relative displacement per step must stay below the pedestrian radius
     vmax = vparams.v_max_odd
     for p in peds:
@@ -111,8 +115,23 @@ def scenario_from_dict(d: dict) -> Scenario:
             raise ScenarioError(f"tunnelling guard: (v_max+v_ped)*dt={(vmax + _upper(p.speed)) * dt:.3f} >= radius {p.radius}; reduce dt")
     obstacles = tuple(ObstacleSpec(o["id"], o["center"][0], o["center"][1], o["size"][0], o["size"][1], o.get("yaw", 0.0), o.get("height", 3.0))
                       for o in d.get("obstacles", []))
+    sensors = []
+    for s in d.get("sensors", []):
+        if s["kind"] == "vehicle" and s.get("mount_vehicle") not in [v["id"] for v in d["vehicles"]]:
+            raise ScenarioError(f"sensor {s['id']}: mount_vehicle {s.get('mount_vehicle')!r} is not a vehicle in the scenario")
+        if s["kind"] == "cctv" and "pose" not in s:
+            raise ScenarioError(f"sensor {s['id']}: cctv requires pose")
+        if s["id"] in ids:
+            raise ScenarioError(f"sensor id {s['id']!r} collides with an actor id")
+        sensors.append(SensorSpec(id=s["id"], kind=s["kind"], height=s["height"], fov=math.radians(s["fov_deg"]), range_m=s["range"], rate_hz=s["rate_hz"],
+                                  mount_vehicle=s.get("mount_vehicle"), mount_offset=tuple(s.get("mount_offset", (0.5, 0.0))), yaw_offset=s.get("yaw_offset", 0.0),
+                                  pose=tuple(s["pose"]) if "pose" in s else None, pd0=s.get("pd0", 0.95), r50=s.get("r50", 60.0), pd_slope=s.get("pd_slope", 8.0),
+                                  sigma0=s.get("sigma0", 0.05), sigma1=s.get("sigma1", 0.01), bias=tuple(s.get("bias", (0.0, 0.0))),
+                                  declared_sigma_scale=s.get("declared_sigma_scale", 1.0), clutter_rate=s.get("clutter_rate", 0.0),
+                                  class_accuracy=s.get("class_accuracy", 1.0), phase=s.get("phase", 0.0), t_proc=s.get("t_proc", 0.0),
+                                  dropout=(s["dropout"]["p_enter"], s["dropout"]["p_exit"]) if "dropout" in s else None))
     return Scenario(d["id"], dt, float(d["duration"]), d.get("stop_on_collision", True), d.get("stop_when_all_stopped", False),
-                    d.get("telemetry_every", 1), fr, vparams, tuple(vehicles), tuple(peds), obstacles, raw=d)
+                    d.get("telemetry_every", 1), fr, vparams, tuple(vehicles), tuple(peds), obstacles, tuple(sensors), raw=d)
 
 
 def _lo(x) -> float:

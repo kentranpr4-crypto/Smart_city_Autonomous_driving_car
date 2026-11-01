@@ -1,0 +1,34 @@
+# make check (final, after doc edits) 2026-11-01T06:24:42Z
+GATE                                                               STATUS       NOTE
+-----------------------------------------------------------------------------------------------------------------------------
+REG-1 registry unchanged                                           PASS         git diff 66f1a64 -- data .claude (excl. __pycache__) is empty
+REG-2 refinery.py                                                  PASS         build digest = a68fc24fbf62a74a
+REG-3 bites.py                                                     PASS         5 applicable bites all bite; 18 N/A (domain does not declare those gates)
+DOC-1 ref/ID integrity                                             PASS         REF_INTEGRITY PASS (references resolve; this is NOT a semantic-correctness check)
+DOC-2 checker selftest                                             PASS         SELFTEST PASS
+SCHEMA valid                                                       PASS         2 schemas
+LOCK-PY hashed + consistent                                        PASS         29 pinned with hashes; pip check: No broken requirements found.
+LOCK-WEB exact + installed                                         PASS         8 exact deps, lockfile present, npm ls rc=0
+PHY-01 determinism / wall-clock independence                       PASS         8 passed, 0 failed, 0 skipped
+PHY-02 linear kinematics                                           PASS         8 passed, 0 failed, 0 skipped
+PHY-03 braking distance + friction                                 PASS         29 passed, 0 failed, 0 skipped
+PHY-04 steering / turning                                          PASS         9 passed, 0 failed, 0 skipped
+PHY-05 accel / jerk / steer limits (+standstill regression)        PASS         12 passed, 0 failed, 0 skipped
+PHY-06 collision + pedestrian                                      PASS         38 passed, 0 failed, 0 skipped
+PHY-07 sensors FOV/occlusion/uncertainty                           PASS         55 passed, 0 failed, 0 skipped
+PHY-08 communication / freshness                                   NOT_CHECKED  no test exists yet (later WP)
+AC-VS-03 tracker consistency (NEES/NIS chi2)                       PASS         7 passed, 0 failed, 0 skipped
+AC-VS-06 ground-truth isolation (AST + blocked-import subprocess)  PASS         15 passed, 0 failed, 0 skipped
+WP2-TRK association/stale/occlusion/failure modes                  PASS         44 passed, 0 failed, 0 skipped
+VIS-01                                                             NOT_CHECKED  frontend city not built yet (WP6)
+VIS-02                                                             NOT_CHECKED  frontend city not built yet (WP6)
+VIS-03                                                             NOT_CHECKED  frontend city not built yet (WP6)
+VIS-04                                                             NOT_CHECKED  frontend city not built yet (WP6)
+VIS-05                                                             NOT_CHECKED  frontend city not built yet (WP6)
+VIS-06                                                             NOT_CHECKED  frontend city not built yet (WP6)
+VIS-07                                                             NOT_CHECKED  frontend city not built yet (WP6)
+VIS-08 reference comparison                                        BLOCKED      no image in docs/references/
+VIS-09                                                             NOT_CHECKED  frontend city not built yet (WP6)
+VIS-10                                                             NOT_CHECKED  frontend city not built yet (WP6)
+-----------------------------------------------------------------------------------------------------------------------------
+TOTAL {'PASS': 18, 'FAIL': 0, 'BLOCKED': 1, 'NOT_CHECKED': 10}

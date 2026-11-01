@@ -30,8 +30,13 @@ def check_limits(frames, dt=0.01):
         if prev is not None:
             jmax = P.j_emergency if s["cmd"]["mode"] == "emergency" else P.j_comfort
             stopped_now = s["v"] == 0.0 and prev["v"] > 0.0
-            if not stopped_now:
-                assert abs(s["a"] - prev["a"]) <= jmax * dt + EPS, (f["step"], s["a"], prev["a"])
+            if abs(s["a"] - prev["a"]) > jmax * dt + EPS:
+                # the ONLY permitted exception is the standstill transition, and it must be REPORTED in telemetry (no silent exception)
+                assert stopped_now, (f["step"], s["a"], prev["a"])
+                ev = [e for e in f["events"] if e["type"] == "standstill_jerk_discontinuity"]
+                assert len(ev) == 1 and ev[0]["jerk_equiv"] == pytest.approx(abs(prev["a"]) / dt, rel=1e-9)
+            else:
+                assert not any(e["type"] == "standstill_jerk_discontinuity" for e in f["events"])
             assert abs(s["delta"] - prev["delta"]) <= P.delta_rate_max * dt + EPS
             v_ref = max(s["v"], prev["v"])
             ay = v_ref ** 2 * abs(math.tan(s["delta_eff"])) / P.wheelbase

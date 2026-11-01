@@ -5,7 +5,7 @@
       "Flat horizontal plane; no slope or road elevation.",
       "Kinematic bicycle + friction circle; no tyre slip, load transfer, suspension, pitch, aero or rolling resistance.",
       "Uniform friction mu (a parameter); no source for Vietnamese inner-city roads.",
-      "Jerk limit is NOT enforced at the standstill transition: acceleration snaps to 0 within one step when v reaches 0 (enforced everywhere else; PHY-05 excludes exactly that step).",
+      "Jerk limit is NOT guaranteed at standstill: if braking is commanded until v=0, acceleration snaps to 0 within one step (jerk = |a|/dt, far above the limit). The model REPORTS this as event standstill_jerk_discontinuity; it only meets the limit if the controller eases the brake command to ~0 as v->0 (soft stop, tested in PHY-05).",
       "Rigid bodies; contact ends the run; no deformation, injury or post-impact dynamics.",
       "Pedestrians are kinematic and non-reactive (no gap acceptance, no crowd behaviour).",
       "Sensors/channel (later WPs) are statistical models over ground truth, not raw sensors or real V2X PHY/MAC.",
@@ -24,7 +24,7 @@
     "python": "3.13.18"
   },
   "git": {
-    "commit": "66f1a640fca649320608940f5acd807b7cc5f2d8",
+    "commit": "01168aacd03b4b189e0064576c87de8f49831bad",
     "dirty": true
   },
   "scenario": "/home/user/Smart_city_Autonomous_driving_car/scenarios/s00a_physics_sandbox_brake_early.yaml",
@@ -36,7 +36,8 @@
     "counts": {
       "friction_limited_steps": 0,
       "outside_model_validity_steps": 0,
-      "outside_odd_steps": 0
+      "outside_odd_steps": 0,
+      "standstill_jerk_discontinuities": 1
     },
     "impact_speed": null,
     "min_clearance": 7.586865280652896,
@@ -53,5 +54,5 @@
     }
   },
   "telemetry_lines": 236,
-  "telemetry_sha256": "ce9dc616001ae93dc246aaa1a2f3f72cad7380be575131a4db575d61bb9ca6b5"
+  "telemetry_sha256": "5876d26cc9def592e3e13934821677909ff3242a8560aeb544152e8ac5786e49"
 }

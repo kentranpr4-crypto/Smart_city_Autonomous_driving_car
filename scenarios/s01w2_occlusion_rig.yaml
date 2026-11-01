@@ -1,0 +1,27 @@
+# WP2 integration scenario: ego (constant speed, NO closed-loop control yet) approaches a crosswalk; a parked truck hides the pedestrian from the ego sensor.
+# A CCTV on the opposite kerb sees the pedestrian. Used to validate occlusion + timestamps + tracker end to end. NOT a safety experiment (no braking logic, WP4).
+schema_version: "0.1.0"
+id: s01w2_occlusion_rig
+description: "Pedestrian waits just beyond the truck's far end. Analytic first-visibility for the ego sensor: x_s = 39.5 m (line of sight clears the truck's NE corner (43,-2.1)). Ego passes before the pedestrian steps into the lane (no contact)."
+dt: 0.01
+duration: 11.0
+stop_on_collision: false
+road: {mu: 0.8}
+vehicles:
+  - id: ego
+    init: {x: 0.0, y: 0.0, psi: 0.0, v: 6.0}
+pedestrians:
+  - id: ped1
+    radius: 0.3
+    height: 1.7
+    path: [[45.0, -3.3], [45.0, 3.0]]
+    start_time: 8.0
+    speed: 1.4
+obstacles:
+  - id: truck
+    center: [38.5, -3.3]
+    size: [9.0, 2.4]
+    height: 3.0
+sensors:
+  - {id: ego_cam, kind: vehicle, mount_vehicle: ego, height: 1.5, fov_deg: 100, range: 80, rate_hz: 10, mount_offset: [0.5, 0.0], pd0: 0.95, r50: 60, pd_slope: 8, sigma0: 0.05, sigma1: 0.01, t_proc: 0.05}
+  - {id: cctv_k1, kind: cctv, pose: [45.0, 8.0, -1.5707963267948966], height: 6.0, fov_deg: 120, range: 40, rate_hz: 10, phase: 0.03, pd0: 0.95, r50: 40, pd_slope: 6, sigma0: 0.05, sigma1: 0.01, t_proc: 0.05}

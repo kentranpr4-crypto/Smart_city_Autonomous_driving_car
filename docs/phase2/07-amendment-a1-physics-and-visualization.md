@@ -85,7 +85,7 @@ float64 toàn bộ; không dùng thao tác song song không xác định thứ t
 7. Đồng hồ nút là mô hình (offset/drift) tham số.
 8. **Không tương đương CARLA** (hay bất kỳ bộ sim thương mại nào) về độ trung thực; kết quả chỉ có giá trị trong mô hình.
 9. Chỉ hợp lệ trong ODD: v ≤ 40 km/h, `a_y ≤ 0.5 μ g`, trời quang.
-10. (Phát hiện khi triển khai WP1) Gia tốc **nhảy về 0 trong một bước** khi xe dừng hẳn; giới hạn jerk không được thi hành tại bước đó (được thi hành ở mọi nơi khác; PHY-05 loại đúng bước này).
+10. (Phát hiện ở WP1, làm rõ ở WP2) **Mô hình không thể bảo đảm giới hạn jerk tại v=0:** nếu xe được lệnh phanh tới khi dừng, gia tốc nhảy về 0 trong một bước (jerk tương đương |a|/dt, vd 600 m/s³). Điều này được **báo bằng sự kiện** `standstill_jerk_discontinuity` trong telemetry (không còn là ngoại lệ ngầm); giới hạn chỉ được đáp ứng khi bộ điều khiển nhả phanh về ~0 khi v→0 (soft-stop, có test).
 11. Ramp gia tốc không kết thúc đúng ranh giới bước (vd μ=0.5) có sai số quãng dừng đo được ≤ 4.7e-5 m (do giả thiết tuyến tính trong bước).
 
 ## 9. Giao diện tích hợp CARLA tương lai (không triển khai, không tuyên bố tương đương)

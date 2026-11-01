@@ -6,19 +6,16 @@ Step order (docs/phase2/07 §1): (1) effective commands -> (2) integrate vehicle
 from __future__ import annotations
 import hashlib, math
 import numpy as np
+from .rng import rng_stream
 from .params import LIMITATIONS
-from .dynamics import VehicleState, initial_state, step_vehicle
+from .dynamics import VehicleState, initial_state, step_vehicle, mode_limits
 from .collision import sat_obb_obb, capsule_hits_obb, dist_segment_obb, closest_point_obb
 from .scenario import Scenario, ScriptedCmd
 from .telemetry import TelemetryWriter
+from .truth import TruthActor, TruthObstacle, TruthSnapshot
 
 BACKEND_NAME = "lightweight-planar-physics"
 BACKEND_VERSION = "0.1.0"
-
-
-def rng_stream(seed: int, name: str) -> np.random.Generator:
-    key = int.from_bytes(hashlib.sha256(name.encode()).digest()[:4], "big")
-    return np.random.Generator(np.random.PCG64(np.random.SeedSequence(entropy=seed, spawn_key=(key,))))
 
 
 def _draw(x, rng):
@@ -28,7 +25,7 @@ def _draw(x, rng):
 class Pedestrian:
     def __init__(self, spec, seed):
         rng = rng_stream(seed, f"ped:{spec.id}")
-        self.id, self.radius = spec.id, spec.radius
+        self.id, self.radius, self.height = spec.id, spec.radius, spec.height
         self.speed = _draw(spec.speed, rng)          # draw order is part of the contract
         self.t_start = _draw(spec.start_time, rng)
         self.path = spec.path
@@ -69,7 +66,7 @@ class World:
         self.peds = [Pedestrian(s, seed) for s in scn.pedestrians]
         self.obst = scn.obstacles
         self.events_log: list[dict] = []
-        self.counts = {"friction_limited_steps": 0, "outside_model_validity_steps": 0, "outside_odd_steps": 0}
+        self.counts = {"friction_limited_steps": 0, "outside_model_validity_steps": 0, "outside_odd_steps": 0, "standstill_jerk_discontinuities": 0}
         self.min_clearance = math.inf
         self._last_cmd = {v.id: (0.0, self.init_delta[v.id], "comfort") for v in scn.vehicles}
         self._last_info = {v.id: False for v in scn.vehicles}
@@ -84,6 +81,19 @@ class World:
         """Schedule a control command at the CURRENT step (used by closed-loop controllers in later WPs)."""
         self.cmds[vid].append((self.n, cmd))
         self.cmds[vid].sort(key=lambda z: z[0])
+
+    def truth_snapshot(self) -> TruthSnapshot:
+        """Ground truth for the TRUTH-SIDE sensor models only. Perception never receives this (I9)."""
+        t = self.t
+        acts = []
+        for vid, s in self.veh.items():
+            ox, oy, _, hl, hw = self._obb(s)
+            acts.append(TruthActor(vid, "vehicle", ox, oy, s.v * math.cos(s.psi), s.v * math.sin(s.psi), s.psi, 2 * hl, 2 * hw, self.p.height))
+        for p in self.peds:
+            x, y, vx, vy = p.at(t)
+            acts.append(TruthActor(p.id, "pedestrian", x, y, vx, vy, 0.0, 2 * p.radius, 2 * p.radius, p.height))
+        obs = tuple(TruthObstacle(o.id, o.cx, o.cy, o.yaw, o.length, o.width, o.height) for o in self.obst)
+        return TruthSnapshot(t, tuple(acts), obs)
 
     def header(self) -> dict:
         from dataclasses import asdict
@@ -126,6 +136,11 @@ class World:
             info_all[vid] = info
             self._last_info[vid] = info.friction_limited
             if info.friction_limited: self.counts["friction_limited_steps"] += 1
+            j_lim = mode_limits(mode, self.p)[1]
+            if info.stop_jerk_equiv > j_lim + 1e-9:
+                self.counts["standstill_jerk_discontinuities"] += 1
+                events.append({"type": "standstill_jerk_discontinuity", "actor": vid, "a_before": st.a,
+                               "jerk_equiv": info.stop_jerk_equiv, "limit": j_lim})
             if info.ay > self.p.ay_validity_fraction * self.fr.mug:
                 self.counts["outside_model_validity_steps"] += 1
                 events.append({"type": "outside_model_validity", "actor": vid, "ay": info.ay})

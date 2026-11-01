@@ -4,79 +4,490 @@
   "title": "PhysicsScenario",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "id", "dt", "duration", "road", "vehicles"],
+  "required": [
+    "schema_version",
+    "id",
+    "dt",
+    "duration",
+    "road",
+    "vehicles"
+  ],
   "properties": {
-    "schema_version": {"const": "0.1.0"},
-    "id": {"type": "string", "pattern": "^[a-z0-9_\\-]+$"},
-    "description": {"type": "string"},
-    "dt": {"type": "number", "exclusiveMinimum": 0, "maximum": 0.05},
-    "duration": {"type": "number", "exclusiveMinimum": 0, "maximum": 600},
-    "stop_on_collision": {"type": "boolean", "default": true},
-    "stop_when_all_stopped": {"type": "boolean", "default": false},
-    "telemetry_every": {"type": "integer", "minimum": 1, "default": 1},
-    "road": {
-      "type": "object", "additionalProperties": false, "required": ["mu"],
-      "properties": {"mu": {"type": "number", "exclusiveMinimum": 0, "maximum": 1.2},
-                     "g": {"type": "number", "exclusiveMinimum": 0, "default": 9.81}}
+    "schema_version": {
+      "const": "0.1.0"
     },
-    "vehicle_params": {"$ref": "#/$defs/VehicleParams"},
-    "vehicles": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/Vehicle"}},
-    "pedestrians": {"type": "array", "items": {"$ref": "#/$defs/Pedestrian"}},
-    "obstacles": {"type": "array", "items": {"$ref": "#/$defs/Obstacle"}}
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_\\-]+$"
+    },
+    "description": {
+      "type": "string"
+    },
+    "dt": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 0.05
+    },
+    "duration": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 600
+    },
+    "stop_on_collision": {
+      "type": "boolean",
+      "default": true
+    },
+    "stop_when_all_stopped": {
+      "type": "boolean",
+      "default": false
+    },
+    "telemetry_every": {
+      "type": "integer",
+      "minimum": 1,
+      "default": 1
+    },
+    "road": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mu"
+      ],
+      "properties": {
+        "mu": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1.2
+        },
+        "g": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "default": 9.81
+        }
+      }
+    },
+    "vehicle_params": {
+      "$ref": "#/$defs/VehicleParams"
+    },
+    "vehicles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/Vehicle"
+      }
+    },
+    "pedestrians": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Pedestrian"
+      }
+    },
+    "obstacles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Obstacle"
+      }
+    },
+    "sensors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Sensor"
+      }
+    }
   },
   "$defs": {
     "VehicleParams": {
-      "type": "object", "additionalProperties": false,
+      "type": "object",
+      "additionalProperties": false,
       "properties": {
-        "length": {"type": "number", "exclusiveMinimum": 0}, "width": {"type": "number", "exclusiveMinimum": 0},
-        "wheelbase": {"type": "number", "exclusiveMinimum": 0}, "rear_overhang": {"type": "number", "minimum": 0},
-        "wheel_radius": {"type": "number", "exclusiveMinimum": 0},
-        "delta_max": {"type": "number", "exclusiveMinimum": 0, "maximum": 1.5},
-        "delta_rate_max": {"type": "number", "exclusiveMinimum": 0},
-        "t_act": {"type": "number", "minimum": 0}, "t_steer": {"type": "number", "minimum": 0},
-        "a_brk_emergency": {"type": "number", "exclusiveMinimum": 0}, "a_brk_comfort": {"type": "number", "exclusiveMinimum": 0},
-        "j_emergency": {"type": "number", "exclusiveMinimum": 0}, "j_comfort": {"type": "number", "exclusiveMinimum": 0},
-        "a_acc": {"type": "number", "exclusiveMinimum": 0},
-        "v_max_odd": {"type": "number", "exclusiveMinimum": 0},
-        "ay_validity_fraction": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}
+        "length": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "width": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "wheelbase": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "rear_overhang": {
+          "type": "number",
+          "minimum": 0
+        },
+        "wheel_radius": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "delta_max": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1.5
+        },
+        "delta_rate_max": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "t_act": {
+          "type": "number",
+          "minimum": 0
+        },
+        "t_steer": {
+          "type": "number",
+          "minimum": 0
+        },
+        "a_brk_emergency": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "a_brk_comfort": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "j_emergency": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "j_comfort": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "a_acc": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "v_max_odd": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "ay_validity_fraction": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "height": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
       }
     },
     "Vehicle": {
-      "type": "object", "additionalProperties": false, "required": ["id", "init"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "init"
+      ],
       "properties": {
-        "id": {"type": "string"},
-        "init": {"type": "object", "additionalProperties": false, "required": ["x", "y", "psi", "v"],
-          "properties": {"x": {"type": "number"}, "y": {"type": "number"}, "psi": {"type": "number"},
-                         "v": {"type": "number", "minimum": 0}, "delta": {"type": "number"}}},
-        "script": {"type": "array", "items": {"$ref": "#/$defs/ScriptedCmd"}}
+        "id": {
+          "type": "string"
+        },
+        "init": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y",
+            "psi",
+            "v"
+          ],
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "psi": {
+              "type": "number"
+            },
+            "v": {
+              "type": "number",
+              "minimum": 0
+            },
+            "delta": {
+              "type": "number"
+            }
+          }
+        },
+        "script": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ScriptedCmd"
+          }
+        }
       }
     },
     "ScriptedCmd": {
-      "type": "object", "additionalProperties": false, "required": ["t", "a_cmd"],
-      "properties": {"t": {"type": "number", "minimum": 0}, "a_cmd": {"type": "number"},
-                     "delta_cmd": {"type": "number", "default": 0.0}, "mode": {"enum": ["comfort", "emergency"], "default": "comfort"}}
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "t",
+        "a_cmd"
+      ],
+      "properties": {
+        "t": {
+          "type": "number",
+          "minimum": 0
+        },
+        "a_cmd": {
+          "type": "number"
+        },
+        "delta_cmd": {
+          "type": "number",
+          "default": 0.0
+        },
+        "mode": {
+          "enum": [
+            "comfort",
+            "emergency"
+          ],
+          "default": "comfort"
+        }
+      }
     },
     "Pedestrian": {
-      "type": "object", "additionalProperties": false, "required": ["id", "path", "speed"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "path",
+        "speed"
+      ],
       "properties": {
-        "id": {"type": "string"}, "radius": {"type": "number", "exclusiveMinimum": 0, "default": 0.3},
-        "path": {"type": "array", "minItems": 2, "items": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2}},
-        "start_time": {"$ref": "#/$defs/Scalar"},
-        "speed": {"$ref": "#/$defs/Scalar"}
+        "id": {
+          "type": "string"
+        },
+        "radius": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "default": 0.3
+        },
+        "path": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          }
+        },
+        "start_time": {
+          "$ref": "#/$defs/Scalar"
+        },
+        "speed": {
+          "$ref": "#/$defs/Scalar"
+        },
+        "height": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "default": 1.7
+        }
       }
     },
     "Scalar": {
       "oneOf": [
-        {"type": "number", "minimum": 0},
-        {"type": "object", "additionalProperties": false, "required": ["dist", "low", "high"],
-         "properties": {"dist": {"const": "uniform"}, "low": {"type": "number", "minimum": 0}, "high": {"type": "number", "minimum": 0}}}
+        {
+          "type": "number",
+          "minimum": 0
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "dist",
+            "low",
+            "high"
+          ],
+          "properties": {
+            "dist": {
+              "const": "uniform"
+            },
+            "low": {
+              "type": "number",
+              "minimum": 0
+            },
+            "high": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        }
       ]
     },
     "Obstacle": {
-      "type": "object", "additionalProperties": false, "required": ["id", "center", "size"],
-      "properties": {"id": {"type": "string"}, "center": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2},
-                     "size": {"type": "array", "items": {"type": "number", "exclusiveMinimum": 0}, "minItems": 2, "maxItems": 2},
-                     "yaw": {"type": "number", "default": 0.0}, "height": {"type": "number", "exclusiveMinimum": 0}}
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "center",
+        "size"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "center": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "size": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "yaw": {
+          "type": "number",
+          "default": 0.0
+        },
+        "height": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "Sensor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "height",
+        "fov_deg",
+        "range",
+        "rate_hz"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "vehicle",
+            "cctv"
+          ]
+        },
+        "height": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "fov_deg": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 360
+        },
+        "range": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "rate_hz": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "mount_vehicle": {
+          "type": "string"
+        },
+        "mount_offset": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "yaw_offset": {
+          "type": "number"
+        },
+        "pose": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "pd0": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "r50": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "pd_slope": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "sigma0": {
+          "type": "number",
+          "minimum": 0
+        },
+        "sigma1": {
+          "type": "number",
+          "minimum": 0
+        },
+        "bias": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "declared_sigma_scale": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "clutter_rate": {
+          "type": "number",
+          "minimum": 0
+        },
+        "class_accuracy": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "phase": {
+          "type": "number",
+          "minimum": 0
+        },
+        "t_proc": {
+          "type": "number",
+          "minimum": 0
+        },
+        "dropout": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "p_enter",
+            "p_exit"
+          ],
+          "properties": {
+            "p_enter": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "p_exit": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        }
+      }
     }
   }
 }

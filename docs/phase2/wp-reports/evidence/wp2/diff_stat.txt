@@ -1,0 +1,108 @@
+# git diff --cached --stat HEAD  (WP2 commit vs previous HEAD 01168aa); generated 2026-11-01T06:24:50Z
+ backend/dynamics.py                                |   5 +-
+ backend/observation.py                             |  45 ++
+ backend/params.py                                  |   3 +-
+ backend/rig.py                                     |  47 ++
+ backend/rng.py                                     |   9 +
+ backend/scenario.py                                |  23 +-
+ backend/sensor_spec.py                             |  36 ++
+ backend/sensors.py                                 | 199 ++++++++
+ backend/truth.py                                   |  35 ++
+ backend/world.py                                   |  31 +-
+ docs/phase2/05-vertical-slice-plan.md              |   2 +-
+ docs/phase2/06-gate-status-report.md               |  12 +
+ .../07-amendment-a1-physics-and-visualization.md   |   2 +-
+ docs/phase2/wp-reports/PHY07-08-reconciliation.md  |  72 +++
+ docs/phase2/wp-reports/WP1-report.md               |   2 +
+ docs/phase2/wp-reports/WP2-report.md               |  68 +++
+ .../wp-reports/evidence/wp1/s00a/manifest.json     |   9 +-
+ .../wp-reports/evidence/wp1/s00a/telemetry.jsonl   |   4 +-
+ .../wp-reports/evidence/wp1/s00b/manifest.json     |   9 +-
+ .../wp-reports/evidence/wp1/s00b/telemetry.jsonl   |   2 +-
+ docs/phase2/wp-reports/evidence/wp1/summary.json   |   4 +-
+ .../wp-reports/evidence/wp2/docs_selftest.txt      |   9 +
+ docs/phase2/wp-reports/evidence/wp2/make_check.txt |  34 ++
+ docs/phase2/wp-reports/evidence/wp2/metrics.json   | 229 +++++++++
+ .../wp-reports/evidence/wp2/mutation_bites.txt     |  37 ++
+ .../evidence/wp2/occlusion_rig_topdown.svg         |  30 ++
+ .../wp-reports/evidence/wp2/pytest_wp2_verbose.txt | 233 ++++++++++
+ perception/__init__.py                             |   3 +
+ perception/hungarian.py                            |  37 ++
+ perception/stats.py                                |  43 ++
+ perception/tracker.py                              | 231 ++++++++++
+ pytest.ini                                         |   2 +
+ scenarios/s01w2_occlusion_rig.yaml                 |  27 ++
+ schemas/scenario.schema.json                       | 511 +++++++++++++++++++--
+ schemas/telemetry.schema.json                      |   2 +-
+ scripts/check_repo.py                              |  30 +-
+ scripts/make_wp2_evidence.py                       | 136 ++++++
+ scripts/physics_bites.py                           |  43 +-
+ tests/perception/__init__.py                       |   0
+ tests/perception/helpers.py                        |  47 ++
+ .../perception/test_iso_ground_truth_separation.py | 160 +++++++
+ tests/perception/test_phy07_sensor_geometry.py     | 108 +++++
+ tests/perception/test_phy07_sensor_statistics.py   | 179 ++++++++
+ tests/perception/test_rig_integration.py           |  72 +++
+ tests/perception/test_trk_association.py           | 118 +++++
+ tests/perception/test_trk_consistency.py           | 103 +++++
+ .../test_trk_occlusion_and_failure_modes.py        | 119 +++++
+ tests/perception/test_trk_stale_and_validation.py  | 118 +++++
+ tests/perception/tracking_helpers.py               |  49 ++
+ tests/physics/golden_hashes.json                   |   2 +-
+ tests/physics/test_phy05_limits.py                 |   9 +-
+ tests/physics/test_phy05_standstill.py             |  93 ++++
+ 52 files changed, 3334 insertions(+), 99 deletions(-)
+
+# modified tracked files (M) vs new files (A)
+M	backend/dynamics.py
+A	backend/observation.py
+M	backend/params.py
+A	backend/rig.py
+A	backend/rng.py
+M	backend/scenario.py
+A	backend/sensor_spec.py
+A	backend/sensors.py
+A	backend/truth.py
+M	backend/world.py
+M	docs/phase2/05-vertical-slice-plan.md
+M	docs/phase2/06-gate-status-report.md
+M	docs/phase2/07-amendment-a1-physics-and-visualization.md
+A	docs/phase2/wp-reports/PHY07-08-reconciliation.md
+M	docs/phase2/wp-reports/WP1-report.md
+A	docs/phase2/wp-reports/WP2-report.md
+M	docs/phase2/wp-reports/evidence/wp1/s00a/manifest.json
+M	docs/phase2/wp-reports/evidence/wp1/s00a/telemetry.jsonl
+M	docs/phase2/wp-reports/evidence/wp1/s00b/manifest.json
+M	docs/phase2/wp-reports/evidence/wp1/s00b/telemetry.jsonl
+M	docs/phase2/wp-reports/evidence/wp1/summary.json
+A	docs/phase2/wp-reports/evidence/wp2/docs_selftest.txt
+A	docs/phase2/wp-reports/evidence/wp2/make_check.txt
+A	docs/phase2/wp-reports/evidence/wp2/metrics.json
+A	docs/phase2/wp-reports/evidence/wp2/mutation_bites.txt
+A	docs/phase2/wp-reports/evidence/wp2/occlusion_rig_topdown.svg
+A	docs/phase2/wp-reports/evidence/wp2/pytest_wp2_verbose.txt
+A	perception/__init__.py
+A	perception/hungarian.py
+A	perception/stats.py
+A	perception/tracker.py
+M	pytest.ini
+A	scenarios/s01w2_occlusion_rig.yaml
+M	schemas/scenario.schema.json
+M	schemas/telemetry.schema.json
+M	scripts/check_repo.py
+A	scripts/make_wp2_evidence.py
+M	scripts/physics_bites.py
+A	tests/perception/__init__.py
+A	tests/perception/helpers.py
+A	tests/perception/test_iso_ground_truth_separation.py
+A	tests/perception/test_phy07_sensor_geometry.py
+A	tests/perception/test_phy07_sensor_statistics.py
+A	tests/perception/test_rig_integration.py
+A	tests/perception/test_trk_association.py
+A	tests/perception/test_trk_consistency.py
+A	tests/perception/test_trk_occlusion_and_failure_modes.py
+A	tests/perception/test_trk_stale_and_validation.py
+A	tests/perception/tracking_helpers.py
+M	tests/physics/golden_hashes.json
+M	tests/physics/test_phy05_limits.py
+A	tests/physics/test_phy05_standstill.py

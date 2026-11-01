@@ -8,8 +8,8 @@
  },
  "throughput": {
   "sim_seconds": 10.0,
-  "wall_seconds": 0.03,
-  "real_time_factor": 333.7,
+  "wall_seconds": 0.031,
+  "real_time_factor": 318.8,
   "note": "informational; one vehicle; includes telemetry capture in memory"
  },
  "environment": {

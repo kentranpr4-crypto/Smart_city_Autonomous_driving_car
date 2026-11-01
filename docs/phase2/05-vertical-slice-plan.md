@@ -69,7 +69,7 @@ Cỡ tương đối S/M/L/XL, không cam kết lịch.
 | WP7 | Báo cáo gate, tái lập, giới hạn | S | AC-VS-12, AC-VS-14, AC-VS-15, AC-VS-16, AC-VS-17 |
 | **Điểm dừng R2** | Review slice toàn bộ trước khi mở rộng sang MVP | — | Chủ việc duyệt |
 
-**Trạng thái thực thi (2026-11-01, cập nhật khi triển khai):** WP0 **PASS**; WP1 **PASS** cho PHY-01..06 (báo cáo + bằng chứng tại `docs/phase2/wp-reports/`); PHY-07/08 NOT_CHECKED (WP2/WP3); VIS-08 **BLOCKED** (chưa có ảnh trong `docs/references/`); VIS-01..07, 09, 10 NOT_CHECKED. Đã dừng trước WP2 theo yêu cầu review.
+**Trạng thái thực thi (2026-11-01, cập nhật khi triển khai):** WP0 **PASS**; WP1 **PASS** (PHY-01..06, kèm regression dừng xe/jerk); WP2 **PASS** (PHY-07, AC-VS-03, AC-VS-06 và test association/stale/occlusion/failure-mode; báo cáo + bằng chứng tại `docs/phase2/wp-reports/`); PHY-08 NOT_CHECKED (WP3); VIS-08 **BLOCKED** (chưa có ảnh gốc trong `docs/references/`); VIS-01..07, 09, 10 NOT_CHECKED. Đã dừng trước WP3 theo yêu cầu review.
 
 ## 6. Tiêu chí chấp nhận của slice
 | ID | Tiêu chí | Cách kiểm |

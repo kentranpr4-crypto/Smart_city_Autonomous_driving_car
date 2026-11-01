@@ -41,7 +41,7 @@
     },
     "Event": {
       "type": "object", "required": ["type"],
-      "properties": {"type": {"enum": ["collision", "outside_model_validity", "outside_odd"]}}
+      "properties": {"type": {"enum": ["collision", "outside_model_validity", "outside_odd", "standstill_jerk_discontinuity"]}}
     }
   }
 }

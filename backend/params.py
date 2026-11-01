@@ -9,7 +9,7 @@ LIMITATIONS = (
     "Flat horizontal plane; no slope or road elevation.",
     "Kinematic bicycle + friction circle; no tyre slip, load transfer, suspension, pitch, aero or rolling resistance.",
     "Uniform friction mu (a parameter); no source for Vietnamese inner-city roads.",
-    "Jerk limit is NOT enforced at the standstill transition: acceleration snaps to 0 within one step when v reaches 0 (enforced everywhere else; PHY-05 excludes exactly that step).",
+    "Jerk limit is NOT guaranteed at standstill: if braking is commanded until v=0, acceleration snaps to 0 within one step (jerk = |a|/dt, far above the limit). The model REPORTS this as event standstill_jerk_discontinuity; it only meets the limit if the controller eases the brake command to ~0 as v->0 (soft stop, tested in PHY-05).",
     "Rigid bodies; contact ends the run; no deformation, injury or post-impact dynamics.",
     "Pedestrians are kinematic and non-reactive (no gap acceptance, no crowd behaviour).",
     "Sensors/channel (later WPs) are statistical models over ground truth, not raw sensors or real V2X PHY/MAC.",
@@ -26,6 +26,7 @@ class VehicleParams:
     wheelbase: float = 2.7
     rear_overhang: float = 0.9
     wheel_radius: float = 0.32
+    height: float = 1.5
     delta_max: float = math.radians(35.0)
     delta_rate_max: float = 0.6
     t_act: float = 0.15

@@ -1,5 +1,7 @@
 # WP1 — Physics sandbox đầu tiên (backend vật lý có thẩm quyền, bước cố định)
 
+> **Bổ sung sau WP2 (2026-11-01):** theo yêu cầu của chủ việc, đã thêm regression moving→stopping→stationary (`tests/physics/test_phy05_standstill.py`, PHY-05 từ 6 lên 12 test) và sự kiện `standstill_jerk_discontinuity` để giới hạn jerk tại v=0 được **báo trong telemetry** thay vì là ngoại lệ ngầm. Header telemetry có thêm `height` nên hash golden đổi từ `ce9dc616…` sang `5876d26c…`; kết quả vật lý không đổi (S00a x_final = 13.613703703703715). Các con số "98 test PHY" bên dưới là số tại thời điểm WP1; số hiện hành xem `make check` và `WP2-report.md`.
+
 **Trạng thái: PASS cho PHY-01…PHY-06 trong phạm vi đã định; PHY-07/PHY-08 NOT_CHECKED (thuộc WP2/WP3).** Ngày 2026-11-01. Không có VIS nào được chạy trong WP này.
 
 ## Mã nguồn chạy được

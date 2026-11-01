@@ -41,22 +41,30 @@ nl = sh("npm", "ls", "--depth=0", cwd="web")
 add("LOCK-WEB exact + installed", "PASS" if not loose and os.path.exists("web/package-lock.json") and nl.returncode == 0 else "FAIL",
     f"{len(deps)} exact deps, lockfile present, npm ls rc={nl.returncode}" + (f"; loose: {loose}" if loose else ""))
 
-# --- physics gates (map test files -> PHY ids; PHY-07/08 have no tests yet)
-junit = "results/junit_phy.xml"; os.makedirs("results", exist_ok=True)
-sh(PY, "-m", "pytest", "-m", "phy", f"--junitxml={junit}", "-q", "-p", "no:cacheprovider")
-per = {}
+# --- physics + WP2 gates (map test files -> gate ids from the junit report)
+junit = "results/junit_all.xml"; os.makedirs("results", exist_ok=True)
+sh(PY, "-m", "pytest", "-m", "phy or trk or iso", f"--junitxml={junit}", "-q", "-p", "no:cacheprovider")
+per, extra = {}, {}
+def tally(d, key, tc):
+    s = d.setdefault(key, {"pass": 0, "fail": 0, "skip": 0})
+    s["fail" if tc.find("failure") is not None or tc.find("error") is not None else "skip" if tc.find("skipped") is not None else "pass"] += 1
 for tc in ET.parse(junit).getroot().iter("testcase"):
-    m = re.search(r"test_phy0(\d)_", tc.get("classname", "") + tc.get("file", ""))
-    if not m: continue
-    pid = f"PHY-0{m.group(1)}"; d = per.setdefault(pid, {"pass": 0, "fail": 0, "skip": 0})
-    d["fail" if tc.find("failure") is not None or tc.find("error") is not None else "skip" if tc.find("skipped") is not None else "pass"] += 1
+    cn = tc.get("classname", "") + tc.get("file", "")
+    m = re.search(r"test_phy0(\d)_", cn)
+    if m: tally(per, f"PHY-0{m.group(1)}", tc)
+    if "test_trk_consistency" in cn: tally(extra, "AC-VS-03 tracker consistency (NEES/NIS chi2)", tc)
+    elif "test_trk_" in cn or "test_rig_integration" in cn: tally(extra, "WP2-TRK association/stale/occlusion/failure modes", tc)
+    if "test_iso_" in cn: tally(extra, "AC-VS-06 ground-truth isolation (AST + blocked-import subprocess)", tc)
 names = {1: "determinism / wall-clock independence", 2: "linear kinematics", 3: "braking distance + friction", 4: "steering / turning",
-         5: "accel / jerk / steer limits", 6: "collision + pedestrian", 7: "sensors FOV/occlusion/uncertainty", 8: "communication / freshness"}
+         5: "accel / jerk / steer limits (+standstill regression)", 6: "collision + pedestrian", 7: "sensors FOV/occlusion/uncertainty", 8: "communication / freshness"}
+def row(label, d):
+    st = "FAIL" if d["fail"] else "PASS"
+    add(label, st, f"{d['pass']} passed, {d['fail']} failed, {d['skip']} skipped" + ("  (skip = golden hash from another environment, never counted as pass)" if d["skip"] else ""))
 for i in range(1, 9):
     pid = f"PHY-0{i}"; d = per.get(pid)
     if not d: add(f"{pid} {names[i]}", "NOT_CHECKED", "no test exists yet (later WP)"); continue
-    st = "FAIL" if d["fail"] else "PASS"
-    add(f"{pid} {names[i]}", st, f"{d['pass']} passed, {d['fail']} failed, {d['skip']} skipped" + ("  (skip = golden hash from another environment, never counted as pass)" if d["skip"] else ""))
+    row(f"{pid} {names[i]}", d)
+for k in sorted(extra): row(k, extra[k])
 img = [p for p in glob.glob("docs/references/*") if p.lower().endswith((".png", ".jpg", ".jpeg", ".webp"))]
 for i in range(1, 11):
     if i == 8: add("VIS-08 reference comparison", "BLOCKED" if not img else "NOT_CHECKED", "no image in docs/references/" if not img else f"{len(img)} reference image(s) present, rubric not yet run")

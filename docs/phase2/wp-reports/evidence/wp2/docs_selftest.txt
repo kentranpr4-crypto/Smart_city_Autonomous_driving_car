@@ -1,0 +1,9 @@
+# scripts/selftest_check_phase2_docs.py   2026-11-01T06:19:27Z
+clean copy       : PASS (expected)
+claim_out_of_range: BITES (caught)
+claim_wrong_entity: BITES (caught)
+snapshot_wrong_line: BITES (caught)
+verified_without_A: BITES (caught)
+undefined_id     : BITES (caught)
+bad_label        : BITES (caught)
+SELFTEST PASS
