@@ -1,0 +1,44 @@
+{
+  "_comment": "DECLARED BEFORE ANY WP3 BENCHMARK WAS RUN. Do not edit after benchmarks exist; change = new version + explicit note. kind: invariant = must hold exactly, proven by construction/tests (evidence-backed by the executable tests, not by external sources); provisional_design = engineering placeholder with NO external evidence source (gap-matrix G05/E04/B04/B06 UNKNOWN); report_only = measured and reported, no pass/fail.",
+  "version": "1.0.0",
+  "declared_on": "2026-11-01",
+  "protocol": {
+    "scenario": "scenarios/s01w2_occlusion_rig.yaml (CCTV cctv_k1 publishes to receiver 'ego'; 11 s simulated)",
+    "publisher": {"rate_hz": 10, "ttl_s": 1.0, "confirmation": "3of4", "publish_only_on_new_observation": true},
+    "receiver": {"proc_delay_s": 0.005, "max_age_s": 0.5, "clock_tolerance_s": 0.05, "reorder_window": 8, "max_hops": 2},
+    "seeds": "20261101 .. 20261150 (50 seeds, results pooled per condition)",
+    "conditions": {
+      "B0_nominal":  {"base_delay_s": 0.030, "jitter_s": 0.010, "loss_p": 0.01},
+      "B1_degraded": {"base_delay_s": 0.080, "jitter_s": 0.040, "gilbert_elliott": {"p_gb": 0.05, "p_bg": 0.30, "loss_good": 0.02, "loss_bad": 0.60}, "dup_p": 0.02, "reorder_p": 0.05, "reorder_extra_delay_s": [0.05, 0.15]},
+      "B2_severe":   {"base_delay_s": 0.200, "jitter_s": 0.100, "loss_p": 0.30, "dup_p": 0.10, "reorder_p": 0.15, "reorder_extra_delay_s": [0.10, 0.40], "corrupt_p": 0.02, "blackouts": [[5.0, 6.0]]}
+    },
+    "definitions": {
+      "delivery_ratio": "messages admitted / messages sent (after loss, corruption, duplication handling, admission)",
+      "network_latency": "t_recv - t_sent in simulation time for every delivered copy",
+      "obs_to_use_latency": "t_proc - t_meas (simulation time) for every ADMITTED message (observation time is preserved end to end)",
+      "aoi": "observation-time AoI at the receiver: t - freshest admitted t_meas, sampled every 10 ms from the first admission until the end of the run, pooled over seeds",
+      "percentiles": "numpy.percentile, method=linear",
+      "bandwidth": "serialized TrackMsg bytes handed to the channel per second, per source; canonical JSON bytes (NOT CPM/SDSM encoding)"
+    }
+  },
+  "thresholds": [
+    {"id": "INV-1", "scope": "all", "metric": "invalid_messages_admitted", "op": "==", "value": 0, "kind": "invariant", "basis": "fail-closed admission; fuzz + injection tests"},
+    {"id": "INV-2", "scope": "all", "metric": "duplicate_content_admitted", "op": "==", "value": 0, "kind": "invariant", "basis": "content key (origin source, origin seq)"},
+    {"id": "INV-3", "scope": "all", "metric": "max_observation_age_accepted_s", "op": "<=", "value": 0.5, "kind": "invariant", "basis": "equals receiver max_age_s by construction"},
+    {"id": "INV-4", "scope": "all", "metric": "accounting_identity_violations", "op": "==", "value": 0, "kind": "invariant", "basis": "sent = dropped + delivered + in_flight; delivered = admitted + rejected"},
+    {"id": "INV-5", "scope": "all", "metric": "replay_hash_mismatches", "op": "==", "value": 0, "kind": "invariant", "basis": "deterministic discrete-event simulation"},
+    {"id": "INV-6", "scope": "all", "metric": "truth_identifiers_in_wire_bytes", "op": "==", "value": 0, "kind": "invariant", "basis": "no truth leakage"},
+    {"id": "INV-7", "scope": "all", "metric": "aoi_decreases_caused_by_older_or_duplicate_or_relayed_copies", "op": "==", "value": 0, "kind": "invariant", "basis": "AoI is driven only by the freshest observation time"},
+    {"id": "B0-NET-MAX", "scope": "B0_nominal", "metric": "network_latency_max_s", "op": "<=", "value": 0.0401, "kind": "invariant", "basis": "base_delay + jitter (+1e-4 float slack); channel construction"},
+    {"id": "B0-DR", "scope": "B0_nominal", "metric": "delivery_ratio", "op": ">=", "value": 0.97, "kind": "provisional_design", "basis": "1% configured loss plus margin; no external source"},
+    {"id": "B0-E2E-P99", "scope": "B0_nominal", "metric": "obs_to_use_latency_p99_s", "op": "<=", "value": 0.25, "kind": "provisional_design", "basis": "sensor t_proc 0.05 + publish period 0.1 + network 0.04 + proc 0.005 + margin; budget 04 s3 (0.87 s chain) is itself derived from [PARAM]"},
+    {"id": "B0-AOI-P95", "scope": "B0_nominal", "metric": "aoi_p95_s", "op": "<=", "value": 0.35, "kind": "provisional_design", "basis": "no external source"},
+    {"id": "B0-AOI-P99", "scope": "B0_nominal", "metric": "aoi_p99_s", "op": "<=", "value": 0.50, "kind": "provisional_design", "basis": "no external source"},
+    {"id": "B0-BW", "scope": "B0_nominal", "metric": "bandwidth_Bps_per_source_mean", "op": "<=", "value": 50000, "kind": "provisional_design", "basis": "no V2X payload budget source (W3H-1)"},
+    {"id": "B1-DR", "scope": "B1_degraded", "metric": "delivery_ratio", "op": ">=", "value": 0.75, "kind": "provisional_design", "basis": "stationary GE loss ~ 0.145 + admission rejects; no external source"},
+    {"id": "B1-AOI-P95", "scope": "B1_degraded", "metric": "aoi_p95_s", "op": "<=", "value": 0.90, "kind": "provisional_design", "basis": "no external source"},
+    {"id": "B1-AOI-P99", "scope": "B1_degraded", "metric": "aoi_p99_s", "op": "<=", "value": 1.50, "kind": "provisional_design", "basis": "no external source"},
+    {"id": "B2-DR", "scope": "B2_severe", "metric": "delivery_ratio", "op": ">=", "value": 0.0, "kind": "report_only", "basis": "severe stress: only invariants are asserted"},
+    {"id": "B2-AOI-P99", "scope": "B2_severe", "metric": "aoi_p99_s", "op": ">=", "value": 0.0, "kind": "report_only", "basis": "severe stress: only invariants are asserted"}
+  ]
+}

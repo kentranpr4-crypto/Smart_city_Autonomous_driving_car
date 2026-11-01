@@ -40,7 +40,7 @@ if gm.exists():
                 tiers = [claims[int(n)-1]['tier'] for n in re.findall(r'\bC(\d{1,3})·', c[3]) if 1 <= int(n) <= len(claims)]
                 if 'A' not in tiers: bad.append(f'{c[0]}: VERIFIED without tier-A claim')
 # ---- ID_RESOLVE: every referenced ID must be defined (table first cell / heading / bold / bullet) ----
-ID = r'(?:R-[A-Z]{3}-\d{2}|FM\d{2}|AC-M\d{2}|AC-VS-\d{2}|ADR-\d{3}|WP\d|DEC-\d|CAL-\d|ODD-\d{2}|N-\d{2}|I1[0-2]|I[1-9]|H[1-9]|PHY-\d{2}|VIS-\d{2}|OD-\d|PX-\d|[A-GV]\d\d(?!·))'
+ID = r'(?:R-[A-Z]{3}-\d{2}|FM\d{2}|AC-M\d{2}|AC-VS-\d{2}|ADR-\d{3}|WP\d|DEC-\d|CAL-\d|ODD-\d{2}|N-\d{2}|I1[0-2]|I[1-9]|H[1-9]|PHY-\d{2}|VIS-\d{2}|COM-\d{2}|OD-\d|PX-\d|[A-GV]\d\d(?!·))'
 defined, refs = {}, {}
 for f in files:
     for ln, row in enumerate(open(f, encoding='utf-8').read().split('\n'), 1):
