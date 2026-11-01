@@ -1,0 +1,6 @@
+fus_ci_omega_fixed_half            BITES  FAILED tests/fusion/test_fus05_fusion_methods.py::test_fus05_ci_weight_is_the_trace_optimu
+fus_monitor_no_hysteresis          BITES  FAILED tests/fusion/test_fus08_09_isolation_monitor_identity.py::test_fus09_monitor_stays_
+fus_b0_uses_remote                 BITES  FAILED tests/fusion/test_fus05_fusion_methods.py::test_fus05_b0_and_b1_do_not_even_look_at
+fus_adapter_uses_arrival_time      BITES  FAILED tests/fusion/test_fus08_09_isolation_monitor_identity.py::test_fus01_adapters_keep_
+fus_evaluator_nees_uses_diag       BITES  FAILED tests/fusion/test_fus10_protocol_and_evaluator.py::test_fus10_nees_uses_the_full_co
+MUTATION BITES: ALL CAUGHT

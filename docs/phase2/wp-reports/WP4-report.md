@@ -28,7 +28,7 @@
 | Invariant FI-1..6 trên 30 seed | **6/6 PASS** | không NaN/PSD sai; 0 dùng bằng chứng đôi; tuổi remote lớn nhất 0.46 s ≤ 0.5; 0 replay lệch; 0 ngoại lệ; 0 đối tượng truth tới được từ fuser |
 
 ## 3. Đánh giá cuối (đăng ký trước; chạy MỘT lần; 30 seed 20261301–20261330; 21 điều kiện × 6 phương pháp)
-Giao thức/ngưỡng đóng băng ở commit `13500d3` (sha256 `fusion/preregistration.json` = `600215ad…`, `experiments/conditions.py` = `f0108f59…`). Seed tuning 20261201–15 tách biệt, chỉ để gỡ lỗi. Kết quả gốc **giữ nguyên, kể cả bác bỏ**: `evidence/wp4/eval/{results.json, verdicts.md, eval_run.log}`.
+Giao thức/ngưỡng đóng băng ở commit `13500d3` (sha256 `fusion/preregistration.json` = `600215ad…`, `experiments/conditions.py` = `f0108f59…`). Seed tuning 20261201–15 tách biệt, chỉ để gỡ lỗi. Kết quả gốc **giữ nguyên, kể cả bác bỏ**: `evidence/wp4/eval/{results.json, verdicts.md, eval_run.txt}`.
 
 **Phán quyết 33 ngưỡng:** FI-1..6 PASS · SUPPORTED: H1b–H1g, H2a–H2c, H3a–H3b, H4b–H4c, H5a*, H5b, H5c–H5d, H6a, H7a, H8a, H9a, H10, H11, H12 · **REFUTED: H1a, H4a, H6b**. (*H5a = 0.900 đúng bằng ngưỡng, 27/30 seed — ủng hộ sát biên.)
 - **H1a bác bỏ:** B0 availability_occluded = 0.151 > 0.05, vì cửa sổ "ego không thấy" gồm cả lúc mục tiêu ra khỏi FOV và track cục bộ còn *coast* tới 1.5 s — định nghĩa cửa sổ của tôi rộng hơn "bị che".

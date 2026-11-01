@@ -1,0 +1,7 @@
+fus_ci_omega_fixed_half            SURVIVED!!  
+fus_monitor_no_hysteresis          SURVIVED!!  
+fus_b0_uses_remote                 SURVIVED!!  
+fus_adapter_uses_arrival_time      SURVIVED!!  
+fus_evaluator_gate_ignored         BITES  FAILED tests/fusion/test_fus10_protocol_and_evaluator.py::test_fus10_evaluator_counts_id_s
+fus_evaluator_nees_uses_diag       SURVIVED!!  
+MUTATION BITES: SURVIVORS ['fus_ci_omega_fixed_half', 'fus_monitor_no_hysteresis', 'fus_b0_uses_remote', 'fus_adapter_uses_arrival_time', 'fus_evaluator_nees_uses_diag']
