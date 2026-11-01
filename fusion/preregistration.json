@@ -1,0 +1,425 @@
+{
+ "version": "1.0.0",
+ "declared_on": "2026-11-01",
+ "_comment": "DECLARED BEFORE ANY WP4 BENCHMARK. Edit = new version + a note in docs/phase2/09. invariant = must hold exactly; hypothesis = directional expectation on EVALUATION seeds (outcome SUPPORTED or REFUTED; refuted ones are reported, never removed); no claim of physical-world safety.",
+ "conditions_sha256": "f0108f59f404d0fb0079682770a182884e44a5c7df553d8230952c84a0edb950",
+ "seeds": {
+  "tuning": [
+   20261201,
+   20261215
+  ],
+  "evaluation": [
+   20261301,
+   20261330
+  ],
+  "replay": 3
+ },
+ "fusion_params": "see experiments/conditions.py FUSION_PARAMS (hash-pinned)",
+ "methods": [
+  "B0_local",
+  "B1_remote",
+  "B2_naive",
+  "B3_info",
+  "B4_ci",
+  "B4q_ci_quarantine"
+ ],
+ "thresholds": [
+  {
+   "id": "FI-1",
+   "scope": "all",
+   "metric": "nonfinite_or_non_psd_outputs",
+   "method": "all_methods",
+   "op": "==",
+   "value": 0,
+   "kind": "invariant",
+   "basis": "outputs are validated; fuzz + property tests"
+  },
+  {
+   "id": "FI-2",
+   "scope": "all",
+   "metric": "duplicate_evidence_double_use",
+   "method": "all_methods",
+   "op": "==",
+   "value": 0,
+   "kind": "invariant",
+   "basis": "evidence ledger keyed (origin source, origin seq)"
+  },
+  {
+   "id": "FI-3",
+   "scope": "all",
+   "metric": "max_remote_age_used_s",
+   "method": "all_methods",
+   "op": "<=",
+   "value": 0.5,
+   "kind": "invariant",
+   "basis": "fusion max_remote_age_s equals store max_age_s"
+  },
+  {
+   "id": "FI-4",
+   "scope": "all",
+   "metric": "replay_mismatches",
+   "method": "all_methods",
+   "op": "==",
+   "value": 0,
+   "kind": "invariant",
+   "basis": "deterministic simulation + deterministic fusion"
+  },
+  {
+   "id": "FI-5",
+   "scope": "all",
+   "metric": "run_exceptions",
+   "method": "all_methods",
+   "op": "==",
+   "value": 0,
+   "kind": "invariant",
+   "basis": "no crash in any condition"
+  },
+  {
+   "id": "FI-6",
+   "scope": "all",
+   "metric": "truth_objects_reachable_from_fuser",
+   "method": "all_methods",
+   "op": "==",
+   "value": 0,
+   "kind": "invariant",
+   "basis": "object-graph walk after each run (as AC-VS-06)"
+  },
+  {
+   "id": "H1a",
+   "scope": "C1_occ_nominal",
+   "metric": "availability_occluded",
+   "method": "B0_local",
+   "op": "<=",
+   "value": 0.05,
+   "kind": "hypothesis",
+   "basis": "ego cannot see the target during occlusion (geometry)",
+   "hypothesis": "local-only is blind while occluded"
+  },
+  {
+   "id": "H1b",
+   "scope": "C1_occ_nominal",
+   "metric": "availability_occluded",
+   "method": "B4_ci",
+   "op": ">=",
+   "value": 0.8,
+   "kind": "hypothesis",
+   "basis": "CCTV sees target; 3-of-4 confirmation delay ~0.4 s of a ~4.5 s window",
+   "hypothesis": "sharing restores a track during occlusion"
+  },
+  {
+   "id": "H1c",
+   "scope": "C1_occ_nominal",
+   "metric": "pos_rmse_overlap",
+   "method": "B3_info",
+   "op": "<=",
+   "value": {
+    "factor": 0.9,
+    "of": [
+     "B0_local",
+     "B1_remote"
+    ],
+    "agg": "min"
+   },
+   "kind": "hypothesis",
+   "basis": "two independent estimates of similar accuracy",
+   "hypothesis": "info fusion beats the best single source when both see the target"
+  },
+  {
+   "id": "H1d",
+   "scope": "C1_occ_nominal",
+   "metric": "pos_rmse_overlap",
+   "method": "B4_ci",
+   "op": "<=",
+   "value": {
+    "factor": 1.05,
+    "of": [
+     "B0_local",
+     "B1_remote"
+    ],
+    "agg": "min"
+   },
+   "kind": "hypothesis",
+   "basis": "CI is never much worse than the best input",
+   "hypothesis": "CI is not materially worse than the best single source"
+  },
+  {
+   "id": "H1e",
+   "scope": "C1_occ_nominal",
+   "metric": "coverage95",
+   "method": "B4_ci",
+   "op": ">=",
+   "value": 0.9,
+   "kind": "hypothesis",
+   "basis": "CI is conservative by construction",
+   "hypothesis": "CI covariance covers the error (nominal 95%)"
+  },
+  {
+   "id": "H1f",
+   "scope": "C1_occ_nominal",
+   "metric": "coverage95",
+   "method": "B3_info",
+   "op": ">=",
+   "value": 0.9,
+   "kind": "hypothesis",
+   "basis": "independence approximately true when both sensors are independent",
+   "hypothesis": "B3 is consistent when its independence assumption holds"
+  },
+  {
+   "id": "H1g",
+   "scope": "C1_occ_nominal",
+   "metric": "ttfv_median_s",
+   "method": "B4_ci",
+   "op": "<=",
+   "value": {
+    "minus": 2.0,
+    "of": [
+     "B0_local"
+    ]
+   },
+   "kind": "hypothesis",
+   "basis": "ego first sees the target ~4.5 s into the run",
+   "hypothesis": "sharing makes the first valid track earlier by >= 2 s"
+  },
+  {
+   "id": "H2a",
+   "scope": "C2b_close_1p5",
+   "metric": "assoc_precision",
+   "method": "B4_ci",
+   "op": ">=",
+   "value": 0.95,
+   "kind": "hypothesis",
+   "basis": "gap 1.5 m >> sigma",
+   "hypothesis": "cross-source association is precise for well separated pedestrians"
+  },
+  {
+   "id": "H2b",
+   "scope": "C2a_close_0p4",
+   "metric": "assoc_precision",
+   "method": "B4_ci",
+   "op": "<",
+   "value": 0.95,
+   "kind": "hypothesis",
+   "basis": "KF-1 (WP2) persists: 0.4 m is inside the merge gate",
+   "hypothesis": "close pedestrians remain a KNOWN FAILURE of association"
+  },
+  {
+   "id": "H2c",
+   "scope": "C2b_close_1p5",
+   "metric": "id_switch_rate_per_min",
+   "method": "B4_ci",
+   "op": "<=",
+   "value": {
+    "plus": 0.0,
+    "of": [
+     "B0_local"
+    ]
+   },
+   "kind": "hypothesis",
+   "basis": "no worse than local-only",
+   "hypothesis": "fusion adds no ID switches for separated pedestrians"
+  },
+  {
+   "id": "H3a",
+   "scope": "C3a_cross_collision",
+   "metric": "id_switch_seed_fraction",
+   "method": "B4_ci",
+   "op": ">=",
+   "value": 0.2,
+   "kind": "hypothesis",
+   "basis": "KF-2 (WP2): collision-course crossing is not fixed by sharing",
+   "hypothesis": "collision-course ID switches persist under fusion (KNOWN FAILURE)"
+  },
+  {
+   "id": "H3b",
+   "scope": "C3b_cross_miss_1p77",
+   "metric": "id_switch_seed_fraction",
+   "method": "B4_ci",
+   "op": "<=",
+   "value": 0.05,
+   "kind": "hypothesis",
+   "basis": "WP2: 0/20 seeds at 1.77 m for single sources",
+   "hypothesis": "no ID switches for a 1.77 m miss"
+  },
+  {
+   "id": "H4a",
+   "scope": "C4a_corr_echo",
+   "metric": "coverage95",
+   "method": "B3_info",
+   "op": "<",
+   "value": 0.9,
+   "kind": "hypothesis",
+   "basis": "echo = fully correlated: information fusion halves P but not the error",
+   "hypothesis": "B3 is overconfident when evidence is correlated"
+  },
+  {
+   "id": "H4b",
+   "scope": "C4a_corr_echo",
+   "metric": "coverage95",
+   "method": "B4_ci",
+   "op": ">=",
+   "value": 0.9,
+   "kind": "hypothesis",
+   "basis": "CI is consistent for any cross-correlation",
+   "hypothesis": "B4 stays consistent under unknown correlation"
+  },
+  {
+   "id": "H4c",
+   "scope": "C4b_corr_partial",
+   "metric": "coverage95",
+   "method": "B4_ci",
+   "op": ">=",
+   "value": 0.9,
+   "kind": "hypothesis",
+   "basis": "same",
+   "hypothesis": "B4 stays consistent under partial correlation"
+  },
+  {
+   "id": "H5a",
+   "scope": "C5a_bias_undeclared",
+   "metric": "monitor_flag_seed_fraction",
+   "method": "B4_ci",
+   "op": ">=",
+   "value": 0.9,
+   "kind": "hypothesis",
+   "basis": "bias 0.58 m vs sigma ~0.1-0.2 m; chi2 99.9% over 10 pairs",
+   "hypothesis": "the inconsistency monitor flags a constant remote bias within 3 s"
+  },
+  {
+   "id": "H5b",
+   "scope": "C0_solo_control",
+   "metric": "monitor_flag_seed_fraction",
+   "method": "B4_ci",
+   "op": "<=",
+   "value": 0.05,
+   "kind": "hypothesis",
+   "basis": "chi2 99.9% window false-alarm design",
+   "hypothesis": "no false flag on the unbiased control"
+  },
+  {
+   "id": "H5c",
+   "scope": "C5a_bias_undeclared",
+   "metric": "coverage95",
+   "method": "B3_info",
+   "op": "<",
+   "value": {
+    "minus": 0.05,
+    "of": [
+     "C0_solo_control:B3_info"
+    ]
+   },
+   "kind": "hypothesis",
+   "basis": "unmodelled bias degrades consistency",
+   "hypothesis": "undeclared bias degrades B3 consistency by >= 5 points"
+  },
+  {
+   "id": "H5d",
+   "scope": "C5b_bias_declared",
+   "metric": "coverage95",
+   "method": "B4_ci",
+   "op": ">=",
+   "value": 0.9,
+   "kind": "hypothesis",
+   "basis": "declaring the extrinsic uncertainty through the covariance-propagating transform restores consistency",
+   "hypothesis": "declared transform uncertainty restores B4 consistency"
+  },
+  {
+   "id": "H6a",
+   "scope": "C6d_skew_p0p3",
+   "metric": "remote_admitted_fraction",
+   "method": "B4_ci",
+   "op": "<=",
+   "value": 0.05,
+   "kind": "hypothesis",
+   "basis": "WP3 admission rejects observations from the future (future_obs)",
+   "hypothesis": "a remote clock 0.3 s ahead is fully rejected: no silent use"
+  },
+  {
+   "id": "H6b",
+   "scope": "C6a_skew_m0p3",
+   "metric": "coverage95",
+   "method": "B3_info",
+   "op": "<",
+   "value": 0.9,
+   "kind": "hypothesis",
+   "basis": "0.3 s stale-stamped data misaligns the state by ~v*0.3 = 0.42 m",
+   "hypothesis": "timestamp skew degrades B3 consistency"
+  },
+  {
+   "id": "H7a",
+   "scope": "C7a_occ_degraded",
+   "metric": "availability_occluded",
+   "method": "B4_ci",
+   "op": ">=",
+   "value": 0.7,
+   "kind": "hypothesis",
+   "basis": "WP3 delivery 0.91 at this link",
+   "hypothesis": "sharing still helps under the degraded link"
+  },
+  {
+   "id": "H8a",
+   "scope": "C8b_relay_1hop",
+   "metric": "distinct_obs_admitted_ratio",
+   "method": "B4_ci",
+   "op": ">=",
+   "value": {
+    "plus": 0.05,
+    "of": [
+     "C8a_relay_direct_only:B4_ci"
+    ]
+   },
+   "kind": "hypothesis",
+   "basis": "a second path recovers observations lost on the severe direct link",
+   "hypothesis": "relay increases distinct observations admitted"
+  },
+  {
+   "id": "H9a",
+   "scope": "C9a_blackout_solo",
+   "metric": "recovery_p95_s",
+   "method": "B4_ci",
+   "op": "<=",
+   "value": 1.0,
+   "kind": "hypothesis",
+   "basis": "3-of-4 reconfirmation + publish period",
+   "hypothesis": "remote evidence is used again within 1 s after a camera blackout"
+  },
+  {
+   "id": "H10",
+   "scope": "all",
+   "metric": "false_tracks_per_cycle_excess_vs_B0",
+   "method": "B4_ci",
+   "op": "<=",
+   "value": 0.01,
+   "kind": "hypothesis",
+   "basis": "3-of-4 confirmation on both sources",
+   "hypothesis": "sharing does not add false tracks (pooled over conditions)"
+  },
+  {
+   "id": "H11",
+   "scope": "all",
+   "metric": "fuse_runtime_p95_ms",
+   "method": "B4_ci",
+   "op": "<=",
+   "value": 5.0,
+   "kind": "hypothesis",
+   "basis": "tens of tracks, pure Python; sandbox CPU, NOT the Jetson",
+   "hypothesis": "fusion cycle fits in 5 ms on the sandbox (not a hardware claim)"
+  },
+  {
+   "id": "H12",
+   "scope": "C1_occ_nominal",
+   "metric": "pos_rmse_overlap",
+   "method": "B2_naive",
+   "op": ">=",
+   "value": {
+    "factor": 1.0,
+    "of": [
+     "B3_info"
+    ],
+    "agg": "min"
+   },
+   "kind": "hypothesis",
+   "basis": "arithmetic mean ignores covariances",
+   "hypothesis": "naive averaging is no better than information fusion"
+  }
+ ]
+}
