@@ -71,6 +71,9 @@ Khoảng tin cậy bootstrap 95% (theo seed) của pos RMSE: C1 B0 [0.192, 0.218
 - **Runtime:** B4 trung bình 0.65 ms, P95 **1.49 ms**/chu kỳ trên CPU sandbox (H11 P95 pooled 2.38 ms ≤ 5 ms) — **không** phải số đo Jetson. **Băng thông:** ~12–15 kB/s/nguồn JSON (24 kB/s khi thêm relay).
 - **Failure rate theo điều kiện** (availability<0.5 của seed): B0 = 1.0 ở mọi điều kiện bị che; B4 = 0 ngoại trừ C2a (0.70).
 
+### 3.4 Tái lập trong clean-room (clone mới + `make setup`)
+`make check` giống hệt (40 PASS / 0 FAIL / 1 BLOCKED / 9 NOT_CHECKED). Chạy lại **toàn bộ** đánh giá cuối từ clone: digest tất định `54d91faa…a31fb` **trùng bit-giống** với bản gốc (loại các trường phụ thuộc đồng hồ tường); mọi phán quyết trùng, kể cả 3 REFUTED; chỉ runtime P95 khác (2.379 vs 2.382 ms, phụ thuộc phần cứng). `MANIFEST.sha256` xác minh hash các tệp đóng băng (đăng ký, điều kiện, ngưỡng WP3) và kết quả gốc. Mutant WP3 (`com_*`, 36) chạy lại sau khi mở rộng `comm/store.py`: ALL CAUGHT.
+
 ## 4. Phát hiện trong quá trình làm (nêu thẳng)
 1. **Chạy mutation đầu tiên báo "ALL CAUGHT" là SAI:** 6 mutant bị "diệt" chỉ vì test băm đăng ký fail trong bản sao (thiếu `docs/`). Sửa runner (sao chép `docs/phase2`), chạy lại: **5 mutant thực sự sống sót** — trọng số CI cố định 0.5, monitor không hysteresis, B0 đọc cả nguồn remote, adapter cộng tuổi vào `t_meas`, NEES chỉ dùng P[0,0]. Cả 5 là lỗ hổng test thật (không tương đương) → thêm 5 test (`ci_weight_is_the_trace_optimum…`, `monitor_stays_flagged_between…`, `b0_and_b1_do_not_even_look…`, `adapters_keep_the_original_observation_time…`, `nees_uses_the_full_covariance…`); chạy lại: **36/36 diệt**. (Mutant thứ 6 `evaluator_gate_ignored` bị diệt đúng bởi test evaluator.)
 2. Q của tracker là DWNA, không hợp thành (test ban đầu của tôi sai) — đã ghi.
