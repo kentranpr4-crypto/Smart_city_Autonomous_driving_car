@@ -1,0 +1,7 @@
+1fff8045a40d2f00bccbabb49762fa749ecf61ce3fe629472ff8ec93571d34c7  eval/results.json
+21a5f4f7db0e5220c0885e7656bc32bfe2c03dfa2095f59465d7f493a6749265  eval/verdicts.md
+618e41d074847c934d8d2dd8ff9d97d51b935796db6e1223747ad9e532637265  eval/eval_run.txt
+f9e07eb627dbde1b60a4845364fdcd3dfe239f097fad5a453c29cf7fbab94b2d  eval/deterministic_digest.txt
+7c6aca4a1b015a1e2ffe08e5e60475760f29d1401d9f5566b27d376af3b33c9c  ../../../../../closedloop/preregistration.json
+ed2e77774e05b648081de528b4781103e20e19ab61f1d4dea55b89d4057a6d0c  ../../../../../closedloop/conditions.py
+ed225108532483b1ef0d0dc5326ac27b9369f14ce0e883209dc8662312d97796  ../../../../../closedloop/FREEZE.json
