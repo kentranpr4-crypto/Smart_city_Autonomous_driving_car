@@ -43,9 +43,9 @@ add("LOCK-WEB exact + installed", "PASS" if not loose and os.path.exists("web/pa
 
 # --- physics + WP2 gates (map test files -> gate ids from the junit report)
 junit = "results/junit_all.xml"; os.makedirs("results", exist_ok=True)
-sh(PY, "-m", "pytest", "-m", "phy or trk or iso or com or fus or known_failure", f"--junitxml={junit}", "-q", "-p", "no:cacheprovider")
+sh(PY, "-m", "pytest", "-m", "phy or trk or iso or com or fus or cls or known_failure", f"--junitxml={junit}", "-q", "-p", "no:cacheprovider")
 per, extra, kf = {}, {}, {}
-com, fus = {}, {}
+com, fus, cls = {}, {}, {}
 def tally(d, key, tc):
     sk = tc.find("skipped")
     if sk is not None and "xfail" in (sk.get("type", "") + sk.get("message", "")):    # strict xfail = an EXPLICIT known failure that still fails as declared
@@ -60,6 +60,8 @@ for tc in ET.parse(junit).getroot().iter("testcase"):
     elif "test_trk_" in cn or "test_rig_integration" in cn: tally(extra, "WP2-TRK association/stale/occlusion/failure modes", tc)
     mc = re.search(r"test_com(\d\d)_", cn)
     if mc: tally(com, f"COM-{mc.group(1)}", tc)
+    mcl = re.search(r"test_cls(\d\d)_", tc.get("name", ""))
+    if mcl: tally(cls, f"CLS-{mcl.group(1)}", tc)
     mf = re.search(r"test_fus(\d\d)_", tc.get("name", ""))
     if mf: tally(fus, f"FUS-{mf.group(1)}", tc)
     if "test_known_failures" in cn: tally(kf, tc.get("name", "?"), tc)
@@ -86,7 +88,13 @@ for i in range(1, 11):
     d = fus.get(f"FUS-{i:02d}")
     if not d: add(f"FUS-{i:02d} {fnames[i]}", "NOT_CHECKED", "no test found"); continue
     row(f"FUS-{i:02d} {fnames[i]}", d)
-EXPECTED_KF = 8
+cnames = {1: "evidence/trust admission", 2: "risk prediction", 3: "safety supervisor (P1, caps, follower-aware)", 4: "planner/controller", 5: "physics + control-timestep integration", 6: "truth isolation of planning/",
+          7: "local-only fallback", 8: "safety evaluator correctness", 9: "failure/attack taxonomy", 10: "protocol integrity + freeze"}
+for i in range(1, 11):
+    d = cls.get(f"CLS-{i:02d}")
+    if not d: add(f"CLS-{i:02d} {cnames[i]}", "NOT_CHECKED", "no test found"); continue
+    row(f"CLS-{i:02d} {cnames[i]}", d)
+EXPECTED_KF = 11
 kfn = len(kf)
 add("KNOWN-FAILURES registry (xfail strict)", "PASS" if kfn == EXPECTED_KF else "FAIL",
     f"{kfn} explicit known failures still failing as declared (expected {EXPECTED_KF}): " + ", ".join(sorted(re.sub(r'^test_', '', k)[:4] for k in kf)) + "; an unexpected pass or a missing entry is FAIL")

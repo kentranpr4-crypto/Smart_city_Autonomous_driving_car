@@ -1,0 +1,34 @@
+pln_trust_no_persistence           BITES  FAILED tests/closedloop/test_cls01_02_trust_and_risk.py::test_cls01_levels_follow_the_decl
+pln_trust_stale_not_rejected       BITES  FAILED tests/closedloop/test_cls01_02_trust_and_risk.py::test_cls01_stale_flagged_quaranti
+pln_trust_ambiguous_accepted       BITES  FAILED tests/closedloop/test_cls01_02_trust_and_risk.py::test_cls01_stale_flagged_quaranti
+pln_trust_single_source_corroborated BITES  FAILED tests/closedloop/test_cls01_02_trust_and_risk.py::test_cls01_levels_follow_the_decl
+pln_trust_claims_authenticated     BITES  FAILED tests/closedloop/test_cls01_02_trust_and_risk.py::test_cls01_levels_follow_the_decl
+pln_risk_no_uncertainty_growth     BITES  FAILED tests/closedloop/test_cls01_02_trust_and_risk.py::test_cls02_monte_carlo_matches_th
+pln_risk_areq_wrong                BITES  FAILED tests/closedloop/test_cls01_02_trust_and_risk.py::test_cls02_probability_is_one_for
+pln_risk_beside_rule_removed       BITES  FAILED tests/closedloop/test_cls01_02_trust_and_risk.py::test_cls02_a_pedestrian_already_b
+pln_risk_creep_floor_removed       SURVIVED!!  
+pln_risk_vcap_no_reaction          BITES  FAILED tests/closedloop/test_cls01_02_trust_and_risk.py::test_cls02_precaution_flag_worst_
+pln_planner_margin_removed         BITES  FAILED tests/closedloop/test_cls03_04_supervisor_planner.py::test_cls04_hazard_braking_equ
+pln_planner_cruise_unbounded       BITES  FAILED tests/closedloop/test_cls03_04_supervisor_planner.py::test_cls04_cruise_tracks_the_
+pln_planner_hazard_ignores_threshold SURVIVED!!  
+pln_planner_los_rect_broken        BITES  FAILED tests/closedloop/test_cls03_04_supervisor_planner.py::test_cls03_contradicted_remot
+pln_sup_p1_min_removed             SURVIVED!!  
+pln_sup_advisory_cap_emergency     BITES  FAILED tests/closedloop/test_cls03_04_supervisor_planner.py::test_cls03_remote_only_adviso
+pln_sup_follower_cap_removed       BITES  FAILED tests/closedloop/test_cls03_04_supervisor_planner.py::test_cls03_remote_triggered_b
+pln_sup_follower_formula_wrong     BITES  FAILED tests/closedloop/test_cls03_04_supervisor_planner.py::test_cls03_follower_cap_close
+pln_sup_contradiction_off          BITES  FAILED tests/closedloop/test_cls03_04_supervisor_planner.py::test_cls03_contradicted_remot
+pln_sup_contradiction_ignores_occluders BITES  FAILED tests/closedloop/test_cls03_04_supervisor_planner.py::test_cls03_an_object_that_cou
+pln_sup_follower_risk_not_flagged  BITES  FAILED tests/closedloop/test_cls03_04_supervisor_planner.py::test_cls03_remote_triggered_b
+pln_sup_mode_threshold_wrong       BITES  FAILED tests/closedloop/test_cls03_04_supervisor_planner.py::test_cls03_remote_only_adviso
+pln_sup_no_command_clip            SURVIVED!!  
+pln_stack_nominal_reads_remote     SURVIVED!!  
+pln_stack_naive_uses_ci            SURVIVED!!  
+pln_imports_backend                BITES  FAILED tests/closedloop/test_cls05_06_07_integration_isolation_fallback.py::test_cls06_pla
+pln_reads_wall_clock               BITES  FAILED tests/closedloop/test_cls05_06_07_integration_isolation_fallback.py::test_cls06_pla
+cls_eval_unnecessary_threshold     SURVIVED!!  
+cls_eval_near_miss_threshold       BITES  FAILED tests/closedloop/test_cls08_evaluator.py::test_cls08_collision_near_miss_ttc_and_ha
+cls_eval_ece_wrong                 SURVIVED!!  
+cls_eval_jerk_ignores_step         BITES  FAILED tests/closedloop/test_cls08_evaluator.py::test_cls08_jerk_includes_the_standstill_d
+cls_eval_censoring_removed         BITES  FAILED tests/closedloop/test_cls08_evaluator.py::test_cls08_warning_lead_completion_censor
+cls_eval_stale_counter_off         BITES  FAILED tests/closedloop/test_cls08_evaluator.py::test_cls08_invariant_counters_detect_plan
+MUTATION BITES: SURVIVORS ['pln_risk_creep_floor_removed', 'pln_planner_hazard_ignores_threshold', 'pln_sup_p1_min_removed', 'pln_sup_no_command_clip', 'pln_stack_nominal_reads_remote', 'pln_stack_naive_uses_ci', 'cls_eval_unnecessary_threshold', 'cls_eval_ece_wrong']

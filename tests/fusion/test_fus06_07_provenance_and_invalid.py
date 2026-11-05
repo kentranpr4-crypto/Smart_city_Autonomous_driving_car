@@ -115,3 +115,23 @@ def test_fus07_remote_track_of_the_ego_vehicle_itself_is_suppressed_using_the_eg
     assert len(CooperativeFuser("B4_ci").step(1.0, [me, other]).tracks) == 2                            # without the ego pose nothing is suppressed
     local_same_place = CooperativeFuser("B4_ci").step(1.0, [loc(1, x=(50.0, 20.0, 0, 0)), est("k", 1, x=(50.0, 20.0, 0, 0), seq=1)], ego_pose=(50.0, 20.0, 0.1))
     assert local_same_place.diagnostics["rejected"] == {"self_track": 1}                                # only REMOTE tracks are suppressed (the ego keeps its own local tracks)
+
+
+def test_fus07_self_track_uses_the_ego_pose_at_the_remote_observation_time():
+    """Found in WP5: a remote constant-velocity estimate of a BRAKING ego lags; comparing at decision time missed it. A callable pose is evaluated at the observation time."""
+    me = est("k", 9, t=0.8, x=(40.0, 0.0, 6.0, 0.0), seq=3, cls="vehicle")                 # the remote saw the ego at x=40 at t=0.8
+    pose_then = lambda t: (40.05 if abs(t - 0.8) < 1e-9 else 99.0, 0.0, 0.1)
+    w = CooperativeFuser("B4_ci").step(1.0, [me], ego_pose=pose_then)
+    assert w.diagnostics["rejected"] == {"self_track": 1} and w.tracks == ()
+    far = lambda t: (47.0, 0.0, 0.1)
+    assert CooperativeFuser("B4_ci").step(1.0, [me], ego_pose=far).tracks                     # a different place at that time => not the ego
+
+
+def test_fus07_self_radius_catches_a_lagging_constant_velocity_track_of_a_braking_ego():
+    me = est("k", 9, t=0.8, x=(41.2, 0.0, 6.0, 0.0), seq=3, cls="vehicle")                 # remote CV track lags the ego centre by 1.3 m
+    pose = lambda t: (42.5, 0.0, 0.1)
+    assert CooperativeFuser("B4_ci").step(1.0, [me], ego_pose=pose).tracks != ()           # default: Mahalanobis gate only (WP4 behaviour) misses it
+    w = CooperativeFuser("B4_ci", {"self_radius_m": 3.0}).step(1.0, [me], ego_pose=pose)
+    assert w.diagnostics["rejected"] == {"self_track": 1} and w.tracks == ()
+    other = est("k", 10, t=0.8, x=(47.0, 0.0, 6.0, 0.0), seq=4, cls="vehicle")             # a different vehicle 4.5 m ahead is NOT suppressed
+    assert CooperativeFuser("B4_ci", {"self_radius_m": 3.0}).step(1.0, [other], ego_pose=pose).tracks

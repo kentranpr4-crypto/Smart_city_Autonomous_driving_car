@@ -115,6 +115,40 @@ M = [  # name, file, old, new[, test targets]
  ("fus_adapter_uses_arrival_time", "fusion/adapters.py", "return Estimate(st.ref[0], st.ref[1], st.t_meas,", "return Estimate(st.ref[0], st.ref[1], st.t_meas + st.age_est,", ["tests/fusion"]),
  ("fus_evaluator_gate_ignored",    "experiments/metrics.py", "if cost[i][j] <= gate}", "if True}", ["tests/fusion"]),
  ("fus_evaluator_nees_uses_diag",  "experiments/metrics.py", "n = float(e @ np.linalg.solve(P, e))", "n = float(e @ e / P[0, 0])", ["tests/fusion"]),
+ # ---- WP5 planning / closed-loop mutants (targets: tests/closedloop unit gates; integration mutants run the integration file)
+ ("pln_trust_no_persistence",       "planning/trust.py", "            elif n < self.prm[\"min_persistence_cycles\"]:", "            elif False:", ["tests/closedloop/test_cls01_02_trust_and_risk.py"]),
+ ("pln_trust_stale_not_rejected",   "planning/trust.py", "f.max_remote_age_s > self.prm[\"remote_max_age_s\"] + 1e-9 or ", "", ["tests/closedloop/test_cls01_02_trust_and_risk.py"]),
+ ("pln_trust_ambiguous_accepted",   "planning/trust.py", " or \"ambiguous_association\" in f.flags:", ":", ["tests/closedloop/test_cls01_02_trust_and_risk.py"]),
+ ("pln_trust_single_source_corroborated","planning/trust.py", "            elif len(remote) >= 2:", "            elif len(remote) >= 1:", ["tests/closedloop/test_cls01_02_trust_and_risk.py"]),
+ ("pln_trust_claims_authenticated", "planning/trust.py", "assurance = \"local\" if not remote else \"allowlist-only\"", "assurance = \"local\" if not remote else \"authenticated\"", ["tests/closedloop/test_cls01_02_trust_and_risk.py"]),
+ ("pln_risk_no_uncertainty_growth", "planning/risk.py", "sd = math.sqrt(max(pyy + 2.0 * t * pyv + t * t * pvv, 1e-9))", "sd = math.sqrt(max(pyy, 1e-9))", ["tests/closedloop/test_cls01_02_trust_and_risk.py"]),
+ ("pln_risk_areq_wrong",            "planning/risk.py", "a_req = (v * v) / (2.0 * max(d, 0.1)) if v > 0 else 0.0", "a_req = (v * v) / (max(d, 0.1)) if v > 0 else 0.0", ["tests/closedloop/test_cls01_02_trust_and_risk.py"]),
+ ("pln_risk_beside_rule_removed",   "planning/risk.py", "    beside = h.x <= xf - 0.3 ", "    beside = False and h.x <= xf - 0.3 ", ["tests/closedloop/test_cls01_02_trust_and_risk.py"]),
+ ("pln_risk_creep_floor_removed",   "planning/risk.py", ", prm.get(\"creep_speed\", 0.0))   # creep floor", ", 0.0)   # creep floor", ["tests/closedloop/test_cls01_02_trust_and_risk.py"]),
+ ("pln_risk_vcap_no_reaction",      "planning/risk.py", "            t_rd = 0.4", "            t_rd = 0.0", ["tests/closedloop/test_cls01_02_trust_and_risk.py"]),
+ ("pln_planner_margin_removed",     "planning/planner.py", "ah = -min(max(r.a_req * 1.15, 0.5), cap)", "ah = -min(max(r.a_req * 1.0, 0.5), cap)", ["tests/closedloop/test_cls03_04_supervisor_planner.py"]),
+ ("pln_planner_cruise_unbounded",   "planning/planner.py", "a = max(-prm[\"a_comf\"], min(prm[\"a_accel\"], self.v_ref - ego.v))", "a = self.v_ref - ego.v", ["tests/closedloop/test_cls03_04_supervisor_planner.py"]),
+ ("pln_planner_hazard_ignores_threshold","planning/planner.py", "r.p_conflict >= prm[\"p_thr\"] and ", "", ["tests/closedloop/test_cls03_04_supervisor_planner.py", "tests/closedloop/test_cls01_02_trust_and_risk.py"]),
+ ("pln_planner_los_rect_broken",    "planning/planner.py", "            if q < 0: return False", "            if q < 0: return True", ["tests/closedloop/test_cls03_04_supervisor_planner.py"]),
+ # EQUIVALENT (documented, not executed): pln_sup_p1_min_removed  `a_prop = min(a_all, a_local)` -> `a_all`. a_all is the planner minimum over a SUPERSET of the items used for a_local, so a_all <= a_local structurally; the min() is defensive redundancy.
+ ("pln_sup_advisory_cap_emergency", "planning/supervisor.py", "return {LOCAL: p[\"a_emerg\"], CORROBORATED: p[\"corroborated_cap\"], ADVISORY: p[\"advisory_cap\"]}[level]", "return {LOCAL: p[\"a_emerg\"], CORROBORATED: p[\"corroborated_cap\"], ADVISORY: p[\"a_emerg\"]}[level]", ["tests/closedloop/test_cls03_04_supervisor_planner.py"]),
+ ("pln_sup_follower_cap_removed",   "planning/supervisor.py", "            if f_cap < -a_prop:", "            if False:", ["tests/closedloop/test_cls03_04_supervisor_planner.py"]),
+ ("pln_sup_follower_formula_wrong", "planning/supervisor.py", "need = vf * tr + vf * vf / (2.0 * af) - g ", "need = vf * tr - g ", ["tests/closedloop/test_cls03_04_supervisor_planner.py"]),
+ ("pln_sup_contradiction_off",      "planning/supervisor.py", "(not self.naive) and h.level == ADVISORY and self._contradicted(h, ego, local)", "False", ["tests/closedloop/test_cls03_04_supervisor_planner.py", "tests/closedloop/test_cls09_failure_taxonomy.py"]),
+ ("pln_sup_contradiction_ignores_occluders","planning/supervisor.py", "        if occluded((sx, 0.0), (h.x, h.y), p.get(\"occluders\", ())):\n            return False ", "        if False:\n            return False ", ["tests/closedloop/test_cls03_04_supervisor_planner.py"]),
+ ("pln_sup_follower_risk_not_flagged","planning/supervisor.py", "        if a_local < -f_cap and not self.naive and f_cap < INF:", "        if False:", ["tests/closedloop/test_cls03_04_supervisor_planner.py"]),
+ ("pln_sup_mode_threshold_wrong",   "planning/supervisor.py", "mode = \"emergency\" if a_cmd < -p[\"a_comf\"] - 0.05 else \"comfort\"", "mode = \"emergency\" if a_cmd < -1.0 else \"comfort\"", ["tests/closedloop/test_cls03_04_supervisor_planner.py"]),
+ ("pln_sup_no_command_clip",        "planning/supervisor.py", "        a_cmd = max(-p[\"a_emerg\"], min(p[\"a_accel\"], a_cmd))\n", "", ["tests/closedloop/test_cls03_04_supervisor_planner.py"]),
+ ("pln_stack_nominal_reads_remote", "planning/stack.py", "if self.planner in (\"guarded\", \"naive\"):", "if True:", ["tests/closedloop/test_cls05_06_07_integration_isolation_fallback.py"]),
+ ("pln_stack_naive_uses_ci",        "planning/stack.py", "method = \"B3_info\" if naive else", "method = \"B4_ci\" if naive else", ["tests/closedloop/test_cls09_failure_taxonomy.py", "tests/closedloop/test_cls05_06_07_integration_isolation_fallback.py"]),
+ ("pln_imports_backend",            "planning/planner.py", "import math\n", "import math\nimport backend.world\n", ["tests/closedloop/test_cls05_06_07_integration_isolation_fallback.py"]),
+ ("pln_reads_wall_clock",           "planning/risk.py", "import math\n", "import math\nimport time\n", ["tests/closedloop/test_cls05_06_07_integration_isolation_fallback.py"]),
+ ("cls_eval_unnecessary_threshold", "closedloop/metrics.py", "unnecessary=any(cf >= 1.5 for _, cf in r[\"onsets\"])", "unnecessary=any(cf >= 0.5 for _, cf in r[\"onsets\"])", ["tests/closedloop/test_cls08_evaluator.py"]),
+ ("cls_eval_near_miss_threshold",   "closedloop/metrics.py", "r[\"min_clearance\"] < 1.0,", "r[\"min_clearance\"] < 0.1,", ["tests/closedloop/test_cls08_evaluator.py"]),
+ ("cls_eval_ece_wrong",             "closedloop/metrics.py", "if m.any(): e += m.mean() * abs(p[m].mean() - y[m].mean())", "if m.any(): e += abs(p[m].mean() - y[m].mean())", ["tests/closedloop/test_cls08_evaluator.py"]),
+ ("cls_eval_jerk_ignores_step",     "closedloop/metrics.py", "max_jerk=float(np.max(np.abs(np.diff(a))) / dt)", "max_jerk=float(np.max(np.abs(np.diff(a))))", ["tests/closedloop/test_cls08_evaluator.py"]),
+ ("cls_eval_censoring_removed",     "closedloop/metrics.py", "t_comp=(r[\"t_goal\"] if r[\"t_goal\"] is not None else K.DURATION)", "t_comp=(r[\"t_goal\"] if r[\"t_goal\"] is not None else 0.0)", ["tests/closedloop/test_cls08_evaluator.py"]),
+ ("cls_eval_stale_counter_off",     "closedloop/metrics.py", "stale=sum(1 for t in ticks if t[\"age\"] > 0.5 + ABOVE)", "stale=0", ["tests/closedloop/test_cls08_evaluator.py"]),
 ]
 def main():
     survivors = []
@@ -126,7 +160,7 @@ def main():
         targets = item[4] if len(item) > 4 else PHY
 
         tmp = pathlib.Path(tempfile.mkdtemp())
-        for d in ("backend", "perception", "comm", "integration", "fusion", "experiments", "tests", "schemas", "scenarios"):
+        for d in ("backend", "perception", "comm", "integration", "fusion", "experiments", "planning", "closedloop", "tests", "schemas", "scenarios"):
             shutil.copytree(ROOT / d, tmp / d, ignore=shutil.ignore_patterns("__pycache__"))
         shutil.copytree(ROOT / "docs" / "phase2", tmp / "docs" / "phase2", ignore=shutil.ignore_patterns("evidence"))   # tests that pin hashes of the preregistration need the document
         shutil.copy(ROOT / "pytest.ini", tmp / "pytest.ini")

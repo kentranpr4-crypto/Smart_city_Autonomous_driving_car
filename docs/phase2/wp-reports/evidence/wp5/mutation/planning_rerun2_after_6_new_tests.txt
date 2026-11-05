@@ -1,0 +1,9 @@
+pln_risk_creep_floor_removed       BITES  FAILED tests/closedloop/test_cls01_02_trust_and_risk.py::test_cls02_creep_floor_applies_wh
+pln_planner_hazard_ignores_threshold BITES  FAILED tests/closedloop/test_cls03_04_supervisor_planner.py::test_cls04_hazard_braking_nee
+pln_sup_p1_min_removed             SURVIVED!!  
+pln_sup_no_command_clip            BITES  FAILED tests/closedloop/test_cls03_04_supervisor_planner.py::test_cls03_the_final_command_
+pln_stack_nominal_reads_remote     BITES  FAILED tests/closedloop/test_cls05_06_07_integration_isolation_fallback.py::test_cls07_the
+pln_stack_naive_uses_ci            SURVIVED!!  
+cls_eval_unnecessary_threshold     BITES  FAILED tests/closedloop/test_cls08_evaluator.py::test_cls08_unnecessary_intervention_bound
+cls_eval_ece_wrong                 BITES  FAILED tests/closedloop/test_cls08_evaluator.py::test_cls08_unnecessary_intervention_bound
+MUTATION BITES: SURVIVORS ['pln_sup_p1_min_removed', 'pln_stack_naive_uses_ci']

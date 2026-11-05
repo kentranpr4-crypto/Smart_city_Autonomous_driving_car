@@ -86,10 +86,20 @@ AC-M11..M15 **chỉ phủ một phần** (không lái né, không P2).
 Seed tuning 20261401–15 (gỡ lỗi + chỉnh tham số chính sách **chỉ ở đây**); seed đánh giá 20261501–40 (chạy **một lần** sau đóng băng). Chỉnh tham số sau đăng ký phải ghi §10 **trước** khi đóng băng. Mọi điều kiện, mọi chính sách chạy trên cùng cấu hình vật lý (WI-8). Thống kê: tỉ lệ + khoảng Wilson 95%; chênh lệch ghép cặp bootstrap; ngưỡng đánh giá trên ước lượng điểm; **không hiệu chỉnh đa so sánh** (36 ngưỡng).
 
 ## 10. Thay đổi SAU đăng ký
-_(trống tại thời điểm commit đăng ký)_
+| # | Thay đổi (TRƯỚC khi đóng băng; chưa seed đánh giá nào được dùng) | Lý do / bằng chứng (seed tuning 20261401–15 + seed hiệu chuẩn kịch bản 20261601–40, chỉ chạy E0-N cho hiệu chuẩn độ khó) |
+|---|---|---|
+| 1 | ODD/kịch bản: người đi bộ 1.1–1.6 → **1.4–2.2 m/s** (đi nhanh/chạy bộ); ego 6.5–9.0 → **7.5–10.0 m/s**; lead `u` ∈ (−0.5, 2.2) → **(−0.5, 1.5)**; `ped_worst_speed` 1.6 → 2.2 | E0-N chỉ va chạm **7%** (< ngưỡng hợp lệ W-V1 ≥ 0.25) vì phanh đủ sớm; sau chỉnh: 32.5% (40 seed hiệu chuẩn), 33% (15 seed tuning). Chỉ E0-N được dùng để hiệu chuẩn độ khó |
+| 2 | `DURATION` 13 → **18 s** | hoàn thành chậm bị kiểm duyệt ở 13 s, làm hỏng phép đo travel-time |
+| 3 | Thêm `creep_speed=2.5 m/s` (sàn của trần tốc độ worst-case) và luật "beside" của risk (đối tượng đã ngang/sau cản trước không tính xung đột tương lai) | Tuning: ego dừng hẳn cạnh người đứng chờ (p≈0.2 từ bất định vận tốc trên 6 s) → không hoàn thành (control goal 0–7%) |
+| 4 | Self-track: so với **tư thế của ego tại thời điểm quan sát từ xa** (lịch sử tư thế) + `self_radius_m=3.0` (mã `fusion/fuser.py`, WP4); `comm/network.py` bỏ qua AoI cho tin nhắn tiêm (không có chú thích mô phỏng) | Tuning: camera từ xa thấy **chính xe ego** đang phanh gấp; ước lượng CV của xe trễ 0.6–1.5 m → vượt cổng Mahalanobis → ego tự coi mình là vật cản "corroborated" và phanh 6 m/s². Tiêm tin giả được chấp nhận làm sập meter AoI đánh giá. Test FUS/COM cũ chạy lại: pass |
+| 5 | Supervisor: vật thể từ xa-only "mâu thuẫn" cách < 12 m **không còn bị bỏ qua** mà thành giả thuyết advisory (phanh êm tối đa); cờ `follower_risk_accepted` tính cả khi hazard cục bộ | Bỏ qua hoàn toàn có thể loại bỏ một người thật mới vào tầm nhìn khi tracker cục bộ chưa xác nhận; test bắt lỗi cờ không bao giờ phát |
+| 6 | Kẻ tấn công: ghost kiểu 1 (luôn cách ego 25 m, "bóng") **giữ lại làm điều kiện báo cáo GF_* (không có giả thuyết)**; ghost chính thức = **xuất hiện đột ngột ở t=5 s cách trục sau 14 m rồi đứng yên**. Khoảng cách xe sau (10,16) → **(6,11) m** | Tuning: ghost kiểu 1 chỉ làm ego bò chậm (naive không phanh gấp, +7.6 s) và xe sau không va chạm ở 10–16 m. Thiết kế kẻ tấn công sau khi thấy kết quả naive — **ghi rõ đây là thiết kế đối kháng có chủ đích**, không phải đo ngẫu nhiên |
+| 7 | **Không đổi**: `p_thr=0.05`, `horizon_s=6.0`, mọi ngưỡng và giả thuyết | Quét p_thr∈{0.1…0.7} và horizon∈{3,4} trên seed tuning: giá trị lớn/ngắn hơn làm **E0-N/E3 va chạm nhiều hơn** (0.13–0.80); giữ giá trị khai báo a priori |
+| 8 | Quan sát tuning còn lại (không sửa): W-7/W-8 có vẻ bị bác bỏ (E3 chậm hơn E0-C trong control; mọi chính sách "can thiệp không cần thiết" ở ngưỡng −1 m/s² vì nhiễu vận tốc tracker làm ngay cả E0-N phanh nhẹ với xe đỗ) | giữ nguyên, báo cáo như kết quả |
+| 9 | Mutation: 8/34 mutant planning sống sót lần đầu (2 tương đương: bao `min` P1 và kẹp lệnh cuối thừa theo cấu trúc; 6 lỗ hổng test thật → thêm 6 test; kẹp lệnh được test bằng cấu hình sai) | `evidence/wp5/mutation/` |
 
 ## 11. Mốc đóng băng
 _(sẽ ghi: commit, cây băm mã, trước khi chạy đánh giá cuối)_
 
 ## 12. Mã băm đăng ký
-`closedloop/preregistration.json` sha256 = `98ddf13c5ce1d0d6abb53bbee3b66663cd159b12e09612ee93ec81f94f4477eb`; `closedloop/conditions.py` sha256 = `efaef1e131c99cbd39415be60b66e3cdcfb1c964b4d150a24d5e2abe42a40250`.
+`closedloop/preregistration.json` sha256 = `7c6aca4a1b015a1e2ffe08e5e60475760f29d1401d9f5566b27d376af3b33c9c`; `closedloop/conditions.py` sha256 = `ed2e77774e05b648081de528b4781103e20e19ab61f1d4dea55b89d4057a6d0c`. (Phiên bản đăng ký GỐC: commit `76f1f2a`, prereg `98ddf13c…`, conditions `efaef1e1…`.)

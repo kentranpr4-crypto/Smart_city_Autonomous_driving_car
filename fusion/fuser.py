@@ -15,7 +15,7 @@ from .types import REASONS, Estimate, FusedTrack, WorldState
 
 METHODS = ("B0_local", "B1_remote", "B2_naive", "B3_info", "B4_ci", "B4q_ci_quarantine")
 DEFAULTS = dict(sigma_a=1.0, gate_chi2_4dof=18.466826, max_horizon_s=1.0, max_remote_age_s=0.5, time_sigma_s=0.0, ci_criterion="trace",
-                monitor_window=10, monitor_chi2_conf=0.999, monitor_warmup_s=0.0, class_gate=True, quarantine_on_flag=False, require_assurance=None, supported_frame="map")
+                monitor_window=10, monitor_chi2_conf=0.999, monitor_warmup_s=0.0, class_gate=True, quarantine_on_flag=False, self_radius_m=0.0, require_assurance=None, supported_frame="map")
 
 
 class CooperativeFuser:
@@ -82,8 +82,11 @@ class CooperativeFuser:
             x, P, age = v
             xp, Pp = predict(x, P, t_now - e.t, p["sigma_a"], p["time_sigma_s"]) if abs(t_now - e.t) > 0 else (x, P)
             if ego_pose is not None and e.kind == "remote":
-                S = Pp[:2, :2] + np.eye(2) * ego_pose[2] ** 2; r = xp[:2] - np.array(ego_pose[:2], dtype=float)
-                if float(r @ np.linalg.solve(S, r)) <= self._self_gate:
+                if callable(ego_pose):                          # ego pose AT THE REMOTE OBSERVATION TIME (no constant-velocity lag when the ego brakes)
+                    ep = ego_pose(e.t); S = P[:2, :2] + np.eye(2) * ep[2] ** 2; r = x[:2] - np.array(ep[:2], dtype=float)
+                else:
+                    S = Pp[:2, :2] + np.eye(2) * ego_pose[2] ** 2; r = xp[:2] - np.array(ego_pose[:2], dtype=float)
+                if float(r @ np.linalg.solve(S, r)) <= self._self_gate or float(np.hypot(r[0], r[1])) <= p["self_radius_m"]:
                     rej["self_track"] += 1; continue
             items.append((e, xp, Pp, age))
         # evidence ledger (input level): one observation (origin source, origin seq) may enter the fusion once, whatever path/track id it arrived under

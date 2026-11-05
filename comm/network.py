@@ -111,7 +111,8 @@ class CommNetwork:
             return
         store.ingest(res)
         m = res.msg
-        self.eval_aoi.setdefault((dst, m.origin.source_id), AoIMeter()).observe(t_proc, obs_sim)
+        if obs_sim is not None:                                   # injected (forged) messages carry no simulation-time annotation: evaluation-only meter skips them
+            self.eval_aoi.setdefault((dst, m.origin.source_id), AoIMeter()).observe(t_proc, obs_sim)
         if dst in self.relays and m.hop_count + 1 <= adm.cfg.max_hops:
             for nxt in self.relays[dst]:
                 if (dst, nxt) not in self.channels or nxt in m.relay_path or nxt == m.origin.source_id:

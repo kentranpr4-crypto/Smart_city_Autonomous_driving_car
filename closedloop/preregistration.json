@@ -2,7 +2,7 @@
  "version": "1.0.0",
  "declared_on": "2026-11-05",
  "_comment": "DECLARED BEFORE ANY WP5 POLICY CODE EXISTED. invariant = must hold exactly; hypothesis = directional expectation on EVALUATION seeds (SUPPORTED/REFUTED; refuted ones are reported); report = measured, no verdict. Finite synthetic runs never prove real-world safety.",
- "conditions_sha256": "efaef1e131c99cbd39415be60b66e3cdcfb1c964b4d150a24d5e2abe42a40250",
+ "conditions_sha256": "ed2e77774e05b648081de528b4781103e20e19ab61f1d4dea55b89d4057a6d0c",
  "seeds": {
   "tuning": [
    20261401,
@@ -432,5 +432,6 @@
    "basis": "KNOWN LIMITATION: the backend snaps acceleration to 0 at v=0; counted, never claimed compliant",
    "hypothesis": "emergency-stop standstill jerk discontinuity events"
   }
- ]
+ ],
+ "_note_v1_1": "conditions_sha256 re-pinned on 2026-11-05 after the logged pre-freeze deviations in docs/phase2/10 section 10; thresholds and hypotheses unchanged"
 }
