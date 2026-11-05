@@ -99,7 +99,7 @@ Seed tuning 20261401–15 (gỡ lỗi + chỉnh tham số chính sách **chỉ �
 | 9 | Mutation: 8/34 mutant planning sống sót lần đầu (2 tương đương: bao `min` P1 và kẹp lệnh cuối thừa theo cấu trúc; 6 lỗ hổng test thật → thêm 6 test; kẹp lệnh được test bằng cấu hình sai) | `evidence/wp5/mutation/` |
 
 ## 11. Mốc đóng băng
-_(sẽ ghi: commit, cây băm mã, trước khi chạy đánh giá cuối)_
+Commit triển khai bị đóng băng: `7a61d97821a99a50acb73c9766df012e8a44ecd6`. Bản ghi `closedloop/FREEZE.json` (băm cây của `planning/ fusion/ comm/ perception/ backend/ schemas/ scenarios/ closedloop/{conditions,runner,metrics}.py experiments/conditions.py scripts/run_wp5_closedloop.py` và `closedloop/preregistration.json`) được ghi **trước** khi chạy đánh giá cuối; `scripts/run_wp5_closedloop.py eval` từ chối chạy nếu bất kỳ tệp nào đã đổi hoặc nếu `evidence/wp5/eval/results.json` đã tồn tại.
 
 ## 12. Mã băm đăng ký
 `closedloop/preregistration.json` sha256 = `7c6aca4a1b015a1e2ffe08e5e60475760f29d1401d9f5566b27d376af3b33c9c`; `closedloop/conditions.py` sha256 = `ed2e77774e05b648081de528b4781103e20e19ab61f1d4dea55b89d4057a6d0c`. (Phiên bản đăng ký GỐC: commit `76f1f2a`, prereg `98ddf13c…`, conditions `efaef1e1…`.)

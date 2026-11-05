@@ -1,0 +1,21 @@
+{
+ "implementation_commit": "7a61d97821a99a50acb73c9766df012e8a44ecd6",
+ "frozen_on": "2026-11-05",
+ "preregistration_sha256": "7c6aca4a1b015a1e2ffe08e5e60475760f29d1401d9f5566b27d376af3b33c9c",
+ "tree_hashes": {
+  "planning": "b4d1f7d9a933967bd01cce0a67c9c46d60d16a22583d44a7287c4aa96ccd8850",
+  "fusion": "ade083008ac01d11bdf9aff53e02d26796b3d85fb9bdc133a7668638d4e76f37",
+  "comm": "33993a92f9cfd028f3a21270de6de7e9485e7f8cc66aaad7ed58a1de13a2aead",
+  "perception": "12fd1aa91244c628c6541f6f6c64ccd3995afa252ac53d0bd40da62999b94be7",
+  "backend": "f01298dffbaf8eb361607692dffbeedcf31f5ce10aca505a95307d56ea45b10e",
+  "closedloop/conditions.py": "c4526e2f51fa1030fb1e39c59603565765f994907ea5b6c01fe8ae105436d22a",
+  "closedloop/runner.py": "ef49eb90b07ccba70a00d54d9f96d60242ef9a15f730d4dfb41f6d1af79d0746",
+  "closedloop/metrics.py": "044d6df6ef8c9980e446e8cfa2bf70ade67959d3b6f6ea652b3786d84eb72d4a",
+  "closedloop/preregistration.json": "951fb322cbb124d5cdfbcc240e1e74bbf87fff794be1bf21ed9660f51519f47b",
+  "experiments/conditions.py": "1c0997f4adf0f6b4d95ad9c705716b629aafa889178417e958e09b192b12d799",
+  "scripts/run_wp5_closedloop.py": "1b40c1e68d17eb8121b4851860042fa42b30ec6d270e8aaf79ed970c3851dde5",
+  "schemas": "bf600d65bb910c656c094b37875a6da5367af9c109394afa5044a2589b5d27fe",
+  "scenarios": "5c9d6205684d30d53cb866f012f391e95cd6eb8b66a54d70198c0101ad8c529d"
+ },
+ "note": "Written BEFORE the final evaluation. scripts/run_wp5_closedloop.py eval refuses to run if any frozen file differs from these hashes. Tests, docs and reports are not frozen."
+}
