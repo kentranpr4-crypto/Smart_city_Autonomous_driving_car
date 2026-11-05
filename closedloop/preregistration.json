@@ -1,0 +1,436 @@
+{
+ "version": "1.0.0",
+ "declared_on": "2026-11-05",
+ "_comment": "DECLARED BEFORE ANY WP5 POLICY CODE EXISTED. invariant = must hold exactly; hypothesis = directional expectation on EVALUATION seeds (SUPPORTED/REFUTED; refuted ones are reported); report = measured, no verdict. Finite synthetic runs never prove real-world safety.",
+ "conditions_sha256": "efaef1e131c99cbd39415be60b66e3cdcfb1c964b4d150a24d5e2abe42a40250",
+ "seeds": {
+  "tuning": [
+   20261401,
+   20261415
+  ],
+  "evaluation": [
+   20261501,
+   20261540
+  ],
+  "replay": 3
+ },
+ "thresholds": [
+  {
+   "id": "WI-1",
+   "scope": "all",
+   "metric": "truth_in_planning",
+   "op": "==",
+   "value": 0,
+   "kind": "invariant",
+   "basis": "AST + blocked-import subprocess + object-graph walk of the stack after every run"
+  },
+  {
+   "id": "WI-2",
+   "scope": "all",
+   "metric": "stale_or_invalid_remote_used",
+   "op": "==",
+   "value": 0,
+   "kind": "invariant",
+   "basis": "trust admission refuses age > 0.5 s, invalid, flagged"
+  },
+  {
+   "id": "WI-3",
+   "scope": "all",
+   "metric": "remote_raised_speed_events",
+   "op": "==",
+   "value": 0,
+   "kind": "invariant",
+   "basis": "P1: remote information may only ADD braking (final command <= local-only candidate)"
+  },
+  {
+   "id": "WI-4",
+   "scope": "all",
+   "metric": "replay_mismatches",
+   "op": "==",
+   "value": 0,
+   "kind": "invariant",
+   "basis": "deterministic simulation and decision stack"
+  },
+  {
+   "id": "WI-5",
+   "scope": "all",
+   "metric": "command_limit_violations",
+   "op": "==",
+   "value": 0,
+   "kind": "invariant",
+   "basis": "|a_cmd| <= 6.0 m/s2 and valid mode on every command"
+  },
+  {
+   "id": "WI-6",
+   "scope": "all",
+   "metric": "run_exceptions",
+   "op": "==",
+   "value": 0,
+   "kind": "invariant",
+   "basis": "no crash"
+  },
+  {
+   "id": "WI-7",
+   "scope": "all",
+   "metric": "unauthenticated_treated_as_authenticated",
+   "op": "==",
+   "value": 0,
+   "kind": "invariant",
+   "basis": "no cryptographic verification exists; trust level 'authenticated' is unreachable"
+  },
+  {
+   "id": "WI-8",
+   "scope": "all",
+   "metric": "physics_config_mismatch",
+   "op": "==",
+   "value": 0,
+   "kind": "invariant",
+   "basis": "all policies share dt, control step, vehicle parameters, friction and scenario seeds"
+  },
+  {
+   "id": "W-V1",
+   "scope": "H_E0N",
+   "metric": "collision_rate",
+   "op": ">=",
+   "value": 0.25,
+   "kind": "hypothesis",
+   "basis": "scenario validity: the hazard must be genuinely hazardous for ego-only nominal",
+   "hypothesis": "scenario is hazardous (not trivially safe)"
+  },
+  {
+   "id": "W-V2",
+   "scope": "H_E0N",
+   "metric": "collision_rate",
+   "op": "<=",
+   "value": 0.85,
+   "kind": "hypothesis",
+   "basis": "scenario validity: not unavoidable for everyone",
+   "hypothesis": "scenario is not hopeless"
+  },
+  {
+   "id": "W-V3",
+   "scope": "C_E0N",
+   "metric": "collision_rate",
+   "op": "==",
+   "value": 0,
+   "kind": "hypothesis",
+   "basis": "no-hazard control must be safe",
+   "hypothesis": "control scenario is safe"
+  },
+  {
+   "id": "W-1",
+   "scope": "H_E3",
+   "metric": "collision_rate",
+   "op": "<=",
+   "value": {
+    "factor": 0.5,
+    "of": [
+     "H_E0N:collision_rate"
+    ]
+   },
+   "kind": "hypothesis",
+   "basis": "early remote warning gives time to brake",
+   "hypothesis": "E3 halves the ego-only nominal collision rate"
+  },
+  {
+   "id": "W-2",
+   "scope": "H_E2",
+   "metric": "collision_rate",
+   "op": "<",
+   "value": {
+    "factor": 1.0,
+    "of": [
+     "H_E0N:collision_rate"
+    ]
+   },
+   "kind": "hypothesis",
+   "basis": "CCTV sees the pedestrian behind the truck",
+   "hypothesis": "E2 (CCTV) is safer than ego-only nominal"
+  },
+  {
+   "id": "W-3",
+   "scope": "H_E1",
+   "metric": "collision_rate",
+   "op": "<",
+   "value": {
+    "factor": 1.0,
+    "of": [
+     "H_E0N:collision_rate"
+    ]
+   },
+   "kind": "hypothesis",
+   "basis": "V2V camera sees the pedestrian",
+   "hypothesis": "E1 (V2V) is safer than ego-only nominal"
+  },
+  {
+   "id": "W-4",
+   "scope": "H_E3",
+   "metric": "collision_rate",
+   "op": "<=",
+   "value": {
+    "plus": 0.05,
+    "of": [
+     "H_E0C:collision_rate"
+    ]
+   },
+   "kind": "hypothesis",
+   "basis": "cooperation should not be worse than the conservative ego-only baseline",
+   "hypothesis": "E3 is non-inferior to conservative ego-only (margin 5 points)"
+  },
+  {
+   "id": "W-5",
+   "scope": "H_E0C",
+   "metric": "collision_rate",
+   "op": "<=",
+   "value": {
+    "factor": 0.5,
+    "of": [
+     "H_E0N:collision_rate"
+    ]
+   },
+   "kind": "hypothesis",
+   "basis": "occlusion-aware phantom pedestrian slows the ego",
+   "hypothesis": "the conservative baseline is effective"
+  },
+  {
+   "id": "W-6",
+   "scope": "H_E3",
+   "metric": "min_ttc_median_s",
+   "op": ">=",
+   "value": {
+    "plus": 0.3,
+    "of": [
+     "H_E0N:min_ttc_median_s"
+    ]
+   },
+   "kind": "hypothesis",
+   "basis": "earlier braking increases the minimum time-to-collision",
+   "hypothesis": "E3 raises median minimum TTC by >= 0.3 s"
+  },
+  {
+   "id": "W-7",
+   "scope": "C_E3",
+   "metric": "travel_time_penalty_s",
+   "op": "<=",
+   "value": {
+    "plus": 0.0,
+    "of": [
+     "C_E0C:travel_time_penalty_s"
+    ]
+   },
+   "kind": "hypothesis",
+   "basis": "E3 only slows for REAL remote tracks",
+   "hypothesis": "E3 costs no more travel time than conservative ego-only in the no-hazard control"
+  },
+  {
+   "id": "W-8",
+   "scope": "C_E3",
+   "metric": "unnecessary_intervention_rate",
+   "op": "<=",
+   "value": 0.3,
+   "kind": "hypothesis",
+   "basis": "a waiting pedestrian near the lane triggers precaution by design",
+   "hypothesis": "E3 unnecessary interventions <= 30% in the control"
+  },
+  {
+   "id": "W-9",
+   "scope": "G_E3naive",
+   "metric": "hard_brake_rate",
+   "op": ">=",
+   "value": 0.5,
+   "kind": "hypothesis",
+   "basis": "ghost obstacle + full trust = emergency braking",
+   "hypothesis": "naive cooperation is harmed by a ghost"
+  },
+  {
+   "id": "W-10",
+   "scope": "G_E3",
+   "metric": "hard_brake_rate",
+   "op": "<=",
+   "value": 0.05,
+   "kind": "hypothesis",
+   "basis": "remote-only advisory cap 3.0 m/s2 and contradiction hold",
+   "hypothesis": "guarded cooperation is not harmed by a ghost (no hard braking)"
+  },
+  {
+   "id": "W-11",
+   "scope": "RG_E3naive",
+   "metric": "follower_collision_rate",
+   "op": ">=",
+   "value": {
+    "plus": 0.2,
+    "of": [
+     "RG_E3:follower_collision_rate"
+    ]
+   },
+   "kind": "hypothesis",
+   "basis": "naive max braking on a ghost with a following human driver",
+   "hypothesis": "naive ghost braking causes rear-end collisions"
+  },
+  {
+   "id": "W-12",
+   "scope": "RG_E3",
+   "metric": "follower_collision_rate",
+   "op": "<=",
+   "value": 0.05,
+   "kind": "hypothesis",
+   "basis": "follower-aware cap",
+   "hypothesis": "guarded cooperation keeps follower collisions <= 5%"
+  },
+  {
+   "id": "W-13",
+   "scope": "R_E3",
+   "metric": "follower_collision_rate",
+   "op": "<=",
+   "value": {
+    "plus": 0.05,
+    "of": [
+     "R_E0N:follower_collision_rate"
+    ]
+   },
+   "kind": "hypothesis",
+   "basis": "hazard + follower",
+   "hypothesis": "cooperation does not add rear-end collisions beyond 5 points"
+  },
+  {
+   "id": "W-14",
+   "scope": "R_E3",
+   "metric": "collision_rate",
+   "op": "<=",
+   "value": {
+    "plus": 0.0,
+    "of": [
+     "R_E0N:collision_rate"
+    ]
+   },
+   "kind": "hypothesis",
+   "basis": "hazard + follower",
+   "hypothesis": "cooperation helps ego collisions also with a follower present"
+  },
+  {
+   "id": "W-15",
+   "scope": "B_E3",
+   "metric": "fallback_identical_fraction",
+   "op": "==",
+   "value": 1.0,
+   "kind": "hypothesis",
+   "basis": "no remote data => identical decisions to E0-N",
+   "hypothesis": "local-only fallback is exactly E0-N when remote traffic is lost"
+  },
+  {
+   "id": "W-16",
+   "scope": "D_E3",
+   "metric": "collision_rate",
+   "op": "<=",
+   "value": {
+    "plus": 0.02,
+    "of": [
+     "H_E0N:collision_rate"
+    ]
+   },
+   "kind": "hypothesis",
+   "basis": "degraded link + 0.58 m CCTV bias",
+   "hypothesis": "degraded/biased cooperation is not worse than ego-only nominal"
+  },
+  {
+   "id": "W-17",
+   "scope": "I_E3",
+   "metric": "collision_rate",
+   "op": "<=",
+   "value": {
+    "plus": 0.02,
+    "of": [
+     "H_E0N:collision_rate"
+    ]
+   },
+   "kind": "hypothesis",
+   "basis": "ID churn on the remote source",
+   "hypothesis": "ID churn does not make E3 worse than ego-only nominal"
+  },
+  {
+   "id": "W-18",
+   "scope": "U_E3",
+   "metric": "unnecessary_intervention_rate",
+   "op": "==",
+   "value": 0.0,
+   "kind": "hypothesis",
+   "basis": "non-allowlisted source is rejected at admission",
+   "hypothesis": "untrusted-source ghost causes no intervention"
+  },
+  {
+   "id": "W-19",
+   "scope": "H_E3",
+   "metric": "calibration_ece",
+   "op": "<=",
+   "value": 0.15,
+   "kind": "hypothesis",
+   "basis": "risk prediction calibration (autocorrelated ticks; provisional)",
+   "hypothesis": "risk model ECE <= 0.15"
+  },
+  {
+   "id": "W-20",
+   "scope": "H_E3",
+   "metric": "decision_latency_p95_ms",
+   "op": "<=",
+   "value": 20.0,
+   "kind": "hypothesis",
+   "basis": "pure-Python stack; sandbox CPU, NOT the Jetson",
+   "hypothesis": "decision latency P95 <= 20 ms on the sandbox"
+  },
+  {
+   "id": "W-21",
+   "scope": "H_E3",
+   "metric": "remote_age_p95_s",
+   "op": "<=",
+   "value": 0.3,
+   "kind": "hypothesis",
+   "basis": "10 Hz publish + 30 ms link + processing",
+   "hypothesis": "remote observation age at decision P95 <= 0.3 s"
+  },
+  {
+   "id": "W-22",
+   "scope": "D_E3naive",
+   "metric": "hard_brake_rate",
+   "op": ">=",
+   "value": {
+    "plus": 0.05,
+    "of": [
+     "D_E3:hard_brake_rate"
+    ]
+   },
+   "kind": "hypothesis",
+   "basis": "bias creates duplicate ghost tracks (WP4 KF-7)",
+   "hypothesis": "under degraded/biased inputs the naive policy brakes hard more often than the guarded one"
+  },
+  {
+   "id": "R-1",
+   "scope": "H_E3",
+   "metric": "max_decel_p95",
+   "op": "report",
+   "value": null,
+   "kind": "report",
+   "basis": "reported only",
+   "hypothesis": "maximum deceleration"
+  },
+  {
+   "id": "R-2",
+   "scope": "H_E3",
+   "metric": "max_jerk_p95",
+   "op": "report",
+   "value": null,
+   "kind": "report",
+   "basis": "reported only",
+   "hypothesis": "maximum jerk (m/s3) - includes the standstill discontinuity"
+  },
+  {
+   "id": "R-3",
+   "scope": "H_E3",
+   "metric": "standstill_jerk_event_rate",
+   "op": "report",
+   "value": null,
+   "kind": "report",
+   "basis": "KNOWN LIMITATION: the backend snaps acceleration to 0 at v=0; counted, never claimed compliant",
+   "hypothesis": "emergency-stop standstill jerk discontinuity events"
+  }
+ ]
+}
