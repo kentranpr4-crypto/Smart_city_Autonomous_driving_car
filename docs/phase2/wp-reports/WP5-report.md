@@ -80,7 +80,8 @@ make setup && make check                                         # 50 PASS / 0 F
 Kết quả clean-room ghi ở §9 sau khi chạy.
 
 ## 9. Kết quả clean-room
-_(điền sau khi chạy: xem cuối tệp)_
+Clone mới + `make setup` (commit `1194d2a`): `MANIFEST.sha256` **7/7 tệp OK**; `make check` giống hệt (**50 PASS / 0 FAIL / 1 BLOCKED / 9 NOT_CHECKED**, gồm FREEZE và evidence cuối được kiểm). Chạy lại **toàn bộ** đánh giá cuối WP5 trong clone (28 điều kiện × 40 seed, ≈14 phút): digest tất định `f20828f1…7974` **trùng bit-giống** với bản gốc; mọi phán quyết trùng (kể cả 6 REFUTED); chỉ độ trễ quyết định P95 khác (2.202 vs 2.271 ms, phụ thuộc đồng hồ tường, loại khỏi digest). Cơ chế "chạy một lần" bị bỏ qua **chỉ trong clone** bằng cách xoá `results.json` của clone (bản gốc trong repo không đổi).
+**Hồi quy WP4:** chạy lại toàn bộ đánh giá cuối WP4 từ mã hiện tại (đã có `fusion/fuser.py`, `comm/network.py` sửa trong WP5): digest `54d91faa…a31fb` **trùng bit-giống** với bản gốc WP4 ⇒ các thay đổi dùng chung không làm đổi kết quả WP4 đã đóng băng.
 
 ## 10. Khuyến nghị cho frontend thành phố 3D (WP6)
 **Tiến hành WP6 có điều kiện, chỉ như lớp hiển thị**: backend là nguồn trạng thái có thẩm quyền, telemetry/frames đã sẵn (I10/I12); frontend **không** tính an toàn. Nên hiển thị: mức tin cậy từng giả thuyết (local/corroborated/advisory/rejected), tuổi dữ liệu từ xa, sự kiện `follower_risk_accepted`, `contradicted_hold`, `standstill_jerk_discontinuity`, và nhãn "mô phỏng — không phải bằng chứng an toàn". **Chưa nên** quảng bá kết quả an toàn trong UI.
